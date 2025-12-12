@@ -4,7 +4,13 @@ Note: Only use **NEW:** for entirely new prompt files, NOT for new additions/sec
 
 ### Claude Code System Prompts Changelog
 
+#### [2.0.61](https://github.com/Piebald-AI/claude-code-system-prompts/commit/09e9a9f1961da38ce3b9d6f771f071e43b4746ea)
+
+<sub>_No changes to the system prompts in v2.0.61._</sub>
+
 # [2.0.60](https://github.com/Piebald-AI/claude-code-system-prompts/commit/7b38ff38e8fc1b6f4e1a88b3d41f0a6d4e70f7c8)
+
+_+1339 tokens_
 
 - **NEW:** System Reminder: Team Coordination - instructions for team-based multi-agent workflows with team config, task list paths, and teammate messaging
 - **NEW:** Agent Prompt: Exit plan mode with swarm - instructions for launching worker swarms when `ExitPlanMode` is called with `isSwarm` enabled
@@ -16,9 +22,13 @@ Note: Only use **NEW:** for entirely new prompt files, NOT for new additions/sec
 
 # [2.0.59](https://github.com/Piebald-AI/claude-code-system-prompts/commit/f01489b6be5c888d3e53a02609710628a29c9a0b)
 
+_+140 tokens_
+
 - **NEW:** Added new `TaskUpdate` tool which allows Claude to update the task list.
 
 # [2.0.58](https://github.com/Piebald-AI/claude-code-system-prompts/commit/d1437449dddae84e888f4751e18add2e6153e135)
+
+_+21 tokens_
 
 - Session notes template: Added new "Current State" section for tracking active work and pending tasks
 - Session notes template: Renamed "User Corrections / Mistakes" to "Errors & Corrections" with expanded description
@@ -33,6 +43,8 @@ Note: Only use **NEW:** for entirely new prompt files, NOT for new additions/sec
 <sub>_No changes to the system prompts in v2.0.57._</sub>
 
 # [2.0.56](https://github.com/Piebald-AI/claude-code-system-prompts/commit/47571b6ad6110bebc89553bba49ebcf94f4605fc)
+
+_-134 tokens_
 
 - Reinforced note about using the current year in the WebSearch tool description
 - Added a note to the main system prompt instructing Claude to never include time estimates when presenting options or plans.
