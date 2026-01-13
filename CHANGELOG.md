@@ -4,6 +4,19 @@ Note: Only use **NEW:** for entirely new prompt files, NOT for new additions/sec
 
 ### Claude Code System Prompts Changelog
 
+# [2.1.6](https://github.com/Piebald-AI/claude-code-system-prompts/commit/4843349)
+
+_+742 tokens_
+
+- **NEW:** System Prompt: Autonomous agent (standalone) - standalone autonomous agent mode prompt without system context prefix
+- **NEW:** System Prompt: Autonomous agent (with context) - autonomous agent mode prompt prefixed with main system prompt
+- **REMOVED:** Agent Prompt: Bash command explainer - removed in favor of integrated bash command explanation
+- Agent Prompt: Status line setup - added pre-calculated `used_percentage` and `remaining_percentage` fields to context_window object; updated examples to use simpler syntax for displaying context usage
+- Agent Prompt: Claude guide agent - fixed incorrect variable references in documentation source URLs and tool names throughout approach steps
+- Agent Prompt: Session Search Assistant - simplified introduction text
+- Tool Description: Bash - refactored variable usage, replacing `BASH_TOOL_NAME` with `RUN_IN_BACKGROUND_NOTE`
+- Tool Description: ExitPlanMode v2 - added comprehensive "Requesting Permissions (allowedPrompts)" section with guidelines for requesting prompt-based permissions for bash commands, including security-conscious scoping practices
+
 # [2.1.5](https://github.com/Piebald-AI/claude-code-system-prompts/commit/701b0e2)
 
 _-24 tokens_
