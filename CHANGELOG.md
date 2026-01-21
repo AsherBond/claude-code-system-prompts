@@ -4,6 +4,19 @@ Note: Only use **NEW:** for entirely new prompt files, NOT for new additions/sec
 
 ### Claude Code System Prompts Changelog
 
+# [2.1.14](https://github.com/Piebald-AI/claude-code-system-prompts/commit/8533e3b)
+
+_-1,153 tokens_
+
+- **NEW:** Agent Prompt: Prompt Suggestion Generator (Stated Intent) - instructions for generating prompt suggestions based on user's explicitly stated next steps
+- **NEW:** Tool Description: ToolSearch - renamed from MCPSearch; tool description for loading and searching deferred tools before use
+- **REMOVED:** Tool Description: ExitPlanMode v2 and ExitPlanMode v2 (security notes) - consolidated functionality into base ExitPlanMode
+- **REMOVED:** Tool Description: MCPSearch and MCPSearch (with available tools) - replaced by ToolSearch
+- Tool Description: ExitPlanMode - added "How This Tool Works" section explaining plan file workflow; clarified that tool reads from plan file rather than taking plan as parameter; simplified "Handling Ambiguity in Plans" section to "Before Using This Tool" with clearer guidance on when to use AskUserQuestion; removed variable references in favor of direct tool names
+- Tool Description: Bash - clarified session persistence behavior: "Working directory persists between commands; shell state (everything else) does not. The shell environment is initialized from the user's profile (bash or zsh)"
+- Tool Description: WebFetch - added guidance to prefer gh CLI via Bash for GitHub URLs (e.g., gh pr view, gh issue view, gh api)
+- System Prompt: Chrome browser MCP tools - updated to reference ToolSearch instead of MCPSearch
+
 #### [2.1.12](https://github.com/Piebald-AI/claude-code-system-prompts/commit/4277b8b)
 
 <sub>_No changes to the system prompts in v2.1.12._</sub>
