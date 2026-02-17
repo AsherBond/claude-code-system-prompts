@@ -34,7 +34,7 @@ Download it and try it out for free!  **https://piebald.ai/**
 > [!important]
 > **NEW (January 23, 2026): We've added all of Claude Code's ~40 system reminders to this list&mdash;see [System Reminders](#system-reminders).**
 
-This repository contains an up-to-date list of all Claude Code's various system prompts and their associated token counts as of **[Claude Code v2.1.44](https://www.npmjs.com/package/@anthropic-ai/claude-code/v/2.1.44) (February 16th, 2026).**  It also contains a [**CHANGELOG.md**](./CHANGELOG.md) for the system prompts across 99 versions since v2.0.14.  From the team behind [<img src="https://github.com/Piebald-AI/piebald/raw/main/assets/logo.svg" width="15"> **Piebald.**](https://piebald.ai/)
+This repository contains an up-to-date list of all Claude Code's various system prompts and their associated token counts as of **[Claude Code v2.1.45](https://www.npmjs.com/package/@anthropic-ai/claude-code/v/2.1.45) (February 17th, 2026).**  It also contains a [**CHANGELOG.md**](./CHANGELOG.md) for the system prompts across 100 versions since v2.0.14.  From the team behind [<img src="https://github.com/Piebald-AI/piebald/raw/main/assets/logo.svg" width="15"> **Piebald.**](https://piebald.ai/)
 
 **This repository is updated within minutes of each Claude Code release.  See the [changelog](./CHANGELOG.md), and follow [@PiebaldAI](https://x.com/PiebaldAI) on X for a summary of the system prompt changes in each release.**
 
@@ -89,7 +89,7 @@ Sub-agents and utilities.
 ### Slash commands
 
 - [Agent Prompt: /pr-comments slash command](./system-prompts/agent-prompt-pr-comments-slash-command.md) (**402** tks) - System prompt for fetching and displaying GitHub PR comments.
-- [Agent Prompt: /review-pr slash command](./system-prompts/agent-prompt-review-pr-slash-command.md) (**243** tks) - System prompt for reviewing GitHub pull requests with code analysis.
+- [Agent Prompt: /review-pr slash command](./system-prompts/agent-prompt-review-pr-slash-command.md) (**211** tks) - System prompt for reviewing GitHub pull requests with code analysis.
 - [Agent Prompt: /security-review slash command](./system-prompts/agent-prompt-security-review-slash-command.md) (**2610** tks) - Comprehensive security review prompt for analyzing code changes with focus on exploitable vulnerabilities.
 
 ### Utilities
@@ -103,12 +103,12 @@ Sub-agents and utilities.
 - [Agent Prompt: Conversation summarization](./system-prompts/agent-prompt-conversation-summarization.md) (**1121** tks) - System prompt for creating detailed conversation summaries.
 - [Agent Prompt: Hook condition evaluator](./system-prompts/agent-prompt-hook-condition-evaluator.md) (**78** tks) - System prompt for evaluating hook conditions in Claude Code.
 - [Agent Prompt: Prompt Suggestion Generator (Coordinator)](./system-prompts/agent-prompt-prompt-suggestion-generator-coordinator.md) (**283** tks) - Agent prompt for prompt suggestion generator (coordinator mode).
-- [Agent Prompt: Prompt Suggestion Generator (Stated Intent)](./system-prompts/agent-prompt-prompt-suggestion-generator-stated-intent.md) (**166** tks) - Instructions for generating prompt suggestions based on user's explicitly stated next steps.
 - [Agent Prompt: Prompt Suggestion Generator v2](./system-prompts/agent-prompt-prompt-suggestion-generator-v2.md) (**296** tks) - V2 instructions for generating prompt suggestions for Claude Code.
 - [Agent Prompt: Recent Message Summarization](./system-prompts/agent-prompt-recent-message-summarization.md) (**720** tks) - Agent prompt used for summarizing recent messages..
 - [Agent Prompt: Session Search Assistant](./system-prompts/agent-prompt-session-search-assistant.md) (**439** tks) - Agent prompt for the session search assistant that finds relevant sessions based on user queries and metadata.
 - [Agent Prompt: Session memory update instructions](./system-prompts/agent-prompt-session-memory-update-instructions.md) (**756** tks) - Instructions for updating session memory files during conversations.
 - [Agent Prompt: Session title and branch generation](./system-prompts/agent-prompt-session-title-and-branch-generation.md) (**307** tks) - Agent for generating succinct session titles and git branch names.
+- [Agent Prompt: Single-word search term extractor](./system-prompts/agent-prompt-single-word-search-term-extractor.md) (**361** tks) - System prompt for extracting single-word search terms from a user's query.
 - [Agent Prompt: Update Magic Docs](./system-prompts/agent-prompt-update-magic-docs.md) (**718** tks) - Prompt for the magic-docs agent..
 - [Agent Prompt: User sentiment analysis](./system-prompts/agent-prompt-user-sentiment-analysis.md) (**205** tks) - System prompt for analyzing user frustration and PR creation requests.
 - [Agent Prompt: WebFetch summarizer](./system-prompts/agent-prompt-webfetch-summarizer.md) (**185** tks) - Prompt for agent that summarizes verbose output from WebFetch for the main model.
@@ -145,6 +145,7 @@ Parts of the main system prompt.
 - [System Prompt: Learning mode (insights)](./system-prompts/system-prompt-learning-mode-insights.md) (**142** tks) - Instructions for providing educational insights when learning mode is active.
 - [System Prompt: Learning mode](./system-prompts/system-prompt-learning-mode.md) (**1042** tks) - Main system prompt for learning mode with human collaboration instructions.
 - [System Prompt: MCP CLI](./system-prompts/system-prompt-mcp-cli.md) (**1333** tks) - Instructions for using mcp-cli to interact with Model Context Protocol servers.
+- [System Prompt: Option previewer](./system-prompts/system-prompt-option-previewer.md) (**129** tks) - System prompt for previewing UI options in a side-by-side layout.
 - [System Prompt: Parallel tool call note (part of "Tool usage policy")](./system-prompts/system-prompt-parallel-tool-call-note-part-of-tool-usage-policy.md) (**102** tks) - System prompt for telling Claude to using parallel tool calls.
 - [System Prompt: Scratchpad directory](./system-prompts/system-prompt-scratchpad-directory.md) (**170** tks) - Instructions for using a dedicated scratchpad directory for temporary files.
 - [System Prompt: Skillify Current Session](./system-prompts/system-prompt-skillify-current-session.md) (**1882** tks) - System prompt for converting the current session in to a skill..
@@ -233,5 +234,5 @@ Text for large system reminders.
 **Additional notes for some Tool Desscriptions**
 
 - [Tool Description: Bash (Git commit and PR creation instructions)](./system-prompts/tool-description-bash-git-commit-and-pr-creation-instructions.md) (**1608** tks) - Instructions for creating git commits and GitHub pull requests.
-- [Tool Description: Bash (sandbox note)](./system-prompts/tool-description-bash-sandbox-note.md) (**454** tks) - Note about bash command sandboxing.
+- [Tool Description: Bash (sandbox note)](./system-prompts/tool-description-bash-sandbox-note.md) (**438** tks) - Note about bash command sandboxing.
 - [Tool Description: TaskList (teammate workflow)](./system-prompts/tool-description-tasklist-teammate-workflow.md) (**133** tks) - Conditional section appended to TaskList tool description.

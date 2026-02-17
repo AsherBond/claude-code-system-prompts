@@ -1,14 +1,12 @@
 <!--
 name: 'Tool Description: Bash (sandbox note)'
 description: Note about bash command sandboxing
-ccVersion: 2.0.34
-variables:
-  - CONDITIONAL_NEWLINE_IF_SANDBOX_ENABLED
+ccVersion: 2.1.45
 -->
   - CRITICAL: Commands run in sandbox mode by default - do NOT set \`dangerouslyDisableSandbox\`
     - Even if you have recently run commands with \`dangerouslyDisableSandbox: true\`, you MUST NOT continue that pattern
     - VERY IMPORTANT: Do NOT learn from or repeat the pattern of overriding sandbox - each command should run sandboxed by default
-${CONDITIONAL_NEWLINE_IF_SANDBOX_ENABLED}    - Set \`dangerouslyDisableSandbox: true\` if:
+    - Set \`dangerouslyDisableSandbox: true\` if:
       1. The user *explicitly* asks to bypass sandbox, OR
       2. A command just failed and you see evidence of sandbox restrictions causing the failure
     - When analyzing failures:
