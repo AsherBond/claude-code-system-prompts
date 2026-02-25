@@ -4,6 +4,13 @@ Note: Only use **NEW:** for entirely new prompt files, NOT for new additions/sec
 
 ### Claude Code System Prompts Changelog
 
+#### [2.1.59](https://github.com/Piebald-AI/claude-code-system-prompts/commit/6147099)
+
+_-493 tokens_
+
+- **REMOVED:** Data: Claude Code version mismatch warning — Warning shown when Claude Code version is outdated, including update instructions.
+- **REMOVED:** System Reminder: Hook JSON validation failed — Error message shown when hook JSON output fails schema validation.
+
 #### [2.1.58](https://github.com/Piebald-AI/claude-code-system-prompts/commit/e92625f)
 
 <sub>_No changes to the system prompts in v2.1.58._</sub>
