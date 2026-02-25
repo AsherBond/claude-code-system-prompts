@@ -4,6 +4,23 @@ Note: Only use **NEW:** for entirely new prompt files, NOT for new additions/sec
 
 ### Claude Code System Prompts Changelog
 
+#### [2.1.53](https://github.com/Piebald-AI/claude-code-system-prompts/commit/f7330d2)
+
+_-617 tokens_
+
+- **NEW:** Agent Prompt: Memory selection - Instructions for selecting relevant memories for a user query (156 tks).
+- **REMOVED:** Agent Prompt: Command execution specialist - Removed command execution specialist agent for running bash commands (109 tks).
+- **REMOVED:** System Prompt: Main system prompt - Removed standalone core identity prompt; content absorbed into other prompt sections (269 tks).
+- Tool Description: Task - Background agents now auto-notify on completion instead of providing an output file path; explicitly discourages sleeping, polling, or proactive checking (1317 → 1331 tks).
+- Tool Description: Write - Clarified Write vs Edit guidance: prefer Edit for modifications (sends only the diff), reserve Write for new files or complete rewrites (127 → 129 tks).
+- Widespread decomposition of 6 monolithic system prompts and 2 tool descriptions into ~70 smaller atomic files. Content is largely preserved but reorganized into independently addressable units, with some new sub-prompts (e.g., "ambitious tasks", "blocked approach", "code references") and redistributed content (e.g., "no time estimates" moved from Tone and style to Doing tasks):
+  - System Prompt: Doing tasks (437 tks) → 13 files covering software engineering focus, read-before-modifying, security, over-engineering, unnecessary additions, error handling, premature abstractions, compatibility hacks, file creation, time estimates, help/feedback, ambitious tasks, and blocked approach.
+  - System Prompt: Tone and style (500 tks) → 3 files covering code references, concise output (detailed), and concise output (short).
+  - System Prompt: Tool usage policy (352 tks) → 11 files covering create/edit/read/search files, Bash reservation, content search, delegate exploration, direct search, skill invocation, subagent guidance, and task management.
+  - System Prompt: Task management (565 tks) → merged into Tool usage (task management) sub-prompt (73 tks).
+  - System Prompt: Conditional delegate codebase exploration (249 tks) → merged into Tool usage (delegate exploration) sub-prompt (114 tks).
+  - Tool Description: Bash (1067 tks) + Bash (sandbox note) (438 tks) → 45 files covering overview, working directory, timeout, command description, quoting, sequential/parallel commands, newlines, semicolons, cwd maintenance, dedicated-tool preferences, 6 alternative-tool notes, git safety (3 files), sleep guidance (6 files), sandbox policy (17 files), and verify-parent-directory.
+
 #### [2.1.52](https://github.com/Piebald-AI/claude-code-system-prompts/commit/94cd8e5)
 
 <sub>_No changes to the system prompts in v2.1.52._</sub>
