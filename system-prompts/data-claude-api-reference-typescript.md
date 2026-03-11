@@ -1,7 +1,7 @@
 <!--
 name: 'Data: Claude API reference — TypeScript'
 description: TypeScript SDK reference including installation, client initialization, basic requests, thinking, and multi-turn conversation
-ccVersion: 2.1.71
+ccVersion: 2.1.73
 -->
 # Claude API — TypeScript
 
@@ -233,7 +233,7 @@ const response = await client.messages.create({
 
 **Rules:**
 
-- Messages must alternate between \`user\` and \`assistant\`
+- Consecutive same-role messages are allowed — the API combines them into a single turn
 - First message must be \`user\`
 - Use SDK types (\`Anthropic.MessageParam\`, \`Anthropic.Message\`, \`Anthropic.Tool\`, etc.) for all API data structures — don't redefine equivalent interfaces
 
@@ -241,7 +241,7 @@ const response = await client.messages.create({
 
 ### Compaction (long conversations)
 
-> **Beta, Opus 4.6 only.** When conversations approach the 200K context window, compaction automatically summarizes earlier context server-side. The API returns a \`compaction\` block; you must pass it back on subsequent requests — append \`response.content\`, not just the text.
+> **Beta, Opus 4.6 and Sonnet 4.6.** When conversations approach the 200K context window, compaction automatically summarizes earlier context server-side. The API returns a \`compaction\` block; you must pass it back on subsequent requests — append \`response.content\`, not just the text.
 
 \`\`\`typescript
 import Anthropic from "@anthropic-ai/sdk";
@@ -265,7 +265,9 @@ async function chat(userMessage: string): Promise<string> {
   // Append full content — compaction blocks must be preserved
   messages.push({ role: "assistant", content: response.content });
 
-  const textBlock = response.content.find((block) => block.type === "text");
+  const textBlock = response.content.find(
+    (b): b is Anthropic.Beta.BetaTextBlock => b.type === "text",
+  );
   return textBlock?.text ?? "";
 }
 

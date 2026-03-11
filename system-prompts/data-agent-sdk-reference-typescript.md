@@ -1,7 +1,7 @@
 <!--
 name: 'Data: Agent SDK reference — TypeScript'
 description: TypeScript Agent SDK reference including installation, quick start, custom tools, and hooks
-ccVersion: 2.1.71
+ccVersion: 2.1.73
 -->
 # Agent SDK — TypeScript
 
@@ -68,7 +68,7 @@ Permission modes:
 - \`"default"\`: Prompt for dangerous operations
 - \`"plan"\`: Planning only, no execution
 - \`"acceptEdits"\`: Auto-accept file edits
-- \`"dontAsk"\`: Don't prompt (useful for CI/CD)
+- \`"dontAsk"\`: Don't prompt — **denies** anything not pre-approved (not an auto-approve mode)
 - \`"bypassPermissions"\`: Skip all prompts (requires \`allowDangerouslySkipPermissions: true\` in options)
 
 ---
@@ -144,7 +144,7 @@ for await (const message of query({
 
 Hook event inputs for tool-lifecycle events (\`PreToolUse\`, \`PostToolUse\`, \`PostToolUseFailure\`) include \`agent_id\` and \`agent_type\` fields, allowing hooks to identify which agent (main or subagent) triggered the tool call.
 
-Available hook events: \`PreToolUse\`, \`PostToolUse\`, \`PostToolUseFailure\`, \`Notification\`, \`UserPromptSubmit\`, \`SessionStart\`, \`SessionEnd\`, \`Stop\`, \`SubagentStart\`, \`SubagentStop\`, \`PreCompact\`, \`PermissionRequest\`, \`Setup\`, \`TeammateIdle\`, \`TaskCompleted\`, \`ConfigChange\`
+Available hook events: \`PreToolUse\`, \`PostToolUse\`, \`PostToolUseFailure\`, \`Notification\`, \`UserPromptSubmit\`, \`SessionStart\`, \`SessionEnd\`, \`Stop\`, \`SubagentStart\`, \`SubagentStop\`, \`PreCompact\`, \`PermissionRequest\`, \`Setup\`, \`TeammateIdle\`, \`TaskCompleted\`, \`ConfigChange\`, \`Elicitation\`, \`ElicitationResult\`, \`WorktreeCreate\`, \`WorktreeRemove\`, \`InstructionsLoaded\`
 
 ---
 
@@ -160,13 +160,13 @@ query({ prompt: "...", options: { ... } })
 | ----------------------------------- | ------ | -------------------------------------------------------------------------- |
 | \`cwd\`                               | string | Working directory for file operations                                      |
 | \`allowedTools\`                      | array  | Tools the agent can use (e.g., \`["Read", "Edit", "Bash"]\`)                |
-| \`tools\`                             | array  | Built-in tools to make available (restricts the default set)               |
+| \`tools\`                             | array \\| preset | Built-in tools to make available (\`string[]\` or \`{type:'preset', preset:'claude_code'}\`) |
 | \`disallowedTools\`                   | array  | Tools to explicitly disallow                                               |
 | \`permissionMode\`                    | string | How to handle permission prompts                                           |
 | \`allowDangerouslySkipPermissions\`   | bool   | Must be \`true\` to use \`permissionMode: "bypassPermissions"\`                |
 | \`mcpServers\`                        | object | MCP servers to connect to                                                  |
 | \`hooks\`                             | object | Hooks for customizing behavior                                             |
-| \`systemPrompt\`                      | string | Custom system prompt                                                       |
+| \`systemPrompt\`                      | string \\| preset | Custom system prompt (\`string\` or \`{type:'preset', preset:'claude_code', append?:string}\`) |
 | \`maxTurns\`                          | number | Maximum agent turns before stopping                                        |
 | \`maxBudgetUsd\`                      | number | Maximum budget in USD for the query                                        |
 | \`model\`                             | string | Model ID (default: determined by CLI)                                      |
@@ -210,7 +210,7 @@ for await (const message of query({
 })) {
   if ("result" in message) {
     console.log(message.result);
-    console.log(\`Stop reason: \${message.stop_reason}\`); // e.g., "end_turn", "max_turns"
+    console.log(\`Stop reason: \${message.stop_reason}\`); // e.g., "end_turn", "tool_use", "max_tokens"
   } else if (message.type === "system" && message.subtype === "init") {
     const sessionId = message.session_id; // Capture for resuming later
   }
@@ -255,10 +255,13 @@ Manage MCP servers at runtime on a running query:
 await queryHandle.reconnectMcpServer("my-server");
 
 // Toggle an MCP server on/off
-await queryHandle.toggleMcpServer("my-server");
+await queryHandle.toggleMcpServer("my-server", false);  // (name, enabled) — both required
 
-// Check MCP server status (returns typed McpServerStatus with config, scope, tools, and error fields)
-const status = await queryHandle.mcpServerStatus();
+// Get status of ALL configured MCP servers — returns an ARRAY
+const statuses: McpServerStatus[] = await queryHandle.mcpServerStatus();
+for (const s of statuses) {
+  console.log(s.name, s.scope, s.tools.length, s.error);
+}
 \`\`\`
 
 ---

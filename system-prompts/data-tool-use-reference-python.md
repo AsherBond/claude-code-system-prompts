@@ -1,7 +1,7 @@
 <!--
 name: 'Data: Tool use reference — Python'
 description: Python tool use reference including tool runner, manual agentic loop, code execution, and structured outputs
-ccVersion: 2.1.69
+ccVersion: 2.1.73
 -->
 # Tool Use — Python
 
@@ -75,7 +75,8 @@ async with stdio_client(StdioServerParameters(command="mcp-server")) as (read, w
         await mcp_client.initialize()
 
         tools_result = await mcp_client.list_tools()
-        runner = await client.beta.messages.tool_runner(
+        # tool_runner is sync — returns the runner, not a coroutine
+        runner = client.beta.messages.tool_runner(
             model="{{OPUS_ID}}",
             max_tokens=1024,
             messages=[{"role": "user", "content": "Use the available tools"}],
@@ -525,7 +526,9 @@ response = client.messages.create(
 )
 
 import json
-data = json.loads(response.content[0].text)
+# output_config.format guarantees the first block is text with valid JSON
+text = next(b.text for b in response.content if b.type == "text")
+data = json.loads(text)
 \`\`\`
 
 ### Strict Tool Use

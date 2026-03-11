@@ -1,7 +1,7 @@
 <!--
 name: 'Data: Claude API reference — Go'
 description: Go SDK reference
-ccVersion: 2.1.71
+ccVersion: 2.1.73
 -->
 # Claude API — Go
 
@@ -81,6 +81,19 @@ if err := stream.Err(); err != nil {
 }
 \`\`\`
 
+**Accumulating the final message** (there is no \`GetFinalMessage()\` on the stream):
+
+\`\`\`go
+stream := client.Messages.NewStreaming(ctx, params)
+message := anthropic.Message{}
+for stream.Next() {
+    message.Accumulate(stream.Current())
+}
+if err := stream.Err(); err != nil { log.Fatal(err) }
+// message.Content now has the complete response
+\`\`\`
+
+
 ---
 
 ## Tool Use
@@ -140,7 +153,16 @@ message, err := runner.RunToCompletion(context.Background())
 if err != nil {
     log.Fatal(err)
 }
-fmt.Println(message.Content[0].Text)
+
+// RunToCompletion returns *BetaMessage; content is []BetaContentBlockUnion.
+// Narrow via AsAny() switch — note the Beta-namespace types (BetaTextBlock,
+// not TextBlock):
+for _, block := range message.Content {
+    switch block := block.AsAny().(type) {
+    case anthropic.BetaTextBlock:
+        fmt.Println(block.Text)
+    }
+}
 \`\`\`
 
 **Key features of the Go tool runner:**
@@ -255,36 +277,133 @@ func main() {
 
 ---
 
-## Extended Thinking
+## Thinking
 
 Enable Claude's internal reasoning by setting \`Thinking\` in \`MessageNewParams\`. The response will contain \`ThinkingBlock\` content before the final \`TextBlock\`.
 
-Derived from \`anthropic-sdk-go/message.go:6316\` (\`ThinkingConfigParamOfEnabled\`).
+**Adaptive thinking is the recommended mode for Claude 4.6+ models.** Claude decides dynamically when and how much to think. Combine with the \`effort\` parameter for cost-quality control.
+
+Derived from \`anthropic-sdk-go/message.go\` (\`ThinkingConfigParamUnion\`, \`NewThinkingConfigAdaptiveParam\`).
 
 \`\`\`go
-resp, err := client.Messages.New(context.Background(), anthropic.MessageNewParams{
+// There is no ThinkingConfigParamOfAdaptive helper — construct the union
+// struct-literal directly and take the address of the variant.
+adaptive := anthropic.NewThinkingConfigAdaptiveParam()
+params := anthropic.MessageNewParams{
     Model:     anthropic.ModelClaudeSonnet4_6,
-    MaxTokens: 16000,  // must be > budget_tokens
-    // ThinkingConfigParamOfEnabled(budgetTokens) is the helper constructor.
-    // budgetTokens must be >= 1024 and < MaxTokens.
-    Thinking: anthropic.ThinkingConfigParamOfEnabled(5000),
+    MaxTokens: 16000,
+    Thinking:  anthropic.ThinkingConfigParamUnion{OfAdaptive: &adaptive},
     Messages: []anthropic.MessageParam{
         anthropic.NewUserMessage(anthropic.NewTextBlock("How many r's in strawberry?")),
     },
-})
+}
+
+resp, err := client.Messages.New(context.Background(), params)
 if err != nil {
     log.Fatal(err)
 }
 
-// Thinking blocks come before text blocks in Content
+// ThinkingBlock(s) precede TextBlock in content
 for _, block := range resp.Content {
-    switch variant := block.AsAny().(type) {
+    switch b := block.AsAny().(type) {
     case anthropic.ThinkingBlock:
-        fmt.Println("[thinking]", variant.Thinking)
+        fmt.Println("[thinking]", b.Thinking)
     case anthropic.TextBlock:
-        fmt.Println("[response]", variant.Text)
+        fmt.Println(b.Text)
     }
 }
 \`\`\`
 
-To disable: \`anthropic.NewThinkingConfigDisabledParam()\`. For adaptive thinking (model decides budget): \`anthropic.NewThinkingConfigAdaptiveParam()\`.
+> **Deprecated:** \`ThinkingConfigParamOfEnabled(budgetTokens)\` (fixed-budget extended thinking) still works on Claude 4.6 but is deprecated. Use adaptive thinking above.
+
+To disable: \`anthropic.ThinkingConfigParamUnion{OfDisabled: &anthropic.ThinkingConfigDisabledParam{}}\`.
+
+---
+
+## Server-Side Tools
+
+Version-suffixed struct names with \`Param\` suffix. \`Name\`/\`Type\` are \`constant.*\` types — zero value marshals correctly, so \`{}\` works. Wrap in \`ToolUnionParam\` with the matching \`Of*\` field.
+
+\`\`\`go
+Tools: []anthropic.ToolUnionParam{
+    {OfWebSearchTool20260209: &anthropic.WebSearchTool20260209Param{}},
+    {OfBashTool20250124: &anthropic.ToolBash20250124Param{}},
+    {OfTextEditor20250728: &anthropic.ToolTextEditor20250728Param{}},
+    {OfCodeExecutionTool20260120: &anthropic.CodeExecutionTool20260120Param{}},
+},
+\`\`\`
+
+Also available: \`WebFetchTool20260209Param\`, \`MemoryTool20250818Param\`, \`ToolSearchToolBm25_20251119Param\`, \`ToolSearchToolRegex20251119Param\`.
+
+---
+
+## PDF / Document Input
+
+\`NewDocumentBlock\` generic helper accepts any source type. \`MediaType\`/\`Type\` are auto-set.
+
+\`\`\`go
+b64 := base64.StdEncoding.EncodeToString(pdfBytes)
+
+msg := anthropic.NewUserMessage(
+    anthropic.NewDocumentBlock(anthropic.Base64PDFSourceParam{Data: b64}),
+    anthropic.NewTextBlock("Summarize this document"),
+)
+\`\`\`
+
+Other sources: \`URLPDFSourceParam{URL: "https://..."}\`, \`PlainTextSourceParam{Data: "..."}\`.
+
+---
+
+## Files API (Beta)
+
+Under \`client.Beta.Files\`. Method is **\`Upload\`** (NOT \`New\`/\`Create\`), params struct is \`BetaFileUploadParams\`. The \`File\` field takes an \`io.Reader\`; use \`anthropic.File()\` to attach a filename + content-type for the multipart encoding.
+
+\`\`\`go
+f, _ := os.Open("./upload_me.txt")
+defer f.Close()
+
+meta, err := client.Beta.Files.Upload(ctx, anthropic.BetaFileUploadParams{
+    File:  anthropic.File(f, "upload_me.txt", "text/plain"),
+    Betas: []anthropic.AnthropicBeta{anthropic.AnthropicBetaFilesAPI2025_04_14},
+})
+// meta.ID is the file_id to reference in subsequent message requests
+\`\`\`
+
+Other \`Beta.Files\` methods: \`List\`, \`Delete\`, \`Download\`, \`GetMetadata\`.
+
+---
+
+## Context Editing / Compaction (Beta)
+
+Use \`Beta.Messages.New\` with \`ContextManagement\` on \`BetaMessageNewParams\`. There is no \`NewBetaAssistantMessage\` — use \`.ToParam()\` for the round-trip.
+
+\`\`\`go
+params := anthropic.BetaMessageNewParams{
+    Model:     anthropic.ModelClaudeOpus4_6,  // also supported: ModelClaudeSonnet4_6
+    MaxTokens: 1024,
+    Betas:     []anthropic.AnthropicBeta{"compact-2026-01-12"},
+    ContextManagement: anthropic.BetaContextManagementConfigParam{
+        Edits: []anthropic.BetaContextManagementConfigEditUnionParam{
+            {OfCompact20260112: &anthropic.BetaCompact20260112EditParam{}},
+        },
+    },
+    Messages: []anthropic.BetaMessageParam{ /* ... */ },
+}
+
+resp, err := client.Beta.Messages.New(ctx, params)
+if err != nil {
+    log.Fatal(err)
+}
+
+// Round-trip: append response to history via .ToParam()
+params.Messages = append(params.Messages, resp.ToParam())
+
+// Read compaction blocks from the response
+for _, block := range resp.Content {
+    if c, ok := block.AsAny().(anthropic.BetaCompactionBlock); ok {
+        fmt.Println("compaction summary:", c.Content)
+    }
+}
+\`\`\`
+
+Other edit types: \`BetaClearToolUses20250919EditParam\`, \`BetaClearThinking20251015EditParam\`.
