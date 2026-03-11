@@ -4,6 +4,34 @@ Note: Only use **NEW:** for entirely new prompt files, NOT for new additions/sec
 
 ### Claude Code System Prompts Changelog
 
+#### [2.1.73](https://github.com/Piebald-AI/claude-code-system-prompts/commit/c02a840)
+
+_+13,443 tokens_
+
+- **NEW:** Data: Claude API reference — cURL — Raw API reference for Claude API for use with cURL or raw HTTP.
+- **NEW:** System Prompt: How to use the SendUserMessage tool — Instructions for using the SendUserMessage tool.
+- **NEW:** System Prompt: Phase four of plan mode — Phase four of plan mode, extracted as a standalone prompt.
+- **NEW:** Tool Description: SendMessageTool (non-agent-teams) — Description of the SendMessageTool for non-agent-teams contexts.
+- **REMOVED:** System Prompt: Brief mode — Removed Codex-like execution mode with short status updates before launching into work.
+- **REMOVED:** System Prompt: Post checkpoints — Removed instructions for how to post checkpoints during task execution.
+- Data: Agent SDK patterns — Python — Clarified that custom SDK MCP tools require `ClaudeSDKClient` (not `query()`); removed `allow_dangerously_skip_permissions` from bypass permissions example; fixed session ID extraction to use `message.data.get("session_id")`; changed `list_sessions` and `get_session_messages` from async to sync functions.
+- Data: Agent SDK reference — Python — Removed `"dontAsk"` permission mode; removed `allow_dangerously_skip_permissions` option and requirement for bypass permissions; reduced available hook events list to a smaller set; fixed session ID extraction to use `message.data.get("session_id")`; renamed task message subclasses to `TaskStartedMessage`, `TaskProgressMessage`, `TaskNotificationMessage`; changed `list_sessions` and `get_session_messages` from async to sync functions; changed MCP server management methods from add/remove to reconnect/toggle/status pattern.
+- Data: Agent SDK reference — TypeScript — Clarified `"dontAsk"` permission mode as denying anything not pre-approved rather than auto-approving; expanded available hook events list with `Elicitation`, `ElicitationResult`, `WorktreeCreate`, `WorktreeRemove`, `InstructionsLoaded`; changed `tools` option to accept a preset object in addition to string arrays; changed `systemPrompt` option to accept a preset object with optional append; corrected stop reason example values; clarified `toggleMcpServer` requires both name and enabled parameters; clarified `mcpServerStatus` returns an array of all configured servers.
+- Data: Claude API reference — C# — Substantially expanded: added content block iteration with `TryPick*` pattern for type-safe narrowing; added adaptive thinking section; added full tool definition and manual tool loop with round-trip conversion guidance; added context editing/compaction beta section with `BetaContentBlock` handling; added effort parameter, prompt caching, token counting, structured output, PDF/document input, server-side tools, and Files API beta sections.
+- Data: Claude API reference — Go — Added stream message accumulation pattern; added `BetaTextBlock` type narrowing for `RunToCompletion` results; replaced fixed-budget extended thinking with adaptive thinking as recommended mode; added server-side tools, PDF/document input, Files API beta, and context editing/compaction beta sections.
+- Data: Claude API reference — Java — Substantially expanded: added adaptive thinking section with `ThinkingConfigAdaptive`; added non-beta tool declaration with manual JSON schema; added `MessageParam` content block building for tool result round-trips; added effort parameter, prompt caching, token counting, structured output with typed parsing, PDF/document input, server-side tools with beta namespace guidance, server tool response reading, and Files API beta sections.
+- Data: Claude API reference — PHP — Substantially expanded: updated Bedrock, Vertex AI, and Foundry client initialization to use new namespaced static factories; added content block type checking for safe text extraction; added SDK version requirement note for streaming; added typed streaming event handling; added full manual tool use loop with camelCase key guidance; added adaptive thinking section; added beta features section with MCP server and server-side tools guidance.
+- Data: Claude API reference — Python — Updated compaction availability from "Opus 4.6 only" to "Opus 4.6 and Sonnet 4.6."
+- Data: Claude API reference — TypeScript — Corrected multi-turn rule from "messages must alternate" to "consecutive same-role messages are allowed"; updated compaction availability from "Opus 4.6 only" to "Opus 4.6 and Sonnet 4.6"; added type guard narrowing for `BetaTextBlock` in compaction example.
+- Data: Claude model catalog — Added retirement date (Apr 19, 2026) for Claude Haiku 3.
+- Data: Files API reference — Python — Updated code examples to iterate content blocks by type instead of indexing `content[0].text`.
+- Data: HTTP error codes reference — Added `request_id` field to error response example.
+- Data: Message Batches API reference — Python — Updated code examples to find text blocks by type instead of indexing `content[0].text`.
+- Data: Tool use reference — Python — Fixed `tool_runner` call from async to sync; updated structured output example to find text blocks by type instead of indexing `content[0].text`.
+- Data: Tool use reference — TypeScript — Added server-side tools section with interface/name/type mapping table and beta mixing warning; fixed `pause_turn` handling to append assistant turn instead of resetting messages; added ESM `__dirname` workaround note; fixed variable shadowing in file download example; added nullability annotations for `container.id` and `parsed_output`; added "Reading Local Files" ESM section.
+- Skill: Build with Claude API — Updated compaction availability from "Opus 4.6 only" to "Opus 4.6 and Sonnet 4.6."
+- System Reminder: Plan mode is active (5-phase) — Extracted Phase 4 (Final Plan) instructions into a separate reusable prompt reference.
+
 #### [2.1.72](https://github.com/Piebald-AI/claude-code-system-prompts/commit/7a45418)
 
 _+1,643 tokens_
