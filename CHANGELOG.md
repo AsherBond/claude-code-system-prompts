@@ -4,6 +4,20 @@ Note: Only use **NEW:** for entirely new prompt files, NOT for new additions/sec
 
 ### Claude Code System Prompts Changelog
 
+# [2.1.77](https://github.com/Piebald-AI/claude-code-system-prompts/commit/87fae2a)
+
+_+6,494 tokens_
+
+- **NEW:** Skill: /init CLAUDE.md and skill setup (new version) — A comprehensive onboarding flow for setting up CLAUDE.md and related skills/hooks in the current repository, including codebase exploration, user interviews, and iterative proposal refinement.
+- **NEW:** Skill: update-config (7-step verification flow) — A skill that guides Claude through a 7-step process to construct and verify hooks for Claude Code, ensuring they work correctly in the user's specific project environment.
+- Data: Claude API reference — Java — Bumped SDK version from 2.15.0 to 2.16.0; added Memory Tool section with `BetaMemoryToolHandler` example showing how to implement a file-system-backed memory backend with `BetaToolRunner`.
+- Data: Tool use concepts — Added Java to the list of SDKs that provide helper classes/functions for implementing the memory tool backend.
+- Skill: /loop slash command — Reformatted action steps as a numbered list; added step 3 instructing Claude to immediately execute the parsed prompt instead of waiting for the first cron fire (invoking slash commands via the Skill tool or acting directly).
+- Skill: /stuck slash command — Changed Slack reporting to only post when a stuck session is actually found (no more all-clear messages); introduced a two-message structure with a short top-level message and a threaded detail reply for channel scannability; added relevant debug log tail or `sample` output to the thread reply.
+- Skill: Update Claude Code Config — Added reference to the new constructing-hook prompt; updated the prettier hook example command from `xargs prettier --write` to a safer `read -r f; prettier --write "$f"` pattern.
+- System Prompt: Hooks Configuration — Updated the prettier PostToolUse hook example command from `xargs prettier --write` to `read -r f; prettier --write "$f"` for safer filename handling.
+- Tool Description: Agent (usage notes) — Replaced agent resume-by-ID mechanism with instructions to use SendMessage with the agent's ID or name as the `to` field to continue a previously spawned agent; removed the separate bullet about agent ID return values; consolidated fresh-invocation guidance into a single bullet.
+
 # [2.1.76](https://github.com/Piebald-AI/claude-code-system-prompts/commit/6cc7a81)
 
 _+43 tokens_
