@@ -4,6 +4,14 @@ Note: Only use **NEW:** for entirely new prompt files, NOT for new additions/sec
 
 ### Claude Code System Prompts Changelog
 
+\# [2.1.113](https://github.com/Piebald-AI/claude-code-system-prompts/commit/d81bcdf)
+
+_+26 tokens_
+
+- Skill: Generate permission allowlist from transcripts — Renamed heading from "Less Permission Prompts" to "Fewer Permission Prompts."
+- Tool Description: Bash (maintain cwd) — Added explicit instruction to never prepend `cd <current-directory>` to a `git` command, since `git` already operates on the current working tree and the compound form triggers a permission prompt.
+
+
 # [2.1.112](https://github.com/Piebald-AI/claude-code-system-prompts/commit/de0eb75)
 
 _+0 tokens_
