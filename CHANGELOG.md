@@ -4,6 +4,35 @@ Note: Only use **NEW:** for entirely new prompt files, NOT for new additions/sec
 
 ### Claude Code System Prompts Changelog
 
+# [2.1.119](https://github.com/Piebald-AI/claude-code-system-prompts/commit/0d2f643)
+
+_+12,498 tokens_
+
+- **NEW:** Agent Prompt: Background agent state classifier — Classifies the tail of a background agent transcript as working, blocked, done, or failed and returns concise state JSON.
+- **NEW:** Data: Assistant voice and values template — Template content for an `assistant.md` file describing Claude's voice, values, and communication style.
+- **NEW:** Data: Background agent state classification examples — Example assistant-message tails and JSON outputs for classifying background agent state, tempo, needs, and result.
+- **NEW:** Data: Managed Agents memory stores reference — Reference documentation for Managed Agents memory stores, including store creation, session attachment, FUSE mounts, memory CRUD, concurrency, versions, redaction, and endpoint paths.
+- **NEW:** Data: User profile memory template — Template content for the user profile memory file, covering personal details, work context, schedule, and communication preferences.
+- **NEW:** System Prompt: Background session instructions — Instructs background job sessions to use the job-specific temporary directory and follow the appropriate worktree isolation guidance.
+- **NEW:** System Prompt: Dream CLAUDE.md memory reconciliation — Instructs dream memory consolidation to reconcile feedback and project memories against CLAUDE.md, deleting stale memories or flagging possible CLAUDE.md drift.
+- **NEW:** System Reminder: Previously invoked skills — Restores skills invoked before conversation compaction as context only, warning not to re-execute setup actions or treat prior inputs as current instructions.
+- **NEW:** Skill: /catch-up periodic heartbeat — Skill for the `/catch-up` heartbeat that scans priorities, triages actionable changes, reports a short digest, and updates catch-up state.
+- **NEW:** Skill: /dream memory consolidation — Skill for the `/dream` nightly housekeeping job that consolidates recent logs and transcripts into persistent memory topics, learnings, and a pruned MEMORY.md index.
+- **NEW:** Skill: /morning-checkin daily brief — Skill for the `/morning-checkin` scheduled task that prepares a daily calendar and inbox digest, schedules pre-meeting check-ins, and records the day's top priority.
+- **NEW:** Skill: /pre-meeting-checkin event brief — Skill for the `/pre-meeting-checkin` task that gathers event materials, recent thread context, open questions, and a concise meeting brief.
+- **REMOVED:** System Reminder: Invoked skills — Replaced by the new "Previously invoked skills" reminder, which adds explicit context-only framing post-compaction.
+- Agent Prompt: Security monitor for autonomous agent actions — Added an encoded/obfuscated command rule requiring base64, PowerShell encoded commands, hex/char-array reassembly, and similar payloads to be decoded and evaluated before allowing; unverifiable payloads are blocked. Expanded block rules with PowerShell and Windows equivalents for remote code execution, remote shell access, production reads, security weakening, irreversible local destruction, credential exploration, and unauthorized persistence.
+- Agent Prompt: Status line setup — Documented two new optional JSON fields passed to the `statusLine` command: `effort` with `level` values `low`, `medium`, `high`, `xhigh`, or `max`, and `thinking.enabled` indicating whether extended thinking is on.
+- Agent Prompt: Dream memory consolidation — Added hooks for the new CLAUDE.md reconciliation block and an additional-guidance extension point near the index-pruning step.
+- Data: Managed Agents core concepts — Documented memory stores as session resources in `resources[]`, including that memory stores attach at session creation time only and cannot be added later with `resources.add()`.
+- Data: Managed Agents endpoint reference — Added Memory Stores, Memories, and Memory Versions endpoint tables, including store CRUD/archive, memory create/list/retrieve/update/delete semantics, conflict/precondition errors, `view: "basic"|"full"`, 100KB memory limits, immutable memory versions, and redaction behavior.
+- Data: Managed Agents environments and resources — Documented `memory_store` resources for sessions, including the max of 8 memory stores per session and a pointer to the memory-store reference.
+- Data: Managed Agents overview — Added memory stores to Managed Agents beta-resource documentation, SDK auto-beta guidance, and the archive-is-permanent warning.
+- Skill: Building LLM-powered applications with Claude — Updated the Managed Agents SDK auto-beta namespace list to include `memory_stores`.
+- Skill: /init CLAUDE.md and skill setup (new version) — Restructured `/init` around an initial CLAUDE.md existence check, added review/improve, leave, and start-fresh paths, added a plain-text primer before the first question, added a "Let Claude decide" fast path, changed proposal presentation to normal assistant text, treats skills/hooks answers as hints rather than hard filters, and adds an approval-gated diff flow for improving an existing CLAUDE.md.
+- Tool Description: Background monitor (streaming events) — Added an explicit decision framework for choosing between Bash `run_in_background` and the monitor based on notification count, a worked `gh pr checks` polling example, and warnings against unbounded commands for single-notification use cases, including why `tail -f log | grep -m 1 ...` can still hang.
+
+
 # [2.1.118](https://github.com/Piebald-AI/claude-code-system-prompts/commit/f5e8b4a)
 
 _+4,712 tokens_
