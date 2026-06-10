@@ -1,7 +1,7 @@
 <!--
 name: 'Data: Design sync story imports module'
-description: Bundled design sync story-imports module that controls preview compile-time resolution between shipped bundle globals, story source, and configured shims
-ccVersion: 2.1.169
+description: Bundled design sync story-imports module that controls preview compile-time resolution between shipped bundle globals, story source, configured shims, and Storybook runtime stubs
+ccVersion: 2.1.172
 -->
 // How story modules resolve at preview-compile time. Small on purpose and
 // FORKABLE: copy to .design-sync/overrides/story-imports.mjs (declare in
@@ -48,7 +48,7 @@ ccVersion: 2.1.169
 //    the emitted html links when present.
 
 import { existsSync, realpathSync } from 'node:fs';
-import { resolve } from 'node:path';
+import { relative, resolve } from 'node:path';
 
 // Storybook's preview-api also re-exports React-compatible hooks for use in
 // render functions — those delegate to the page's React (an inert stub there
@@ -132,6 +132,11 @@ export function storybookStubPlugin() {
 // these (buildPreviews does this) — the policy plugin resolves aliases via
 // b.resolve, so a paths plugin registered first would bypass rule 2.
 export function storyImportPlugins({ PKG, GLOBAL, extraEntries = [], exported, cfg, pkgDir }) {
+  // Path-form entries (./, ../, absolute) are repo files bundled by path —
+  // they must never enter import-SPECIFIER matching below, where a story's
+  // relative import could coincidentally equal the config string and get
+  // wrongly shimmed to the global. Bare package specifiers only.
+  extraEntries = extraEntries.filter((e) => !/^(\.\.?\/|\/|[A-Za-z]:[\\/])/.test(e));
   const escRx = (s) => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
   const pkgRx = new RegExp(`^(?:${[PKG, ...extraEntries].map(escRx).join('|')})(?:/.*)?$`);
   const force = cfg?.storyImports ?? {};
@@ -223,7 +228,16 @@ export function storyImportPlugins({ PKG, GLOBAL, extraEntries = [], exported, c
         if (matches(p, force.bundle)) return r;               // explicit bundle wins
         if (matches(p, force.shim)) return shimResult(exportedComponentFor(p, exported));
         if (p.includes('/node_modules/')) return r;           // third-party stays put
-        if (barrelRoots.some((root) => p.startsWith(`${root}/`) && /^src\/index\.[cm]?[jt]sx?$/.test(p.slice(root.length + 1)))) {
+        // relative() instead of a startsWith prefix — case-insensitive on
+        // win32, where the pkgDir roots carry user-typed casing (a lowercase
+        // d:\ drive from --node-modules) while p carries cwd casing, and JS
+        // realpathSync never canonicalizes case. Outside-root ('../') and
+        // cross-drive (absolute) remainders can never match the anchor.
+        // Known limit: darwin's default case-insensitive APFS still compares
+        // case-sensitively here (path.posix.relative) — a blanket lowercase
+        // compare would be wrong on case-SENSITIVE volumes, so mis-cased
+        // --node-modules on mac remains the user's to fix.
+        if (barrelRoots.some((root) => /^src\/index\.[cm]?[jt]sx?$/.test(relative(root, p).replace(/\\/g, '/')))) {
           return shimResult(null);                            // package source barrel
         }
         const name = exportedComponentFor(p, exported);

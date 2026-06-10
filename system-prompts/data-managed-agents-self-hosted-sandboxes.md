@@ -1,7 +1,7 @@
 <!--
 name: 'Data: Managed Agents self-hosted sandboxes'
 description: Reference documentation for running Managed Agents tool execution in self-hosted infrastructure, including environment setup, workers, webhook-driven wake, orchestration, monitoring, credentials, and security responsibilities
-ccVersion: 2.1.145
+ccVersion: 2.1.172
 -->
 # Managed Agents — Self-Hosted Sandboxes
 
@@ -161,6 +161,7 @@ These are **control-plane** calls — authenticate with `x-api-key` (not the env
 | Container lifecycle, hardening, networking | Anthropic | **You** — run non-root, read-only rootfs, drop caps; egress is whatever your VPC/firewall allows |
 | `file` / `github_repository` resource mounting | Anthropic mounts into the container | **You** — pass pointers via `sessions.create(metadata={...})` and have your orchestrator fetch/clone before dispatch |
 | `memory_store` resources | Supported | **Not yet supported** |
+| Vault `environment_variable` credentials | Supported (substituted at Anthropic-managed egress) | **Not yet supported** — egress is yours, so there's nowhere to substitute the secret. Use MCP credentials or a host-side custom tool (`shared/managed-agents-client-patterns.md` Pattern 9) |
 | Built-in tools | Via `agent_toolset_20260401` | Supplied by your worker (`EnvironmentWorker` default / `beta_agent_toolset(env)` / `ant` CLI fixed set) |
 | Skills download | Automatic | `EnvironmentWorker` / `AgentToolContext` fetch into `{workdir}/skills/` (needs `client` + `session_id`) |
 | Claude Platform on AWS | Supported | **Not available** |

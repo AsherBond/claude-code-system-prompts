@@ -1,7 +1,7 @@
 <!--
 name: 'Data: Claude model catalog'
 description: Catalog of current and legacy Claude models with exact model IDs, aliases, context windows, and pricing
-ccVersion: 2.1.170
+ccVersion: 2.1.172
 -->
 # Claude Model Catalog
 
@@ -62,7 +62,8 @@ curl https://api.anthropic.com/v1/models/claude-opus-4-8 \
 
 | Friendly Name     | Alias (use this)    | Full ID                       | Context        | Max Output | Status |
 |-------------------|---------------------|-------------------------------|----------------|------------|--------|
-| Claude Fable 5    | `{{FABLE_ID}}`      | —                             | 1M             | 128K       | Active |
+| {{FABLE_NAME}}    | `{{FABLE_ID}}`      | —                             | 1M             | 128K       | Active |
+| {{MYTHOS_NAME}}   | `{{MYTHOS_ID}}`     | —                             | 1M             | 128K       | Active (Project Glasswing only) |
 | Claude Opus 4.8   | `claude-opus-4-8`   | —                             | 1M             | 128K       | Active |
 | Claude Opus 4.7   | `claude-opus-4-7`   | —                             | 1M             | 128K       | Active |
 | Claude Opus 4.6   | `claude-opus-4-6`   | —                             | 1M             | 128K       | Active |
@@ -70,7 +71,8 @@ curl https://api.anthropic.com/v1/models/claude-opus-4-8 \
 | Claude Haiku 4.5  | `claude-haiku-4-5`  | `claude-haiku-4-5-20251001`   | 200K           | 64K        | Active |
 
 ### Model Descriptions
-- **Claude Fable 5** — Our most powerful, most intelligent model. New tier above Opus. Same API surface as Opus 4.7/4.8 (see `shared/model-migration.md`) with one new breaking change: an explicit `thinking: {type: "disabled"}` returns a 400 (omit the `thinking` param instead); $10/$50 per MTok.
+- **{{FABLE_NAME}}** — Anthropic's most capable widely released model, for the most demanding reasoning and long-horizon agentic work. Same API surface as Opus 4.7/4.8 with one new breaking change: an explicit `thinking: {type: "disabled"}` returns a 400 — omit the `thinking` parameter instead (thinking is always on; the raw chain of thought is never returned — summaries via `display: "summarized"`). New tokenizer (~30% more tokens than Opus-tier for the same content). Safety classifiers may return `stop_reason: "refusal"`. No assistant prefill. Requires 30-day data retention (not available under ZDR). $10/$50 per MTok; 1M context window (default), 128K max output. See `shared/model-migration.md` → Migrating to {{FABLE_NAME}}.
+- **{{MYTHOS_NAME}}** — Same capabilities, pricing, limits, and API behavior as {{FABLE_NAME}}; only the model ID differs. Available exclusively through Project Glasswing, where it joins (and succeeds) the invitation-only Claude Mythos Preview (`claude-mythos-preview`). Use it only when the org participates in Project Glasswing; otherwise use {{FABLE_ID}}.
 - **Claude Opus 4.8** — The most capable Opus-tier model — highly autonomous, state-of-the-art on long-horizon agentic work, knowledge work, and memory; clearer, warmer writing. Same API surface as Opus 4.7 (adaptive thinking only; sampling parameters and `budget_tokens` removed). 1M context window at standard API pricing (no long-context premium). See `shared/model-migration.md` → Migrating to Opus 4.8 — a 4.7 → 4.8 move is a model-ID swap plus prompt re-tuning, no new breaking changes.
 - **Claude Opus 4.7** — Previous-generation Opus. Highly autonomous; strong on long-horizon agentic work, knowledge work, vision, and memory. Adaptive thinking only; sampling parameters and `budget_tokens` removed. 1M context window. See `shared/model-migration.md` → Migrating to Opus 4.7.
 - **Claude Opus 4.6** — Older Opus. Supports adaptive thinking (recommended), 128K max output tokens (requires streaming for large outputs). 1M context window.
@@ -82,7 +84,7 @@ curl https://api.anthropic.com/v1/models/claude-opus-4-8 \
 | Friendly Name     | Alias (use this)    | Full ID                       | Status |
 |-------------------|---------------------|-------------------------------|--------|
 | Claude Opus 4.5   | `claude-opus-4-5`   | `claude-opus-4-5-20251101`    | Active |
-| Claude Opus 4.1   | `claude-opus-4-1`   | `claude-opus-4-1-20250805`    | Active |
+| Claude Opus 4.1   | `claude-opus-4-1`   | `claude-opus-4-1-20250805`    | Deprecated (retires 2026-08-05 — migrate to `claude-opus-4-8`) |
 | Claude Sonnet 4.5 | `claude-sonnet-4-5` | `claude-sonnet-4-5-20250929`  | Active |
 
 ## Deprecated Models (retiring soon)
@@ -112,14 +114,16 @@ When a user asks for a model by name, use this table to find the correct model I
 
 | User says...                              | Use this model ID              |
 |-------------------------------------------|--------------------------------|
-| "fable"                                   | `{{FABLE_ID}}`                 |
+| "fable", "most capable model"             | `{{FABLE_ID}}`                 |
 | "most powerful"                           | `{{FABLE_ID}}`                 |
+| "mythos", "mythos 5"                      | `{{MYTHOS_ID}}` (Project Glasswing participants only; otherwise use `{{FABLE_ID}}`) |
+| "mythos preview"                          | `{{MYTHOS_ID}}` (successor to `claude-mythos-preview` — see migration guide) |
 | "opus"                                    | `claude-opus-4-8`              |
 | "opus 4.8"                                | `claude-opus-4-8`              |
 | "opus 4.7"                                | `claude-opus-4-7`              |
 | "opus 4.6"                                | `claude-opus-4-6`              |
 | "opus 4.5"                                | `claude-opus-4-5`              |
-| "opus 4.1"                                | `claude-opus-4-1`              |
+| "opus 4.1"                                | `claude-opus-4-1` (deprecated, retires 2026-08-05 — suggest `claude-opus-4-8`) |
 | "opus 4", "opus 4.0"                      | `claude-opus-4-0` (deprecated — suggest `claude-opus-4-8`) |
 | "sonnet", "balanced"                      | `claude-sonnet-4-6`            |
 | "sonnet 4.6"                              | `claude-sonnet-4-6`            |
