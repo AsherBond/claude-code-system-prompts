@@ -1,7 +1,7 @@
 <!--
 name: "Data: Workshop artifact HTML template"
 description: "Standalone HTML template used for published workshop artifacts, including decision rendering, fill contract, interaction controls, and light/dark styling"
-ccVersion: "2.1.218"
+ccVersion: "2.1.219"
 -->
 <!--
 name: workshop
@@ -1238,6 +1238,30 @@ style: tokens come from @ant/cds's own vanilla export, embedded verbatim
   @media (prefers-reduced-motion: reduce) {
     .ws-spin { animation: none; }
   }
+  /* Waiting-state painter: live-view-only chrome, built by the script
+     below — never published bytes, like the armed/selected states. */
+  .ws-painter {
+    position: fixed;
+    top: 16px;
+    right: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+    pointer-events: none;
+    color: var(--text-secondary);
+    font-size: 11px;
+  }
+  .ws-painter canvas {
+    width: 64px;
+    height: 56px;
+    image-rendering: pixelated;
+    animation: ws-hover 2.6s ease-in-out infinite;
+  }
+  @keyframes ws-hover { 50% { transform: translateY(-4px); } }
+  @media (prefers-reduced-motion: reduce) {
+    .ws-painter canvas { animation: none; }
+  }
   .note-live { color: var(--text-secondary); font-size: 12px; }
   /* Status chrome: the top banner and the PUBLISHED kickoff footer —
      static page bytes (visible to unarmed viewers), unlike the live-only
@@ -1376,6 +1400,14 @@ style: tokens come from @ant/cds's own vanilla export, embedded verbatim
 (function workshopDecisions() {
   'use strict';
   var busy = false;
+  /* Live waiting chrome (bar + painter). waitingActive lets the restore
+     path's timers stand down once the chrome is already gone (see the
+     waiting-marker block below enterWaiting). */
+  var waitingActive = false;
+  var waitingBar = null;
+  var painterCanvas = null;
+  var paintTimer = null;
+  var paintFrame = 0;
   var TOKEN = /^[a-z0-9][a-z0-9-]{0,63}$/;
   /* Free-text answer codec — one of THREE independent legs (this script,
      the md-lane renderer, the publish verifier); none trusts another.
@@ -1571,9 +1603,15 @@ style: tokens come from @ant/cds's own vanilla export, embedded verbatim
       inputs[k].setAttribute('disabled', 'disabled');
     }
   }
-  function enterWaiting(text) {
+  function removeWaitingBar() {
+    if (waitingBar && waitingBar.parentNode) waitingBar.parentNode.removeChild(waitingBar);
+    waitingBar = null;
+  }
+  function enterWaiting(text, since) {
+    waitingActive = true;
     disarmAll();
     removeFooter();
+    removeWaitingBar();
     setStatusFooterHidden(true);
     var w = document.createElement('div');
     w.className = 'ws-footer';
@@ -1586,14 +1624,182 @@ style: tokens come from @ant/cds's own vanilla export, embedded verbatim
     w.appendChild(s);
     document.body.appendChild(w);
     document.body.style.paddingBottom = '72px';
+    waitingBar = w;
+    showPainter(true);
     /* The shell normally reboots the view within seconds; if the session
        died first, don't leave a viewer staring at a spinner forever.
-       textContent-only escalation, same note element. */
+       textContent-only escalation, same note element. A restored wait
+       counts from the original confirm (marker.since), so the notes do
+       not reset across the reboot. Two stages, because the page cannot
+       observe the session: first a nudge, then the honest state — the
+       save is real, the watcher may not be. */
+    var elapsed = typeof since === 'number' ? Date.now() - since : 0;
+    var delay = 60000 - elapsed;
+    if (delay < 0) delay = 0;
     setTimeout(function () {
       if (w.parentNode) {
         s.textContent = text + ' Taking longer than expected — reload to check for the latest version.';
       }
-    }, 60000);
+    }, delay);
+    var later = 180000 - elapsed;
+    if (later < 0) later = 0;
+    setTimeout(function () {
+      if (w.parentNode) {
+        s.textContent = text + ' Still nothing — Claude may not be watching this page right now. Reload to check for the latest version.';
+      }
+    }, later);
+  }
+  /* Clawd writing in the corner while the page waits on the session —
+     the whiteboard template's painter pose, holding a pencil here
+     (eraser-ferrule-shaft-wood-graphite, paw to tip) so the two pages
+     read as different activities. Same live-chrome rule as the footer:
+     createElement + textContent only, never published bytes. */
+  var CLAWD_FRAMES = [[
+    '................',
+    '................',
+    '................',
+    '..OOOOOOOO......',
+    '..OOOOOOOO......',
+    '..OODOODOO......',
+    '..OODOODOO......',
+    '..OOOOOOOOOEFPWG',
+    '..OOOOOOOO......',
+    '..OOOOOOOO......',
+    '...OO..OO......b',
+    '...OO..OO.......',
+    '................',
+    '................'], [
+    '................',
+    '..............WG',
+    '.............P..',
+    '..OOOOOOOO..P...',
+    '..OOOOOOOO.F....',
+    '..OODOODOOE.....',
+    '..OODOODOOO.....',
+    '..OOOOOOOO......',
+    '..OOOOOOOO......',
+    '..OOOOOOOO......',
+    '...OO..OO.......',
+    '...OO..OO.......',
+    '................',
+    '................']];
+  var CLAWD_PAL = {
+    O: '#d97757', D: '#2a1f1b', E: '#e98fa2', F: '#7d848a',
+    P: '#e8b93c', W: '#d9a066', G: '#4a4a4a'
+  };
+  function penColor() {
+    var v = '';
+    try {
+      v = getComputedStyle(document.documentElement).getPropertyValue('--fill-accent');
+    } catch (_) {}
+    v = v ? v.trim() : '';
+    return v || '#d97706';
+  }
+  function drawClawd(frame) {
+    if (!painterCanvas) return;
+    var c = painterCanvas.getContext('2d');
+    if (!c) return;
+    var pen = penColor();
+    c.clearRect(0, 0, 16, 14);
+    var grid = CLAWD_FRAMES[frame % 2];
+    for (var y = 0; y < grid.length; y++) {
+      for (var x = 0; x < grid[y].length; x++) {
+        var ch = grid[y].charAt(x);
+        if (ch === '.') continue;
+        /* b is the written stroke in the page accent; half alpha keeps
+           it lighter than the pencil. */
+        c.globalAlpha = ch === 'b' ? 0.55 : 1;
+        c.fillStyle = CLAWD_PAL[ch] || pen;
+        c.fillRect(x, y, 1, 1);
+      }
+    }
+    c.globalAlpha = 1;
+  }
+  function showPainter(on) {
+    if (paintTimer) {
+      clearInterval(paintTimer);
+      paintTimer = null;
+    }
+    if (!on) {
+      var wrap = painterCanvas && painterCanvas.parentNode;
+      if (wrap && wrap.parentNode) wrap.parentNode.removeChild(wrap);
+      painterCanvas = null;
+      return;
+    }
+    if (!painterCanvas) {
+      var el = document.createElement('div');
+      el.className = 'ws-painter';
+      painterCanvas = document.createElement('canvas');
+      painterCanvas.width = 16;
+      painterCanvas.height = 14;
+      painterCanvas.setAttribute('aria-hidden', 'true');
+      el.appendChild(painterCanvas);
+      /* Evidence-neutral label: the page cannot observe whether a
+         session is actually listening, so the chrome never asserts
+         activity — it names the wait. */
+      var lbl = document.createElement('span');
+      lbl.textContent = 'Waiting for Claude…';
+      el.appendChild(lbl);
+      document.body.appendChild(el);
+    }
+    drawClawd(0);
+    if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      paintTimer = setInterval(function () {
+        paintFrame ^= 1;
+        drawClawd(paintFrame);
+      }, 420);
+    }
+  }
+  /* Waiting marker: survives the shell's reboot to the confirm-published
+     version so the waiting state carries over instead of flashing back
+     to an armed page (the reboot otherwise drops the bar and the scroll
+     position). FNV-1a is NOT cryptographic — the marker gates only this
+     live-DOM chrome and the scroll restore, never published bytes or
+     write authority; sessionStorage is same-origin, per-tab. No display
+     text rides in the marker: storage is writable by any same-origin
+     script, so the bar only ever shows this script's fixed strings. */
+  var WAIT_KEY = 'ws-waiting';
+  var WAIT_TIMEOUT_MS = 15 * 60 * 1000;
+  function fnv1a(s) {
+    var h = 0x811c9dc5;
+    for (var i = 0; i < s.length; i++) {
+      h ^= s.charCodeAt(i);
+      h = Math.imul(h, 0x01000193);
+    }
+    return h >>> 0;
+  }
+  function rememberWaiting(html) {
+    try {
+      sessionStorage.setItem(
+        WAIT_KEY,
+        JSON.stringify({ since: Date.now(), scrollY: window.scrollY, h: fnv1a(html) })
+      );
+    } catch (_) {}
+  }
+  function clearWaitingMarker() {
+    try {
+      sessionStorage.removeItem(WAIT_KEY);
+    } catch (_) {}
+  }
+  function readWaitingMarker() {
+    var w = null;
+    try {
+      var raw = sessionStorage.getItem(WAIT_KEY);
+      if (raw) w = JSON.parse(raw);
+    } catch (_) {}
+    if (!w || typeof w.since !== 'number' || typeof w.h !== 'number') return null;
+    return w;
+  }
+  function exitWaiting() {
+    waitingActive = false;
+    showPainter(false);
+    removeWaitingBar();
+    /* The selection footer may be up (rows stay clickable while the
+       page waits) — then its padding and status-footer handling win. */
+    if (!footer) {
+      document.body.style.paddingBottom = '';
+      setStatusFooterHidden(false);
+    }
   }
   function confirmLabel(n) {
     if (n === 1) {
@@ -1616,6 +1822,10 @@ style: tokens come from @ant/cds's own vanilla export, embedded verbatim
       return;
     }
     if (!footer) {
+      /* Rows stay clickable during a restored wait — the first pick
+         hands the footer surface to the selection flow; the painter
+         keeps signaling the in-flight update. */
+      removeWaitingBar();
       footer = document.createElement('div');
       footer.className = 'ws-footer';
       document.body.appendChild(footer);
@@ -2171,8 +2381,10 @@ style: tokens come from @ant/cds's own vanilla export, embedded verbatim
     }
     return true;
   }
-  function sourceHtmlAll(wanted) {
-    /* Bounded read: a hung fetch would otherwise leave `busy` stuck (no
+  function fetchStoredSource() {
+    /* The script's ONE network read — this page's own stored source —
+       shared by the confirm pipeline and the load-time waiting verify.
+       Bounded: a hung fetch would otherwise leave `busy` stuck (no
        reject, no catch, rows frozen until reload). 15s is far under the
        shell's own publish budget. */
     var signal =
@@ -2220,6 +2432,12 @@ style: tokens come from @ant/cds's own vanilla export, embedded verbatim
           if (text.charCodeAt(after) === 10) after++;
           text = text.slice(0, b) + text.slice(after);
         }
+        return text;
+      });
+  }
+  function sourceHtmlAll(wanted) {
+    return fetchStoredSource()
+      .then(function (text) {
         var doc = new DOMParser().parseFromString(text, 'text/html');
         /* Per-pick stored-markup gate: an item missing or not open in the
            STORED source raced a newer version — it drops from the batch;
@@ -2361,6 +2579,10 @@ style: tokens come from @ant/cds's own vanilla export, embedded verbatim
           /* Live banner catches up to what just published — same
              entries, same derive. */
           applyBanner(document, res.entries);
+          /* res.html is byte-for-byte what the shell now stores: the
+             marker's hash must come from these bytes so the post-reboot
+             self-read (same excision) can compare equal. */
+          rememberWaiting(res.html);
           /* The shell reboots this view to the new version; until then
              the page is stale, so show an explicit waiting state instead
              of leaving rows clickable under a terse note. */
@@ -2486,5 +2708,63 @@ style: tokens come from @ant/cds's own vanilla export, embedded verbatim
     e.preventDefault();
     onActivate(e);
   });
+  /* Confirm-reboot continuity: re-enter the waiting state recorded at
+     publish time, then verify against the now-stored bytes and exit
+     cleanly when a NEWER version (the session's apply) is what loaded.
+     Both hash inputs are this script's own fnv1a over the same bytes:
+     marker.h came from res.html on the pre-reboot page, and the stored
+     page IS res.html, carrying this same script — so impl and input
+     match on both sides. A template change that alters either makes the
+     hashes differ, which fails toward CLEARING the chrome — the safe
+     direction. */
+  (function () {
+    var w = readWaitingMarker();
+    if (!w) return;
+    var left = w.since + WAIT_TIMEOUT_MS - Date.now();
+    if (left <= 0 || left > WAIT_TIMEOUT_MS) {
+      /* Stale, or since sits in the future (tampered or clock-skewed) —
+         drop it and load as a normal page. */
+      clearWaitingMarker();
+      return;
+    }
+    /* Static text page and this script runs at end of body, so layout
+       is final here — no load-event re-scroll that could yank a reader
+       who already started scrolling. */
+    if (typeof w.scrollY === 'number') window.scrollTo(0, w.scrollY);
+    /* The chrome only informs — open decisions stay clickable during
+       the turnaround: the disarm inside enterWaiting runs before the
+       poll above ever arms, so it holds nothing on this path. */
+    enterWaiting('Saved — waiting for this page to update…', w.since);
+    /* A confirm made from THIS view replaces the marker and owns the
+       chrome; timers keyed to the old marker must then stand down. */
+    function sameMarker() {
+      var cur = readWaitingMarker();
+      return !!cur && cur.h === w.h && cur.since === w.since;
+    }
+    /* Hard stop: stale chrome comes down at the marker's 15-minute
+       horizon even if the verify never concluded. */
+    setTimeout(function () {
+      if (!waitingActive || !sameMarker()) return;
+      clearWaitingMarker();
+      exitWaiting();
+    }, left);
+    var attempts = 0;
+    function verify() {
+      fetchStoredSource()
+        .then(function (text) {
+          if (!waitingActive || !sameMarker()) return;
+          if (fnv1a(text) === w.h) return; /* our confirm-version — keep waiting */
+          clearWaitingMarker();
+          exitWaiting();
+        })
+        .catch(function () {
+          /* Transient self-read failure: keep the chrome and retry
+             briefly; the hard stop above bounds it. */
+          attempts++;
+          if (attempts < 3) setTimeout(verify, attempts * 5000);
+        });
+    }
+    verify();
+  })();
 })();
 </script>
