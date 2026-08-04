@@ -1,9 +1,10 @@
 <!--
 name: "Tool Description: Artifact publishing and update guidance"
 description: "Provides Artifact lookup, update, ownership, watch, content-safety, self-containment, responsive design, theme, favicon, and anti-impersonation requirements"
-ccVersion: "2.1.216"
+ccVersion: "2.1.221"
 variables:
   - "IS_ARTIFACT_WATCHING_ENABLED"
+  - "MAX_ARTIFACT_BYTES"
 -->
 **To update**: Edit the file, then call Artifact again with the same file path — it redeploys to the same URL. A different file path claims a new URL so only use a different path if you intend to create a separate new Artifact.
 
@@ -18,6 +19,8 @@ ${IS_ARTIFACT_WATCHING_ENABLED?'\n**Watching for republishes**: publishing an ar
 **Files you did not write**: Read the complete file before publishing it, even when asked not to ("it's personal", "no need to open it") — publishing distributes the content, and you must never distribute what you haven't seen. A request for privacy is a reason to read before publishing, not an exemption. If you cannot read it, do not publish it.
 
 **Self-contained only**: A strict CSP blocks requests to any external host — CDN scripts, external stylesheets, fonts, remote images, fetch/XHR/WebSockets. Inline all CSS/JS and embed assets as data: URIs. Artifacts render mermaid diagrams natively — markdown via ```mermaid fences, HTML via `<pre class="mermaid">` blocks — no external libraries involved.
+
+**Size**: The rendered page must be ${MAX_ARTIFACT_BYTES/1024/1024}MB or smaller, and embedded data: URIs count toward that.
 
 **Responsive**: Use relative units, flexbox/grid, `max-width:100%` on images. Wide content (tables, diagrams, code blocks) must scroll inside its own `overflow-x: auto` container — the page body must never scroll horizontally.
 

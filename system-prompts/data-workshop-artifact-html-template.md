@@ -1,7 +1,7 @@
 <!--
 name: "Data: Workshop artifact HTML template"
 description: "Standalone HTML template used for published workshop artifacts, including decision rendering, fill contract, interaction controls, and light/dark styling"
-ccVersion: "2.1.219"
+ccVersion: "2.1.221"
 -->
 <!--
 name: workshop
@@ -912,6 +912,9 @@ style: tokens come from @ant/cds's own vanilla export, embedded verbatim
       --text-secondary: #52514e;
       --text-accent: #184f95;
       --border: rgba(11, 11, 11, 0.1);
+      /* Card rules paint with the shadow token family (var(--shadow-sm));
+         re-pin its color component so a dark-stamped page prints light. */
+      --shadow-color: rgba(11, 11, 11, 0.08);
       --border-strong: rgba(11, 11, 11, 0.2);
       --border-stronger: rgba(11, 11, 11, 0.4);
       --fill-control: rgba(11, 11, 11, 0.1);
@@ -1077,6 +1080,14 @@ style: tokens come from @ant/cds's own vanilla export, embedded verbatim
   .call-item {
     display: flex;
     gap: var(--gap-sm);
+    /* Separation: air AFTER each card — the unit boundary. The card's
+       own diagram stays at the base flex gap above it (tight grouping);
+       margin-top here would invert that proximity. margin-bottom is
+       adjacency-independent, so the lanes' varying between-elements
+       can't defeat it. Shadow is theme-aware: --shadow-sm composes
+       --shadow-color, darkens for dark scheme, re-pinned for print. */
+    margin-bottom: var(--gap-xs);
+    box-shadow: var(--shadow-sm);
     /* Right padding mirrors the marker column (card padding + marker
        width + flex gap) so option rows sit equidistant from the card's
        left and right edges. */
@@ -1179,6 +1190,11 @@ style: tokens come from @ant/cds's own vanilla export, embedded verbatim
     display: flex;
     align-items: center;
     gap: var(--gap-sm);
+    /* Same height reserve as .ws-status-footer: the two rules share the
+       fixed bottom band (the script swaps between them), so they must
+       share the floor or the band jumps on every swap. */
+    min-height: 72px;
+    box-sizing: border-box;
     /* Content left-aligns with the article's text column: the article is
        a centered content-box of 76ch + 24px side padding, so its text
        edge sits at (100% - 76ch) / 2 from the viewport — the Confirm
@@ -1297,6 +1313,11 @@ style: tokens come from @ant/cds's own vanilla export, embedded verbatim
     display: flex;
     align-items: center;
     gap: var(--gap-sm);
+    /* Height reserve: state changes swap the footer's content (CTAs vs a
+       single status line); min-height keeps the bar, and the body padding
+       that matches it, stable across states. */
+    min-height: 72px;
+    box-sizing: border-box;
     padding: 14px 24px 14px max(24px, calc((100% - 76ch) / 2));
     /* Opaque by requirement: content must not scroll through the
        footer — accent tint layered over the page background. */
@@ -1359,13 +1380,13 @@ style: tokens come from @ant/cds's own vanilla export, embedded verbatim
   </header>
 
   <section>
-    <h2>What we're deciding</h2>
-    <!-- SLOT: context -->
+    <h2>Working draft</h2>
+    <!-- SLOT: draft -->
   </section>
 
   <section>
-    <h2>Working draft</h2>
-    <!-- SLOT: draft -->
+    <h2>What we're deciding</h2>
+    <!-- SLOT: context -->
   </section>
 
   <section>
