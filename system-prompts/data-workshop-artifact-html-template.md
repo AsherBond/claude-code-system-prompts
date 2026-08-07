@@ -1,7 +1,7 @@
 <!--
 name: "Data: Workshop artifact HTML template"
 description: "Standalone HTML template used for published workshop artifacts, including decision rendering, fill contract, interaction controls, and light/dark styling"
-ccVersion: "2.1.224"
+ccVersion: "2.1.225"
 -->
 <!--
 name: workshop
@@ -2729,6 +2729,35 @@ style: tokens come from @ant/cds's own vanilla export, embedded verbatim
     e.preventDefault();
     onActivate(e);
   });
+  /* Opening version: published before any decision exists (empty island,
+     no decision rows), so the page is waiting on the session's next
+     version — show the painter until that version loads. */
+  (function () {
+    var isl = document.getElementById('ws-decisions');
+    if (!isl) return;
+    var parsed = null;
+    try {
+      parsed = JSON.parse(isl.textContent || '');
+    } catch (e) {
+      return;
+    }
+    var items = parsed && parsed.items;
+    if (!Array.isArray(items) || items.length !== 0) return;
+    if (document.querySelector('[data-decision-id]')) return;
+    showPainter(true);
+    /* The session may have died between the two publishes: escalate once
+       into the footer bar (textContent only) rather than spin forever. */
+    setTimeout(function () {
+      if (!painterCanvas) return;
+      if (!footer) {
+        footer = document.createElement('div');
+        footer.className = 'ws-footer';
+        document.body.appendChild(footer);
+        document.body.style.paddingBottom = '72px';
+      }
+      footerStatus('Still nothing — Claude may not be watching this page right now. Reload to check for the latest version.');
+    }, 180000);
+  })();
   /* Confirm-reboot continuity: re-enter the waiting state recorded at
      publish time, then verify against the now-stored bytes and exit
      cleanly when a NEWER version (the session's apply) is what loaded.
