@@ -4,6 +4,17 @@ Note: Only use **NEW:** for entirely new prompt files, NOT for new additions/sec
 
 ### Claude Code System Prompts Changelog
 
+# [2.1.225](https://github.com/Piebald-AI/claude-code-system-prompts/commit/4b82ebc)
+
+_+1,314 tokens_
+
+- **NEW:** Tool Description: Bash (pre-commit skill checks) — Requires a visible `RAN`/`NOT RUN` status for each applicable verification, simplification, and code-review skill immediately before nontrivial commits, runs checks that are not still valid for the current diff, and limits skips to explicit user instructions or enumerated trivial-only changes.
+- Data: Workshop artifact HTML template — Shows the waiting painter when the opening version has no decisions and, after three minutes without a newer version, warns that Claude may no longer be watching and suggests reloading.
+- System Prompt: Artifact comment reply composer — Answers questions and feedback directly, flags requested artifact changes for the owning session without discussing its own limitations, and avoids claiming or promising that edits will happen.
+- Tool Description: Artifact — Treats finished audience-facing deliverables such as team reports, shared plans, and reference documents as incomplete until they are published as private artifacts and handed off with a link.
+- Tool Description: ListAgents — Reframes Remote Control connectivity as listing the user's Remote Control sessions on other machines when connected here, replacing the previous reply-only remote-bridge guidance.
+- Tool Description: RemoteTrigger prompt — Adds webhook-trigger creation for wiring a scoped, filtered event source to an existing routine and returns that routine's Claude.ai link without a scheduled run time.
+
 # [2.1.224](https://github.com/Piebald-AI/claude-code-system-prompts/commit/1079f62)
 
 _+32,958 tokens_
