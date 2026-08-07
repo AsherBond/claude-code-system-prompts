@@ -1,7 +1,7 @@
 <!--
 name: "Skill: Whiteboard"
 description: "Creates a whiteboard Artifact for architecture sketches and planning feedback using a freehand canvas"
-ccVersion: "2.1.221"
+ccVersion: "2.1.224"
 -->
 ---
 name: whiteboard
@@ -62,9 +62,7 @@ tag you are fixing, or helper steps.
    talk back: sketch, then click
    **Send to Claude**, and you'll answer on the board in orange; if a
    send seems to slip past me, say "check the whiteboard" and I'll
-   read it. That is the whole message. If the user later asks about a
-   browser prompt to let the page update itself, tell them to allow
-   it — don't pre-announce it.
+   read it. That is the whole message.
 
 ## What comes back
 

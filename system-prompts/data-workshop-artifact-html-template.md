@@ -1,7 +1,7 @@
 <!--
 name: "Data: Workshop artifact HTML template"
 description: "Standalone HTML template used for published workshop artifacts, including decision rendering, fill contract, interaction controls, and light/dark styling"
-ccVersion: "2.1.223"
+ccVersion: "2.1.224"
 -->
 <!--
 name: workshop
@@ -1400,8 +1400,8 @@ style: tokens come from @ant/cds's own vanilla export, embedded verbatim
      a test pins this block by exact hash, so any change is a deliberate,
      reviewed hash update in the same change. It arms the decision option rows
      only where the page can save a decision (the publish declared the self
-     capability; the shell enforces the writer gate and a one-time consent
-     prompt server-side — this script holds no authority) AND the render
+     capability; the shell enforces the writer gate server-side — this
+     script holds no authority) AND the render
      emitted the ws-decisions island. The interaction is two-step by design:
      selecting rows — one option per decision, across any number of
      decisions — only accumulates them in a sticky footer (a confirmed
