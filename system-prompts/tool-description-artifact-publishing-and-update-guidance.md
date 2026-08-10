@@ -1,14 +1,14 @@
 <!--
 name: "Tool Description: Artifact publishing and update guidance"
 description: "Provides Artifact lookup, update, ownership, watch, content-safety, self-containment, responsive design, theme, favicon, and anti-impersonation requirements"
-ccVersion: "2.1.224"
+ccVersion: "2.1.227"
 variables:
   - "IS_ARTIFACT_WATCHING_ENABLED"
   - "MAX_ARTIFACT_BYTES"
 -->
 **To update**: Edit the file, then call Artifact again with the same file path — it redeploys to the same URL. A different file path claims a new URL so only use a different path if you intend to create a separate new Artifact.
 
-**To update an artifact from an earlier conversation** — whenever the user wants an existing artifact updated or its link kept, not only when they paste a URL: pass the artifact's URL as `url` (find it with `action: "list"` if you don't have it). Without `url`, a conversation that didn't publish the artifact always mints a new URL — there is no other way to target an existing one.
+**To update an artifact from an earlier conversation** — whenever the user wants an existing artifact updated or its link kept, not only when they paste a URL: pass the artifact's URL as `url`, finding it with `action: "list"` or by asking the user for the link when you don't have it. Publishing without `url` creates a separate artifact rather than updating the existing one, so recover its URL instead of announcing a new link.
 
 **To read an existing artifact's content**: call WebFetch with its URL.
 
