@@ -1,7 +1,7 @@
 <!--
 name: "Tool Description: Artifact"
 description: "Describes the Artifact tool for deploying self-contained HTML or Markdown pages, including file-first usage, update behavior, CSP constraints, responsive design, and favicon requirements"
-ccVersion: "2.1.227"
+ccVersion: "2.1.228"
 variables:
   - "ARTIFACT_DESIGN_SKILL_NAME"
   - "WORKSHOP_SKILL_NAME"
@@ -13,5 +13,5 @@ A finished deliverable with an audience — a report for a team, a plan other pe
 
 **Before writing the page, you MUST load the `${ARTIFACT_DESIGN_SKILL_NAME}` skill** to calibrate how much design investment this particular request warrants — unless the page is a workshop document built from the `${WORKSHOP_SKILL_NAME}` skill's template, which already carries its page design: skip `${ARTIFACT_DESIGN_SKILL_NAME}` there and load `${ARTIFACT_DIAGRAMMING_SKILL_NAME}` for its diagrams instead. Then write the content to a file (via Write/Edit) and call Artifact with its path. The file is wrapped in a `<!doctype html>…<head>…</head><body>` skeleton at publish time, so write the page content directly — no `<!DOCTYPE>`, `<html>`, `<head>`, or `<body>` tags of your own. The file includes a minimal CSS reset. Unless the user names a location, put the file in your scratchpad directory if one is listed in your system prompt.
 
-**Title**: Set a concise `<title>` at the top of the HTML — only the first 8KB of the file is scanned for it. It names the artifact in the browser tab and gallery; for HTML publishes, a `title` parameter fills in when the file has no tag (Markdown pages always keep their filename identity). Keep it stable across redeploys. Pass a one-sentence `description` parameter — it becomes the gallery card's subtitle.
+**Title**: Set a `<title>` at the top of the HTML — only the first 8KB of the file is scanned for it. It names the artifact in the browser tab and gallery, so make it a name, not a summary: a short noun phrase, typically two to four words, distinctive to this page's subject so the reader can pick it out of a gallery of many — the way an app or a document gets named, never a generic category label, and never a name plus an appended explainer after a dash or colon. When a natural title pairs the name with a generic word, the name is the half that survives the trim — keeping the generic half and dropping the identity makes the title worse, not shorter. And trim only actual explainers: a multi-word title that already reads as one specific name is finished as it is. The explanation belongs in the `description` parameter instead: pass a one-sentence `description` — it becomes the gallery card's subtitle. For HTML publishes, a `title` parameter fills in when the file has no tag (Markdown pages always keep their filename identity). Keep the title stable across redeploys.
 
