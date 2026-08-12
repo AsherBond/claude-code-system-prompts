@@ -1,7 +1,7 @@
 <!--
 name: "Data: Claude Code gateway protocol"
 description: "Markdown reference documenting the Claude Code gateway wire contract, including OAuth 2.0 device flow, RFC 8414 discovery, Messages API inference, managed settings, model discovery, OTLP telemetry, error envelopes, TLS certificate pinning, and proxying to Bedrock, Vertex, and Foundry"
-ccVersion: "2.1.227"
+ccVersion: "2.1.229"
 -->
 # Claude Code gateway protocol
 
@@ -255,7 +255,9 @@ provider's Claude endpoint needs translation:
   accept the header.
 - **Streaming.** Bedrock's native stream is AWS binary event-stream, not SSE;
   decode and re-emit Anthropic-shaped `text/event-stream`. The provider SDKs
-  handle this.
+  handle this, but their stream iterators drop the upstream's `ping` events
+  (and Bedrock sends none) — emit your own `event: ping` during silent gaps
+  so long thinking pauses don't trip client or proxy idle timeouts.
 - **`count_tokens`.** Bedrock has no count-tokens API. Return
   `501 not_supported`; the client falls back to a Haiku `max_tokens:1` probe.
 - **Headers.** Forward `content-type`, `accept`, `accept-encoding`,

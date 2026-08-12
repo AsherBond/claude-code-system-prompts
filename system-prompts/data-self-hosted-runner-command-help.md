@@ -1,7 +1,7 @@
 <!--
 name: "Data: Self-hosted runner command help"
 description: "Documents self-hosted runner connection, runtime, lifecycle, watchdog, security, health, and debug command-line options"
-ccVersion: "2.1.228"
+ccVersion: "2.1.229"
 variables:
   - "DEFAULT_SELF_HOSTED_RUNNER_API_URL"
   - "DEFAULT_RUNNER_CAPACITY"
@@ -27,7 +27,8 @@ Connection:
 
 Runtime:
   --capacity <n>              Max concurrent sessions (default: ${DEFAULT_RUNNER_CAPACITY})
-  --base-dir <path>           Base directory for repo checkouts (default: ${DEFAULT_RUNNER_BASE_DIR})
+  --base-dir <path>           Base directory for repo checkouts (default: ${DEFAULT_RUNNER_BASE_DIR};
+                              required on Windows, which has no default)
                               [env: SELF_HOSTED_RUNNER_BASE_DIR]
   --exec-path <path>          Binary to spawn for child sessions. Default: this process's own binary.
                               [env: SELF_HOSTED_RUNNER_EXEC_PATH]
