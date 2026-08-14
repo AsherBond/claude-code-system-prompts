@@ -4,6 +4,21 @@ Note: Only use **NEW:** for entirely new prompt files, NOT for new additions/sec
 
 ### Claude Code System Prompts Changelog
 
+# [2.1.233](https://github.com/Piebald-AI/claude-code-system-prompts/commit/2f5e820)
+
+_+27,728 tokens_
+
+- **NEW:** Data: Plugin eval and skill-doctor quick reference and Data: Plugin eval and skill-doctor reference — Add condensed and comprehensive offline guidance for early-access `claude plugin eval`, `eval init`, and `/skill-doctor`, covering enablement, suite authoring, graders, run options, result and report formats, sandboxing, CI, and troubleshooting.
+- **NEW:** System Prompt: Plugin eval enabled-session status — Announces when plugin eval is enabled and gives the exact `CLAUDE_CODE_WALNUT_SPIRE=1` fallback for clients and CI that cannot receive the organization rollout, with supported shell, user-settings, and managed-settings locations and a warning not to rely on project settings.
+- Agent Prompt: Claude Code guide, Agent Prompt: Claude guide agent, Data: Claude Code live documentation sources, Data: Claude Code recent changes reference, and Skill: Claude Code configuration guide — Route plugin-evaluation and skill-diagnostics questions through current-build checks and the new offline references, distinguish `/skill-doctor` from linting, and warn against stale-memory answers, guessed documentation URLs, or invented enablement variables.
+- Data: Artifact decision component script, Data: Workshop artifact HTML template, and Skill: Artifact components — Update decision controls to acquire artifact publishing through the asynchronous viewer 0.2 `claude.use('artifact')` API, retain viewer 0.1 `artifact`/`self` compatibility, arm only after capability availability, and refresh the verifier-pinned digest.
+- Data: Claude Code gateway protocol — Relays Anthropic 400/413 error messages needed for client recovery such as auto-compaction while continuing to sanitize other upstream messages and preserve error types.
+- Skill: Artifact document — No longer presents document artifacts as supporting selection-based comments or requires hidden comment-store machinery, while preserving live editing and reframing review language around feedback.
+- Skill: /doctor slash command and Skill: /doctor slash command description — Add diagnosis of malformed skill YAML frontmatter, explaining that parse failures drop every field and trigger fallback naming and descriptions while silently disabling tool, model, and invocation settings.
+- Skill: Plugin eval authoring interview — Keeps every calibration pilot and re-pilot private with `--no-publish` and tells users how to keep final full-suite reports local.
+- System Reminder: Team Coordination and Tool Description: SendMessage — Make task-list resources and coordination instructions conditional on available task tooling and allow legacy status updates in plain prose when those tools are absent.
+- Tool Description: WebFetch, Tool Description: WebFetch (concise), and Tool Description: WebFetch private URL warning — Derive cache-expiry text at render time instead of hard-coding 15 minutes.
+
 # [2.1.232](https://github.com/Piebald-AI/claude-code-system-prompts/commit/a21a614)
 
 _+48,736 tokens_
