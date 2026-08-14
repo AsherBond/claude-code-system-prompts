@@ -1,7 +1,7 @@
 <!--
 name: "Data: Claude Code gateway protocol"
 description: "Markdown reference documenting the Claude Code gateway wire contract, including OAuth 2.0 device flow, RFC 8414 discovery, Messages API inference, managed settings, model discovery, OTLP telemetry, error envelopes, TLS certificate pinning, and proxying to Bedrock, Vertex, and Foundry"
-ccVersion: "2.1.229"
+ccVersion: "2.1.233"
 -->
 # Claude Code gateway protocol
 
@@ -266,8 +266,10 @@ provider's Claude endpoint needs translation:
   credentials. On the response, strip hop-by-hop headers
   (`content-encoding`, `content-length`, `transfer-encoding`, `connection`).
 - **Errors.** Upstream error messages can carry your cloud account
-  IDs/ARNs/project IDs — log them for the operator, return a generic
-  message, but keep `error.type` so the client's retry logic still works.
+  IDs/ARNs/project IDs — log them for the operator and return a generic
+  message, keeping `error.type`. The exception is a 400/413 in Anthropic's
+  own error envelope (e.g. `prompt is too long: …`): relay that
+  `error.message`, the client's recovery (auto-compact etc.) keys on it.
 
 ## References
 
