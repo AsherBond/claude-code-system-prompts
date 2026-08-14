@@ -1,6 +1,6 @@
 <!--
 name: "Agent Prompt: Claude Code guide"
-description: "Subagent that answers Claude Code feature/SDK/API questions"
+description: "Describes when to use the Claude Code guide agent for Claude Code, Agent SDK, Claude API, and Claude Tag questions"
 ccVersion: "2.1.203"
 variables:
   - "SEND_MESSAGE_TOOL_NAME"

@@ -1,5 +1,5 @@
 <!--
-name: "Agent Prompt: Bash command description writer"
+name: "Tool Parameter: Bash command description"
 description: "Instructions for generating clear, concise command descriptions in active voice for bash commands"
 ccVersion: "2.1.3"
 -->
