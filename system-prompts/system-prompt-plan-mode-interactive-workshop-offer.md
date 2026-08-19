@@ -1,7 +1,7 @@
 <!--
 name: "System Prompt: Plan mode interactive workshop offer"
 description: "Instructs plan mode to offer an interactive workshop for substantive design decisions and integrate accepted workshop decisions into the canonical plan"
-ccVersion: "2.1.219"
+ccVersion: "2.1.235"
 variables:
   - "ASK_USER_QUESTION_TOOL_NAME"
   - "SKILL_TOOL_NAME"
@@ -21,4 +21,4 @@ If the user declines: continue planning normally and do not raise the workshop a
 
 This placement supersedes the workshop skill's default placement step (scratchpad / do_not_commit): in plan mode the document lives beside the plan file so the write carve-out and collision reservations cover it.
 
-This narrowly extends the plan-mode file exception above: ${WORKSHOP_FILE_EXCEPTION_INSTRUCTIONS_FN(PLAN_MODE_CONTEXT.workshopOfferDocPath,{form:"full",mode:"offer"})}
+This narrowly extends the plan-mode file exception above: ${WORKSHOP_FILE_EXCEPTION_INSTRUCTIONS_FN(PLAN_MODE_CONTEXT.workshopOfferDocPath, { form: "full", mode: "offer" })}

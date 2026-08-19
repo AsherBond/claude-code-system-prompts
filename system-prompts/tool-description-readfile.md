@@ -1,7 +1,7 @@
 <!--
 name: "Tool Description: ReadFile"
 description: "Tool description for reading files"
-ccVersion: "2.1.128"
+ccVersion: "2.1.235"
 variables:
   - "MAX_LINES_CONSTANT"
   - "CONDITIONAL_LENGTH_NOTE"
@@ -18,8 +18,12 @@ Usage:
 - By default, it reads up to ${MAX_LINES_CONSTANT} lines starting from the beginning of the file${CONDITIONAL_LENGTH_NOTE}
 ${CAT_DASH_N_NOTE}
 ${READ_FULL_FILE_NOTE}
-- This tool allows Claude Code to read images (eg PNG, JPG, etc). When reading an image file the contents are presented visually as Claude Code is a multimodal LLM.${CAN_READ_PDF_FILES_FN()?`
-- This tool can read PDF files (.pdf). For large PDFs (more than 10 pages), you MUST provide the pages parameter to read specific page ranges (e.g., pages: "1-5"). Reading a large PDF without the pages parameter will fail. Maximum 20 pages per request.`:""}
+- This tool allows Claude Code to read images (eg PNG, JPG, etc). When reading an image file the contents are presented visually as Claude Code is a multimodal LLM.${
+      CAN_READ_PDF_FILES_FN()
+        ? `
+- This tool can read PDF files (.pdf). For large PDFs (more than 10 pages), you MUST provide the pages parameter to read specific page ranges (e.g., pages: "1-5"). Reading a large PDF without the pages parameter will fail. Maximum 20 pages per request.`
+        : ""
+    }
 - This tool can read Jupyter notebooks (.ipynb files) and returns all cells with their outputs, combining code, text, and visualizations.
 - This tool can only read files, not directories. To list files in a directory, use the registered shell tool.
 - You will regularly be asked to read screenshots. If the user provides a path to a screenshot, ALWAYS use this tool to view the file at the path. This tool will work with all temporary file paths.

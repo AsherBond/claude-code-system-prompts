@@ -1,7 +1,7 @@
 <!--
 name: "Skill: /stuck (background-daemon diagnostics)"
 description: "The background-daemon troubleshooting section of the /stuck skill"
-ccVersion: "2.1.173"
+ccVersion: "2.1.235"
 variables:
   - "DAEMON_LOCK_CONTENT"
   - "DAEMON_STATUS_CONTENT"
@@ -16,12 +16,12 @@ The background daemon manages `& <prompt>` jobs and `claude agents`. If the issu
 
 ### daemon.lock
 ```json
-${DAEMON_LOCK_CONTENT??"(missing)"}
+${DAEMON_LOCK_CONTENT ?? "(missing)"}
 ```
 
 ### daemon.status.json
 ```json
-${DAEMON_STATUS_CONTENT??"(missing)"}
+${DAEMON_STATUS_CONTENT ?? "(missing)"}
 ```
 
 ### Daemon log (`${DAEMON_LOG_PATH}`)

@@ -1,7 +1,7 @@
 <!--
 name: "Data: Self-hosted runner command help"
 description: "Documents self-hosted runner connection, runtime, lifecycle, watchdog, security, health, and debug command-line options"
-ccVersion: "2.1.229"
+ccVersion: "2.1.235"
 variables:
   - "DEFAULT_SELF_HOSTED_RUNNER_API_URL"
   - "DEFAULT_RUNNER_CAPACITY"
@@ -38,11 +38,11 @@ Runtime:
   --session-stop-grace-sec <n>
                               How long to wait for the Claude process to exit cleanly after a
                               session ends, before force-killing it. The post-session hook runs
-                              after this. Default: ${SESSION_STOP_GRACE_MS/1000}.
+                              after this. Default: ${SESSION_STOP_GRACE_MS / 1000}.
                               [env: SELF_HOSTED_RUNNER_SESSION_STOP_GRACE_MS, in ms]
   --post-session-hook-timeout-sec <n>
                               SIGTERM budget for the post-session lifecycle hook, on every session
-                              end including runner shutdown. Default: ${POST_SESSION_HOOK_TIMEOUT_MS/1000}.
+                              end including runner shutdown. Default: ${POST_SESSION_HOOK_TIMEOUT_MS / 1000}.
                               [env: SELF_HOSTED_RUNNER_POST_SESSION_HOOK_TIMEOUT_MS, in ms]
   --drain-wait-sec <n>        On SIGTERM/SIGINT, wait up to N seconds for each session's in-flight
                               turn (a foreground tool call) and running background tasks to finish
@@ -51,7 +51,7 @@ Runtime:
                               A background task that has JUST finished also counts as
                               in-flight until the follow-up turn that reads its result starts
                               (bounded by SELF_HOSTED_RUNNER_BG_RESULT_GRACE_MS, in ms;
-                              default: ${BACKGROUND_RESULT_GRACE_MS/1000}s; 0 or an unusable value falls back
+                              default: ${BACKGROUND_RESULT_GRACE_MS / 1000}s; 0 or an unusable value falls back
                               to the default — the hold cannot be disabled).
                               Default: 0 (send SIGTERM immediately). Max: 86400.
                               [env: SELF_HOSTED_RUNNER_DRAIN_WAIT_MS, in ms]

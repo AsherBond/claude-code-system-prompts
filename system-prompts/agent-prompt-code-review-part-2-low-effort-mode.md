@@ -1,7 +1,7 @@
 <!--
 name: "Agent Prompt: /code-review part 2 low effort mode"
 description: "Low-effort /code-review prompt that reads the diff once and returns up to four hunk-visible runtime correctness findings"
-ccVersion: "2.1.216"
+ccVersion: "2.1.235"
 variables:
   - "HAS_REPORT_FINDINGS_TOOL"
   - "REPORT_FINDINGS_TOOL_NAME"
@@ -29,13 +29,17 @@ helper visible in the diff context, and dead code the diff leaves behind.
 Do **not** flag style, naming, perf, missing tests, or anything outside the
 hunk.
 
-${HAS_REPORT_FINDINGS_TOOL?`Report at most **4 findings**, most-severe first, in one
+${
+  HAS_REPORT_FINDINGS_TOOL
+    ? `Report at most **4 findings**, most-severe first, in one
 ${REPORT_FINDINGS_TOOL_NAME} call with `{level, findings}` — each entry has
 `file`, `line`, `summary`, `short_summary` (≤60 characters), and
 `failure_scenario`. If nothing qualifies, call it with an empty findings
 array. Do not also print the findings as text.
-`:`Output at most **4 findings**, most-severe first, one line each:
+`
+    : `Output at most **4 findings**, most-severe first, one line each:
 `path/to/file.ext:123 — what's wrong and the concrete failure`. If nothing
 qualifies, output exactly `(none)`. Do not call the
 ${REPORT_FINDINGS_TOOL_NAME} tool even if it is available.
-`}
+`
+}

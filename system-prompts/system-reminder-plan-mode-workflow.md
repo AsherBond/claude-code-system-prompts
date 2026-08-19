@@ -1,7 +1,7 @@
 <!--
 name: "System Reminder: Plan mode workflow"
 description: "Full plan-mode workflow reminder covering plan file constraints, optional workshop and prototype offers, exploration, design, review, final planning, and approval"
-ccVersion: "2.1.221"
+ccVersion: "2.1.235"
 variables:
   - "PLAN_MODE_READONLY_INSTRUCTIONS"
   - "PLAN_FILE_INFO"
@@ -31,7 +31,7 @@ ${PLAN_MODE_PHASE_2_DESIGN}
 
 ${PLAN_MODE_PHASE_3_REVIEW}
 
-${PLAN_MODE_PHASE_4_FINAL_PLAN_FN(PLAN_MODE_CONTEXT.workshopOfferDocPath!==void 0||PLAN_MODE_CONTEXT.workshopActiveDocPath!==void 0)}
+${PLAN_MODE_PHASE_4_FINAL_PLAN_FN(PLAN_MODE_CONTEXT.workshopOfferDocPath !== void 0 || PLAN_MODE_CONTEXT.workshopActiveDocPath !== void 0)}
 
 ### Phase 5: Call ${EXIT_PLAN_MODE_INSTRUCTIONS_FN.name}
 ${EXIT_PLAN_MODE_TOOL(PLAN_MODE_CONTEXT.workshopActiveDocPath)}

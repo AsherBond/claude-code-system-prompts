@@ -1,7 +1,7 @@
 <!--
 name: "Skill: /design-sync package source shape"
 description: "Shape-specific /design-sync instructions for syncing a React design system from a built package without Storybook"
-ccVersion: "2.1.176"
+ccVersion: "2.1.235"
 -->
 # Package source shape
 

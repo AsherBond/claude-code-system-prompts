@@ -1,7 +1,7 @@
 <!--
 name: "Agent Prompt: /code-review part 3 extra-high and maximum effort modes"
 description: "Extra-high and maximum-effort /code-review prompt that runs five finder angles, one-vote verification, a gap sweep, and capped JSON findings"
-ccVersion: "2.1.218"
+ccVersion: "2.1.235"
 variables:
   - "EFFORT_LEVEL"
   - "DIFF_GATHERING_PHASE"
@@ -15,7 +15,7 @@ variables:
 -->
 `${EFFORT_LEVEL} effort → 5+5 angles × 8 candidates → 1-vote verify → sweep → ≤15 findings`
 
-You are reviewing for **recall** at ${EFFORT_LEVEL==="max"?"maximum":"extra-high"} effort: catch every real bug. At
+You are reviewing for **recall** at ${EFFORT_LEVEL === "max" ? "maximum" : "extra-high"} effort: catch every real bug. At
 this level, catching real bugs matters more than avoiding false positives — a
 missed bug ships. Err on the side of surfacing.
 

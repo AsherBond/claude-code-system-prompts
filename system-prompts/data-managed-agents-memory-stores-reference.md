@@ -1,7 +1,7 @@
 <!--
 name: "Data: Managed Agents memory stores reference"
 description: "Reference documentation for managed agents memory stores, memory versions, attachment, and direct memory management"
-ccVersion: "2.1.219"
+ccVersion: "2.1.235"
 -->
 # Managed Agents — Memory Stores
 

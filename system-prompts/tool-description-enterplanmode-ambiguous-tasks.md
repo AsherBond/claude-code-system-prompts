@@ -1,7 +1,7 @@
 <!--
 name: "Tool Description: EnterPlanMode (ambiguous tasks)"
 description: "Tool for entering plan mode when task has ambiguity"
-ccVersion: "2.1.173"
+ccVersion: "2.1.235"
 variables:
   - "USE_EMBEDDED_TOOLS_FN"
   - "IS_BASH_ENV_FN"
@@ -14,7 +14,7 @@ variables:
 ## What Happens in Plan Mode
 
 In plan mode, you'll:
-1. Thoroughly explore the codebase using ${USE_EMBEDDED_TOOLS_FN()&&IS_BASH_ENV_FN()?``find`/${GLOB_TOOL_NAME}, `grep`/${GREP_TOOL_NAME}, and ${READ_TOOL_NAME}`:`${GLOB_TOOL_NAME}, ${GREP_TOOL_NAME}, and ${READ_TOOL_NAME}`}
+1. Thoroughly explore the codebase using ${USE_EMBEDDED_TOOLS_FN() && IS_BASH_ENV_FN() ? ``find`/${GLOB_TOOL_NAME}, `grep`/${GREP_TOOL_NAME}, and ${READ_TOOL_NAME}` : `${GLOB_TOOL_NAME}, ${GREP_TOOL_NAME}, and ${READ_TOOL_NAME}`}
 2. Understand existing patterns and architecture
 3. Design an implementation approach
 4. Present your plan to the user for approval
