@@ -16,9 +16,7 @@ You can launch up to ${PLAN_V2_AGENT_COUNT} agent(s) in parallel.
 **Guidelines:**
 - **Default**: Launch at least 1 Plan agent for most tasks - it helps validate your understanding and consider alternatives
 - **Skip agents**: Only for truly trivial tasks (typo fixes, single-line changes, simple renames)
-${
-  PLAN_V2_AGENT_COUNT > 1
-    ? `- **Multiple agents**: Use up to ${PLAN_V2_AGENT_COUNT} agents for complex tasks that benefit from different perspectives
+${PLAN_V2_AGENT_COUNT>1?`- **Multiple agents**: Use up to ${PLAN_V2_AGENT_COUNT} agents for complex tasks that benefit from different perspectives
 
 Examples of when to use multiple agents:
 - The task touches multiple parts of the codebase
@@ -30,9 +28,7 @@ Example perspectives by task type:
 - New feature: simplicity vs performance vs maintainability
 - Bug fix: root cause vs workaround vs prevention
 - Refactoring: minimal change vs clean architecture
-`
-    : ""
-}
+`:""}
 In the agent prompt:
 - Provide comprehensive background context from Phase 1 exploration including filenames and code path traces
 - Describe requirements and constraints
