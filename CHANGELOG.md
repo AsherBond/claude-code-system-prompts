@@ -4,6 +4,14 @@ Note: Only use **NEW:** for entirely new prompt files, NOT for new additions/sec
 
 ### Claude Code System Prompts Changelog
 
+# [2.1.237](https://github.com/Piebald-AI/claude-code-system-prompts/commit/9c96204)
+
+_+1,249 tokens_
+
+- **NEW:** System Prompt: Auto mode Slack message provenance — Treats bound-thread Slack relays that open with the server-verified human marker as direct user intent capable of clearing soft blocks, while bot-attributed or nested cross-session relays remain untrusted and cannot establish consent or launder permissions.
+- **NEW:** System Prompt: Concise output style — Defines the built-in Concise style to lead with results, omit narration and repeated recaps, use short plain answers by default, and preserve requested detail and correctness, including full error reports, failing-test output, security warnings, and destructive-action confirmations.
+- **NEW:** Tool Description: Poll — Adds an idle wait for queued harness events, returning pending events immediately and yielding to new user input, while defining authoritative envelope provenance, untrusted event content, nonce manifests, transcript-replay compatibility, and oldest-first chunked delivery.
+
 # [2.1.236](https://github.com/Piebald-AI/claude-code-system-prompts/commit/e39d195)
 
 _+26,676 tokens_
