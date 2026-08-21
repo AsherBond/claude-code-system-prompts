@@ -1,7 +1,7 @@
 <!--
 name: "Data: Managed Agents Scheduled Deployments"
 description: "Managed Agents scheduled deployment API guidance, including cron schedules, deployment runs, pausing, resuming, and operational limits"
-ccVersion: "2.1.236"
+ccVersion: "2.1.239"
 -->
 # Managed Agents — Scheduled Deployments
 

@@ -59,11 +59,11 @@ Runtime:
   --session-stop-grace-sec <n>
                               How long to wait for the Claude process to exit cleanly after a
                               session ends, before force-killing it. The post-session hook runs
-                              after this. Default: ${SESSION_STOP_GRACE_MS/1000}.
+                              after this. Default: ${SESSION_STOP_GRACE_MS / 1000}.
                               [env: SELF_HOSTED_RUNNER_SESSION_STOP_GRACE_MS, in ms]
   --post-session-hook-timeout-sec <n>
                               SIGTERM budget for the post-session lifecycle hook, on every session
-                              end including runner shutdown. Default: ${POST_SESSION_HOOK_TIMEOUT_MS/1000}.
+                              end including runner shutdown. Default: ${POST_SESSION_HOOK_TIMEOUT_MS / 1000}.
                               [env: SELF_HOSTED_RUNNER_POST_SESSION_HOOK_TIMEOUT_MS, in ms]
   --drain-wait-sec <n>        On SIGTERM/SIGINT, wait up to N seconds for each session's in-flight
                               turn (a foreground tool call) and running background tasks to finish
@@ -72,7 +72,7 @@ Runtime:
                               A background task that has JUST finished also counts as
                               in-flight until the follow-up turn that reads its result starts
                               (bounded by SELF_HOSTED_RUNNER_BG_RESULT_GRACE_MS, in ms;
-                              default: ${BACKGROUND_RESULT_GRACE_MS/1000}s; 0 or an unusable value falls back
+                              default: ${BACKGROUND_RESULT_GRACE_MS / 1000}s; 0 or an unusable value falls back
                               to the default — the hold cannot be disabled).
                               Default: 0 (send SIGTERM immediately). Max: 86400.
                               [env: SELF_HOSTED_RUNNER_DRAIN_WAIT_MS, in ms]
@@ -167,7 +167,7 @@ Runner lifecycle:
                               stays attached. M minutes after the first signal every session still attached
                               is released through that same park path at once regardless of idle time (one
                               mid-turn as soon as its turn ends; background work a finished turn left running
-                              gets up to 60s), and anything STILL attached ${(DEFERRED_SESSION_RELEASE_GRACE_MS+SHUTDOWN_MARGIN_MS)/1000}s later (that 60s + a 15s
+                              gets up to 60s), and anything STILL attached ${(DEFERRED_SESSION_RELEASE_GRACE_MS + SHUTDOWN_MARGIN_MS) / 1000}s later (that 60s + a 15s
                               margin; --drain-wait-sec + 15s if longer) is drained as on a second signal —
                               the one path that requeues instead of parking. The runner exits 0 as soon as
                               it holds no session, before or after M. A SECOND signal drains immediately, as
@@ -177,7 +177,7 @@ Runner lifecycle:
                               every still-attached session is killed WITHOUT its post-session hook or
                               deregister and is requeued to another runner about a minute later — strictly
                               worse than the default drain. So set the stop timeout
-                              (terminationGracePeriodSeconds etc.) to at least M minutes + ${(DEFERRED_SESSION_RELEASE_GRACE_MS+SHUTDOWN_MARGIN_MS)/1000}s (that post-ceiling
+                              (terminationGracePeriodSeconds etc.) to at least M minutes + ${(DEFERRED_SESSION_RELEASE_GRACE_MS + SHUTDOWN_MARGIN_MS) / 1000}s (that post-ceiling
                               grace; --drain-wait-sec + 15s if longer) + the shutdown budget above — the runner
                               prints this sum at startup when the flag is set. --startup-timeout-min and
                               --kill-session-after-min keep working unchanged during the wait. Fractional

@@ -5,13 +5,13 @@ ccVersion: "2.1.235"
 variables:
   - "BASH_TOOL_NAME"
   - "COMMIT_CO_AUTHORED_BY_CLAUDE_CODE"
-  - "GET_TODO_TOOL_FN"
-  - "TASK_TOOL_NAME"
+  - "TASK_CREATE_OR_TODOWRITE_TOOL_NAME"
+  - "AGENT_TOOL_NAME"
   - "PR_INSTRUCTIONS_PREFIX"
   - "PR_WRITING_GUIDANCE_BLOCK"
-  - "PR_GENERATED_WITH_CLAUDE_CODE"
   - "PR_SUMMARY_TEMPLATE_FN"
   - "PR_TEST_PLAN_TEMPLATE_FN"
+  - "PR_ATTRIBUTION_TEXT"
   - "PR_COMMON_OPERATIONS_NOTE"
 -->
 ${`# Committing changes with git
@@ -40,15 +40,19 @@ Git Safety Protocol:
   - Ensure it accurately reflects the changes and their purpose
 3. Run the following commands in parallel:
    - Add relevant untracked files to the staging area.
-   - Create the commit with a message${COMMIT_CO_AUTHORED_BY_CLAUDE_CODE?` ending with:
-   ${COMMIT_CO_AUTHORED_BY_CLAUDE_CODE}`:"."}
+   - Create the commit with a message${
+     COMMIT_CO_AUTHORED_BY_CLAUDE_CODE
+       ? ` ending with:
+   ${COMMIT_CO_AUTHORED_BY_CLAUDE_CODE}`
+       : "."
+   }
    - Run git status after the commit completes to verify success.
    Note: git status depends on the commit completing, so run it sequentially after the commit.
 4. If the commit fails due to pre-commit hook: fix the issue and create a NEW commit
 
 Important notes:
 - NEVER run additional commands to read or explore code, besides git bash commands
-- NEVER use the ${GET_TODO_TOOL_FN} or ${TASK_TOOL_NAME} tools
+- NEVER use the ${TASK_CREATE_OR_TODOWRITE_TOOL_NAME} or ${AGENT_TOOL_NAME} tools
 - DO NOT push to the remote repository unless the user explicitly asks you to do so
 - IMPORTANT: Never use git commands with the -i flag (like git rebase -i or git add -i) since they require interactive input which is not supported.
 - IMPORTANT: Do not use --no-edit with git rebase commands, as the --no-edit flag is not a valid option for git rebase.
@@ -56,16 +60,24 @@ Important notes:
 - In order to ensure good formatting, ALWAYS pass the commit message via a HEREDOC, a la this example:
 <example>
 git commit -m "$(cat <<'EOF'
-   Commit message here.${COMMIT_CO_AUTHORED_BY_CLAUDE_CODE?`
+   Commit message here.${
+     COMMIT_CO_AUTHORED_BY_CLAUDE_CODE
+       ? `
 
-   ${COMMIT_CO_AUTHORED_BY_CLAUDE_CODE}`:""}
+   ${COMMIT_CO_AUTHORED_BY_CLAUDE_CODE}`
+       : ""
+   }
    EOF
    )"
 </example>
 
-`}${PR_INSTRUCTIONS_PREFIX}${PR_WRITING_GUIDANCE_BLOCK?`${PR_WRITING_GUIDANCE_BLOCK}
+`}${PR_INSTRUCTIONS_PREFIX}${
+      PR_WRITING_GUIDANCE_BLOCK
+        ? `${PR_WRITING_GUIDANCE_BLOCK}
 
-`:""}# Creating pull requests
+`
+        : ""
+    }# Creating pull requests
 Use the gh command via the Bash tool for ALL GitHub-related tasks including working with issues, pull requests, checks, and releases. If given a Github URL use the gh command to get the information needed.
 
 IMPORTANT: When the user asks you to create a pull request, follow these steps carefully:
@@ -85,21 +97,29 @@ IMPORTANT: When the user asks you to create a pull request, follow these steps c
 <example>
 gh pr create --title "the pr title" --body "$(cat <<'EOF'
 ## Summary
-${PR_GENERATED_WITH_CLAUDE_CODE()}
+${PR_SUMMARY_TEMPLATE_FN()}
 
 ## Test plan
-${PR_SUMMARY_TEMPLATE_FN()}${PR_TEST_PLAN_TEMPLATE_FN?`
+${PR_TEST_PLAN_TEMPLATE_FN()}${
+      PR_ATTRIBUTION_TEXT
+        ? `
 
-${PR_TEST_PLAN_TEMPLATE_FN}`:""}
+${PR_ATTRIBUTION_TEXT}`
+        : ""
+    }
 EOF
 )"
 </example>
 
 Important:
-- DO NOT use the ${GET_TODO_TOOL_FN} or ${TASK_TOOL_NAME} tools
+- DO NOT use the ${TASK_CREATE_OR_TODOWRITE_TOOL_NAME} or ${AGENT_TOOL_NAME} tools
 - Return the PR URL when you're done, so the user can see it
 
 # Other common operations
-- View comments on a Github PR: gh api repos/foo/bar/pulls/123/comments${PR_COMMON_OPERATIONS_NOTE?`
+- View comments on a Github PR: gh api repos/foo/bar/pulls/123/comments${
+      PR_COMMON_OPERATIONS_NOTE
+        ? `
 
-${PR_COMMON_OPERATIONS_NOTE}`:""}
+${PR_COMMON_OPERATIONS_NOTE}`
+        : ""
+    }

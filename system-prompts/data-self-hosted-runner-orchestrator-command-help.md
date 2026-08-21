@@ -29,7 +29,7 @@ Hook:
                               [env: SELF_HOSTED_RUNNER_HOOKS_DIR]
   --hook-concurrency <n>      Max spawn-runner hooks running in parallel (default: ${DEFAULT_HOOK_CONCURRENCY}).
                               Also caps how many hints are claimed per poll.
-  --hook-timeout <sec>        SIGTERM the hook after <sec> seconds (default: ${DEFAULT_HOOK_TIMEOUT_MS/1000}).
+  --hook-timeout <sec>        SIGTERM the hook after <sec> seconds (default: ${DEFAULT_HOOK_TIMEOUT_MS / 1000}).
   --expected-spawn-seconds <n>  p99 boot time for runners this orchestrator spawns
                               (default: ${DEFAULT_EXPECTED_SPAWN_SECONDS}). Sent on every Poll as the
                               server-side lease; if the runner doesn't register before then, the

@@ -1,7 +1,7 @@
 <!--
 name: "Data: HTTP error codes reference"
 description: "Reference for HTTP error codes returned by the Claude API with common causes and handling strategies"
-ccVersion: "2.1.235"
+ccVersion: "2.1.239"
 -->
 # HTTP Error Codes Reference
 

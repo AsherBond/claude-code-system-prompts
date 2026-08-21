@@ -1,7 +1,7 @@
 <!--
 name: "Data: Managed Agents reference — Go"
 description: "Reference guide for using the Anthropic Go SDK to create and manage agents, environments, sessions, and tools"
-ccVersion: "2.1.235"
+ccVersion: "2.1.239"
 -->
 # Managed Agents — Go
 

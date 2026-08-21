@@ -15,9 +15,13 @@ ${""}## Context
 - Current git diff (staged and unstaged changes): !`git diff HEAD`
 - Current branch: !`git branch --show-current`
 - Recent commits: !`git log --oneline -10`
-${ADDITIONAL_COMMIT_GUIDANCE?`
+${
+  ADDITIONAL_COMMIT_GUIDANCE
+    ? `
 User guidance for this commit: ${ADDITIONAL_COMMIT_GUIDANCE}
-`:""}
+`
+    : ""
+}
 ## Git Safety Protocol
 
 - NEVER update the git config
@@ -41,24 +45,40 @@ Based on the above changes, create a single git commit:
    - Ensure the message accurately reflects the changes and their purpose (i.e. "add" means a wholly new feature, "update" means an enhancement to an existing feature, "fix" means a bug fix, etc.)
    - Draft a concise (1-2 sentences) commit message that focuses on the "why" rather than the "what"${COMMIT_WRITING_GUIDANCE_FN()}
 
-2. Stage the relevant files and create the commit. To ensure good formatting, ALWAYS pass the commit message via a ${IS_BASH_ENV_FN()?"HEREDOC":"here-string"}:
-${IS_BASH_ENV_FN()?````
+2. Stage the relevant files and create the commit. To ensure good formatting, ALWAYS pass the commit message via a ${IS_BASH_ENV_FN() ? "HEREDOC" : "here-string"}:
+${
+  IS_BASH_ENV_FN()
+    ? ````
 git commit -m "$(cat <<'EOF'
-Commit message here.${COMMIT_ATTRIBUTION_TEXT?`
+Commit message here.${
+        COMMIT_ATTRIBUTION_TEXT
+          ? `
 
-${COMMIT_ATTRIBUTION_TEXT}`:""}
+${COMMIT_ATTRIBUTION_TEXT}`
+          : ""
+      }
 EOF
 )"
-````:````
+````
+    : ````
 git commit -m @'
-Commit message here.${COMMIT_ATTRIBUTION_TEXT?`
+Commit message here.${
+        COMMIT_ATTRIBUTION_TEXT
+          ? `
 
-${COMMIT_ATTRIBUTION_TEXT}`:""}
+${COMMIT_ATTRIBUTION_TEXT}`
+          : ""
+      }
 '@
 ```
-The closing `'@` MUST be at column 0 with no leading whitespace.`}${PRE_COMMIT_CHECKS_GUIDANCE?`
+The closing `'@` MUST be at column 0 with no leading whitespace.`
+}${
+      PRE_COMMIT_CHECKS_GUIDANCE
+        ? `
 
-${PRE_COMMIT_CHECKS_GUIDANCE}`:""}
+${PRE_COMMIT_CHECKS_GUIDANCE}`
+        : ""
+    }
 
 3. Run git status after the commit completes to verify it succeeded.
 

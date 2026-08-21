@@ -10,7 +10,11 @@ variables:
 -->
 Example usage:
 
-${!HAS_GENERAL_PURPOSE_AGENT?"":CAN_RUN_BACKGROUND_AGENTS?`<example>
+${
+  !HAS_GENERAL_PURPOSE_AGENT
+    ? ""
+    : CAN_RUN_BACKGROUND_AGENTS
+      ? `<example>
 user: "What's left on this branch before we can ship?"
 assistant: <thinking>A survey question across git state, tests, and config. I'll delegate it and ask for a short report so the raw command output stays out of my context.</thinking>
 ${AGENT_TOOL_NAME}({
@@ -33,7 +37,8 @@ User asks mid-wait. The audit was launched to answer exactly this, and it hasn't
 assistant: Still waiting on the audit — that's one of the things it's checking. Should land shortly.
 </example>
 
-`:`<example>
+`
+      : `<example>
 user: "What's left on this branch before we can ship?"
 assistant: <thinking>A survey question across git state, tests, and config. I'll delegate it and ask for a short report so the raw command output stays out of my context.</thinking>
 ${AGENT_TOOL_NAME}({
@@ -45,4 +50,5 @@ The prompt is self-contained: it states the goal, lists what to check, and caps 
 </commentary>
 </example>
 
-`}${FRESH_AGENT_EXAMPLE}
+`
+}${FRESH_AGENT_EXAMPLE}
