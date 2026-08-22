@@ -6,4 +6,4 @@ variables:
   - "ESCAPE_UNTRUSTED_TEXT_FN"
   - "OUTPUT_STYLE_CONFIG"
 -->
-${ESCAPE_UNTRUSTED_TEXT_FN(OUTPUT_STYLE_CONFIG.style)} output style is active. ${OUTPUT_STYLE_CONFIG.turnReminder ?? "Remember to follow the specific guidelines for this style."}
+${ESCAPE_UNTRUSTED_TEXT_FN(OUTPUT_STYLE_CONFIG.style)} output style is active. ${OUTPUT_STYLE_CONFIG.turnReminder??"Remember to follow the specific guidelines for this style."}

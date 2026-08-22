@@ -37,15 +37,11 @@ Every user who asks for "9am" gets `0 9`, and every user who asks for "hourly" g
 Only use minute 0 or 30 when the user names that exact time and clearly means it ("at 9:00 sharp", "at half past", coordinating with a meeting). When in doubt, nudge a few minutes early or late — the user will not notice, and the fleet will.
 
 ${CRON_DURABILITY_SECTION}
-${
-  IS_MONITOR_TOOL_ENABLED_FN()
-    ? `
+${IS_MONITOR_TOOL_ENABLED_FN()?`
 ## Not for live watching
 
 ${CRON_CREATE_TOOL_NAME} re-runs a prompt at fixed wall-clock intervals. To watch a log file, process, or command output and be notified the moment something changes, use the ${MONITOR_TOOL_NAME} tool instead — ${MONITOR_TOOL_NAME} streams events as they happen; cron polls on a schedule.
-`
-    : ""
-}
+`:""}
 ## Runtime behavior
 
 Jobs only fire while the REPL is idle (not mid-query). ${CRON_DURABLE_RUNTIME_NOTE}The scheduler adds a small deterministic jitter on top of whatever you pick: recurring tasks fire up to 10% of their period late (max 15 min); one-shot tasks landing on :00 or :30 fire up to 90 s early. Picking an off-minute is still the bigger lever.
