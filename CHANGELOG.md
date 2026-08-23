@@ -4,6 +4,12 @@ Note: Only use **NEW:** for entirely new prompt files, NOT for new additions/sec
 
 ### Claude Code System Prompts Changelog
 
+# [2.1.241](https://github.com/Piebald-AI/claude-code-system-prompts/commit/0260612)
+
+_+182 tokens_
+
+- **NEW:** Data: SDK set max thinking tokens request schema — Documents the `set_max_thinking_tokens` control request, including resetting an omitted or null token budget to the session default and optionally setting or clearing the session-scoped thinking display mode.
+
 # [2.1.240](https://github.com/Piebald-AI/claude-code-system-prompts/commit/18f32d7)
 
 _-1,911 tokens_
