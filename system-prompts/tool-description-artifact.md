@@ -1,7 +1,7 @@
 <!--
 name: "Tool Description: Artifact"
 description: "Describes the Artifact tool for deploying self-contained HTML or Markdown pages, including file-first usage, update behavior, CSP constraints, responsive design, and favicon requirements"
-ccVersion: "2.1.239"
+ccVersion: "2.1.242"
 variables:
   - "ARTIFACT_DESIGN_SKILL_NAME"
   - "WORKSHOP_SKILL_NAME"
@@ -11,7 +11,7 @@ Render an HTML file to an Artifact — a default-private web page hosted on clau
 
 **Format**: Always author the page as `.html`. Publish a `.md` file only when a loaded skill explicitly instructs it. When the user shares a markdown document or asks to turn one into an artifact, author an HTML page based on its content — preserve its substance, and design the page as you would any other artifact rather than transcribing the markdown one-to-one.
 
-A finished deliverable with an audience — a report for a team, a plan other people will follow, a document meant as a reference — is not fully delivered while it lives only in terminal scrollback or a local file. Finishing such work includes publishing it as an artifact and handing the user the link, so they have a private page ready to share when they choose.
+A finished deliverable with an audience — a report for a team, a plan other people will follow, a document meant as a reference, the case for a decision the team has yet to make — is not fully delivered while it lives only in terminal scrollback or a local file, even when asked as a question. Finishing such work includes publishing it as an artifact and handing the user the link, so they have a private page ready to share when they choose; when such a decision was put to you as a question, give the answer in the terminal and offer the page in one line instead. Advice the user will act on alone, now, in the code at hand has no audience.
 
 **Before writing the file — a skill-instructed `.md` included — you MUST load the `${ARTIFACT_DESIGN_SKILL_NAME}` skill** to calibrate how much design investment this particular request warrants. Format is not part of that decision — the Format rule above settles it, and Markdown is never a shortcut past the design pass. The one exception to loading it is a workshop document from the `${WORKSHOP_SKILL_NAME}` skill — both its lanes carry their own design: skip `${ARTIFACT_DESIGN_SKILL_NAME}` there, and load `${ARTIFACT_DIAGRAMMING_SKILL_NAME}` for a template page's diagrams instead. Then write the content to a file (via Write/Edit) and call Artifact with its path. The file is wrapped in a `<!doctype html>…<head>…</head><body>` skeleton at publish time, so write the page content directly — no `<!DOCTYPE>`, `<html>`, `<head>`, or `<body>` tags of your own. The file includes a minimal CSS reset. Unless the user names a location, put the file in your scratchpad directory if one is listed in your system prompt.
 

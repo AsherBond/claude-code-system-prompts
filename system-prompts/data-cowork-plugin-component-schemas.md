@@ -1,7 +1,7 @@
 <!--
 name: "Data: Cowork plugin component schemas"
 description: "Reference documentation for Cowork plugin component formats, including skills, agents, hooks, MCP servers, legacy commands, CONNECTORS.md, and README.md"
-ccVersion: "2.1.163"
+ccVersion: "2.1.242"
 -->
 # Component Schemas
 
@@ -44,14 +44,14 @@ metadata:
 
 ```
 skill-name/
-├── SKILL.md              # Core knowledge (required)
-├── references/           # Detailed docs loaded on demand
-│   ├── patterns.md
-│   └── advanced.md
-├── examples/             # Working code examples
-│   └── sample-config.json
-└── scripts/              # Utility scripts
-    └── validate.sh
+|-- SKILL.md              # Core knowledge (required)
+|-- references/           # Detailed docs loaded on demand
+|   |-- patterns.md
+|   `-- advanced.md
+|-- examples/             # Working code examples
+|   `-- sample-config.json
+`-- scripts/              # Utility scripts
+    `-- validate.sh
 ```
 
 ### Progressive Disclosure Levels
@@ -287,14 +287,14 @@ Decisions: `approve`, `block`, `ask_user` (ask for confirmation).
 
 All MCP configs support `${VAR_NAME}` substitution:
 
-- `${CLAUDE_PLUGIN_ROOT}` — plugin directory (always use for portability)
-- `${ANY_ENV_VAR}` — user environment variables
+- `${CLAUDE_PLUGIN_ROOT}` - plugin directory (always use for portability)
+- `${ANY_ENV_VAR}` - user environment variables
 
 Document all required environment variables in the plugin README.
 
 ### Directory Servers Without a URL
 
-Some MCP directory entries have no `url` because the endpoint is dynamic. Plugins can reference these servers by **name** instead — if the server name in the plugin's MCP config matches the directory entry name, it is treated the same as a URL match.
+Some MCP directory entries have no `url` because the endpoint is dynamic. Plugins can reference these servers by **name** instead - if the server name in the plugin's MCP config matches the directory entry name, it is treated the same as a URL match.
 
 ## Commands (Legacy)
 
@@ -368,7 +368,7 @@ Plugin files use `~~category` as a placeholder for whatever tool the user
 connects in that category. For example, `~~project tracker` might mean
 Asana, Linear, Jira, or any other project tracker with an MCP server.
 
-Plugins are tool-agnostic — they describe workflows in terms of categories
+Plugins are tool-agnostic - they describe workflows in terms of categories
 rather than specific products.
 
 ## Connectors for this plugin
@@ -394,8 +394,8 @@ During customization (via the cowork-plugin-customizer skill), these get replace
 
 Every plugin should include a README with:
 
-1. **Overview** — what the plugin does
-2. **Components** — list of skills, agents, hooks, MCP servers
-3. **Setup** — any required environment variables or configuration
-4. **Usage** — how to trigger each skill
-5. **Customization** — if CONNECTORS.md exists, mention it
+1. **Overview** - what the plugin does
+2. **Components** - list of skills, agents, hooks, MCP servers
+3. **Setup** - any required environment variables or configuration
+4. **Usage** - how to trigger each skill
+5. **Customization** - if CONNECTORS.md exists, mention it
