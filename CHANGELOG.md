@@ -4,6 +4,31 @@ Note: Only use **NEW:** for entirely new prompt files, NOT for new additions/sec
 
 ### Claude Code System Prompts Changelog
 
+# [2.1.246](https://github.com/Piebald-AI/claude-code-system-prompts/commit/3ceec8f)
+
+_+69,754 tokens_
+
+- **NEW:** Data: Message Batches API references (C#, PHP), Files API references (C#, Java, PHP), Streaming references (Go, Java, Ruby), and Tool use reference — Ruby — Newly surfaced by CCSP/TweakCC's Bun-asset extraction; these model-facing SDK resources already existed upstream and were not introduced in Claude Code 2.1.246.
+- **NEW:** Skill: Artifact workshop and Data: Artifact workshop page HTML template — Add iterative decision workshops with direct-HTML and Markdown lanes, on-page choice confirmation, an evolving published draft, a reader-triggered build kickoff, and a structurally verified interactive template.
+- **NEW:** Data: SDK assistant and error-result user message UUID fields and SDK per-task stop affordance field — Document reply/error join keys for client-supplied user-message UUIDs and the capability declaration that lets open-input clients stop individual background tasks without an ordinary interrupt killing them.
+- **NEW:** Data: `syncClaudeAiPlugins` setting — Documents how setting plugin sync to `false` stops downloads, hides or trashes previously synced plugins according to settings scope, and leaves enablement controlled by the server-side account feature.
+- **NEW:** Skill: Whiteboard description — Adds model-facing trigger guidance for creating a shared sketch canvas that the user and Claude can draw on together or use as planning input.
+- **NEW:** System Reminder: Permission prompt auto-denied after timeout — Explains that an unattended timeout neither performed nor judged the action, stops Claude from retrying approval-blocked variations while the user is away, and redirects it to useful unblocked work.
+- **NEW:** Tool Description: Artifact watch approval explanation — Explains session-wide watch approval, local live connections versus cloud wakeups, content-free republish notices, and the narrower reapproval boundary for comment auto-replies on another Artifact.
+- **REMOVED:** System Reminders: Directory sync git-checkout guidance, plain-folder guidance, receive-only budget exhausted, and uncopied user files — Remove the four standalone mode and transfer-budget reminders.
+- Agent Prompt: `/schedule` slash command — Makes one-time `run_once_at` cloud routines universally available, skips the initial action picker when the request already names the task, requires a fresh UTC time check for relative one-off schedules, and respects organization policy when suggesting quick GitHub setup.
+- Data: Managed Agents environments and resources — Warns that package installation under limited networking requires `allow_package_managers: true`; allowlisting a registry host alone is insufficient and yields a 400 response.
+- Data: Anthropic CLI and Managed Agents references (Go, Java, PHP, Python, Ruby, TypeScript), and Skill: `/design-sync` package source shape — Correct literal newline escapes in shell, SDK, and frontmatter examples after the resources moved out of inline JavaScript literals.
+- Data: Plan artifact HTML template and Workshop artifact HTML template — Update embedded design-token synchronization comments to defer the complete template and test roster to `scripts/embed-cds-tokens.ts`.
+- Skill: Whiteboard — Reworks collaborative boards around publish-driven scene inspection, main-loop watch registration, full-page hash and code-authenticity checks, a fast acknowledgement followed by the complete drawn answer, conflict-safe merges, and explicit authorship boundaries for Claude's marks.
+- System Prompt: Coordinator mode orchestration — Renames successful worker summaries from “completed” to “finished” and distinguishes workers stopped at their turn limit as partial results that can be continued by task ID.
+- System Prompt: Project timeline user message provenance — Recognizes the server-recorded timeline reply directly beneath a coordinator message as a narrowly scoped user reply, while limiting bare approvals to the one action and target the coordinator actually proposed and excluding option lists, vague retries, and post-block specificity inheritance.
+- System Reminder: Directory sync live checkout guidance — Adds standing cloud-only exceptions for dot-led paths, dependency and build outputs, and credential-like filenames, and warns that the user's machine never receives dot-led files from the session even when they are committed.
+- Tool Descriptions: Artifact assets, supporting files, and unsupported supporting-file errors — Allow text assets such as CSV, Markdown, JSON, and plain text, require using returned asset URLs verbatim and supporting-file paths without a leading slash, and generalize unsupported-file diagnostics to their runtime file label.
+- Tool Description: Artifact publishing and update guidance and Tool Parameter: Artifact watch actions guidance — Allow `watch` to arm comment auto-replies when session auto-replies are enabled and the user supplied an editable Artifact link, while continuing to forbid arming on view-only pages.
+- Tool Description: Artifact type discovery guidance — Requires listing account-published Artifact types before loading a skill or writing a file for presentations, reader-facing documents, and visual designs; prefers a fitting type unless the user specifically needs a file format, and lists types before answering availability questions.
+- Tool Descriptions: `memory_list` and `memory_write` — Reframe stores as available to the session rather than necessarily connected, clarify that only project stores are shared with collaborators, and retain secret-write refusal across every store.
+
 #### [2.1.245](https://github.com/Piebald-AI/claude-code-system-prompts/commit/f5060ac)
 
 <sub>_No changes to the system prompts in v2.1.245._</sub>
