@@ -1,7 +1,7 @@
 <!--
 name: "Data: Artifact decision component script"
 description: "Provides the pinned JavaScript asset for the reusable Artifact decision component, including selection, confirmation, persistence, restore, and conflict behavior"
-ccVersion: "2.1.234"
+ccVersion: "2.1.246"
 -->
 <script>
 (function workshopDecisions() {

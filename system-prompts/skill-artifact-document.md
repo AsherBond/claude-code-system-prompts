@@ -1,7 +1,7 @@
 <!--
 name: "Skill: Artifact document"
 description: "Skill instructions for creating live editable document artifacts with structured prose, status metadata, commenting, and template-preservation requirements"
-ccVersion: "2.1.242"
+ccVersion: "2.1.246"
 -->
 ---
 name: doc

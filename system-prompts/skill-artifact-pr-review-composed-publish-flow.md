@@ -1,7 +1,7 @@
 <!--
 name: "Skill: Artifact PR review (composed publish flow)"
 description: "Skill instructions for gathering a GitHub pull request, authoring a structured review briefing payload, and publishing it through the Artifact tool pr_review input"
-ccVersion: "2.1.242"
+ccVersion: "2.1.246"
 -->
 ---
 name: artifact-pr-review
@@ -165,8 +165,8 @@ activity, no approvals.
        "anchor": {"file": "<changed file path>", "snippet": "<one diff line, no +/- prefix, <=200 chars>", "line": "<new-side line number, or null>"}}
     ],
     "followups": ["<2-3 short lowercase questions the reviewer is likely to type next, <=100 chars each>"],
-    "visual": "<ONE block of kind delta_diagram|flow|before_after - REQUIRED; the only escape is {\"kind\": \"none\", \"reason\": \"<why, <=160 chars>\"}, see the visual rule>",
-    "actions_read": ["<=6 human-phrased items, <=40 chars each: \"the diff\", \"PR description\", \"changed files\">"]
+    "visual": "<ONE block of kind delta_diagram|flow|before_after - REQUIRED; the only escape is {"kind": "none", "reason": "<why, <=160 chars>"}, see the visual rule>",
+    "actions_read": ["<=6 human-phrased items, <=40 chars each: "the diff", "PR description", "changed files">"]
   },
   "class_chip": "<your change-class judgment: mechanical|bugfix|feature|refactor|risky|unknown - lowercase, <=24 chars>",
   "coverage": "<only when the diff was partially read: what you read and skipped, <=200 chars>",

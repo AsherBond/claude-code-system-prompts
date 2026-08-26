@@ -1,7 +1,7 @@
 <!--
 name: "Data: Data visualization choosing a form"
 description: "Reference guidance for choosing the appropriate chart, stat tile, or non-chart form based on the data's job"
-ccVersion: "2.1.242"
+ccVersion: "2.1.246"
 -->
 # Choosing a form
 

@@ -1,7 +1,7 @@
 <!--
 name: "Data: Anthropic CLI"
 description: "Reference documentation for the ant CLI covering installation, authentication, command structure, input and output shaping, managed agents workflows, and scripting patterns"
-ccVersion: "2.1.242"
+ccVersion: "2.1.246"
 -->
 # Anthropic CLI (`ant`)
 
@@ -216,17 +216,14 @@ while IFS= read -r -u "$stream" line; do
     type:\ session.error)
       IFS= read -r -u "$stream" next || next=
       case "$next" in err:\ *) msg=${next#err: } ;; *) msg=unknown ;; esac
-      printf '\
-[Error: %s]\
-' "$msg"; break ;;
+      printf '\n[Error: %s]\n' "$msg"; break ;;
     type:\ *) type=${line#type: } ;;
     text:*)
       [[ $type == agent.message ]] || continue
       val=${line#text: }
       case "$val" in '|-'|'|') ;; *) printf '%s' "$val" ;; esac ;;
     \ \ *)
-      if [[ $type == agent.message ]]; then printf '%s\
-' "${line#  }"; fi ;;
+      if [[ $type == agent.message ]]; then printf '%s\n' "${line#  }"; fi ;;
   esac
 done
 exec {stream}<&-

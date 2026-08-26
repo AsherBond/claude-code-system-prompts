@@ -1,7 +1,7 @@
 <!--
 name: "Skill: Artifact components"
 description: "Catalogs reusable Artifact components and supplies the exact scripts, styles, tokens, markup contract, and composition limits for embedding interactive decision blocks"
-ccVersion: "2.1.242"
+ccVersion: "2.1.246"
 -->
 ---
 name: artifact-components

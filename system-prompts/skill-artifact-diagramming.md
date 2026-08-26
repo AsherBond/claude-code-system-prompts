@@ -1,7 +1,7 @@
 <!--
 name: "Skill: Artifact diagramming"
 description: "Provides Artifact diagramming guidance, including when diagrams add value and how to build legible theme-aware inline SVG"
-ccVersion: "2.1.242"
+ccVersion: "2.1.246"
 -->
 ---
 name: artifact-diagramming

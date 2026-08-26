@@ -1,7 +1,7 @@
 <!--
 name: "Skill: /design-sync package source shape"
 description: "Shape-specific /design-sync instructions for syncing a React design system from a built package without Storybook"
-ccVersion: "2.1.242"
+ccVersion: "2.1.246"
 -->
 # Package source shape
 
@@ -76,9 +76,7 @@ If building the monorepo is complex, `npm install <your-pkg>@latest react react-
 
 Per component, under `components/<group>/<Name>/`: `<Name>.jsx` (one-line re-export stub), `<Name>.d.ts` (props interface from the shipped types), `<Name>.prompt.md`, and `<Name>.html` (the preview card). You don't write any of these - the converter does.
 
-`<Name>.prompt.md` is the matched per-component doc when one exists (sibling `<Name>.md`/`.mdx` -> `cfg.docsDir` lookup -> `<Name>.stories.mdx`; frontmatter `category` sets the component's `<group>`). To regroup a component that has no real doc, point `cfg.docsMap` at a stub `.md` whose only content is `---\
-category: <Group>\
----`. Otherwise it's synthesized from the `.d.ts` props body, the leading JSDoc, and any examples in `.design-sync/previews/<Name>.tsx`. `[DOCS_UNMAPPED]` lists components that didn't match.
+`<Name>.prompt.md` is the matched per-component doc when one exists (sibling `<Name>.md`/`.mdx` -> `cfg.docsDir` lookup -> `<Name>.stories.mdx`; frontmatter `category` sets the component's `<group>`). To regroup a component that has no real doc, point `cfg.docsMap` at a stub `.md` whose only content is `---\ncategory: <Group>\n---`. Otherwise it's synthesized from the `.d.ts` props body, the leading JSDoc, and any examples in `.design-sync/previews/<Name>.tsx`. `[DOCS_UNMAPPED]` lists components that didn't match.
 
 `<Name>.html` renders the component from `window.<GLOBAL>.<Name>` via its compiled preview `.tsx` (each named export = one labeled cell, individually addressable as `?story=<Export>`). When no compiled preview exists - nothing authored, or the `.tsx` failed to compile - the html is the **floor card**: one render attempt with the `.d.ts` crash-prevention props that swaps to a deliberate typographic block (name + "preview not yet authored") if the root comes up empty. The floor card is honest, not broken; the fix for a component that deserves better is authoring its preview (§4.2). Hand-edits to a `.html` are overwritten on rebuild - previews live in the `.tsx`.
 

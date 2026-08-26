@@ -1,7 +1,7 @@
 <!--
 name: "Data: Managed Agents reference — Java"
 description: "Reference guide for using the Anthropic Java SDK to create and manage agents, environments, and sessions"
-ccVersion: "2.1.242"
+ccVersion: "2.1.246"
 -->
 # Managed Agents - Java
 
@@ -144,13 +144,11 @@ try (var stream = client.beta().sessions().events().streamStreaming(session.id()
         if (event.isAgentMessage()) {
             event.asAgentMessage().content().forEach(block -> System.out.print(block.text()));
         } else if (event.isAgentToolUse()) {
-            System.out.println("\
-[Using tool: " + event.asAgentToolUse().name() + "]");
+            System.out.println("\n[Using tool: " + event.asAgentToolUse().name() + "]");
         } else if (event.isSessionStatusIdle()) {
             break;
         } else if (event.isSessionError()) {
-            System.out.println("\
-[Error]");
+            System.out.println("\n[Error]");
             break;
         }
     }

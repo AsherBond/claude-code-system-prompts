@@ -1,7 +1,7 @@
 <!--
 name: "Data: Data visualization components"
 description: "Reference specification for the HTML/SVG pieces, layers, and system parameters that make up a data visualization"
-ccVersion: "2.1.242"
+ccVersion: "2.1.246"
 -->
 # Components - the pieces a chart is made of
 

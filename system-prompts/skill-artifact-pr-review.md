@@ -1,7 +1,7 @@
 <!--
 name: "Skill: Artifact PR review"
 description: "Skill instructions for gathering a GitHub pull request, authoring a structured review briefing, optionally wiring a live staleness signal, filling the bundled HTML template, and publishing it as an Artifact"
-ccVersion: "2.1.242"
+ccVersion: "2.1.246"
 -->
 ---
 name: artifact-pr-review
@@ -182,7 +182,7 @@ does not exist here):
     ],
     "followups": ["<2-4 short lowercase questions the reviewer is likely to type next, <=100 chars each>"],
     "visual": "<ONE explainer block, kind delta_diagram|flow|before_after - see explainer schema above> or null",
-    "actions_read": ["<=6 human-phrased items, <=40 chars each: \"the diff\", \"PR description\", \"changed files\">"]
+    "actions_read": ["<=6 human-phrased items, <=40 chars each: "the diff", "PR description", "changed files">"]
   }
 }
 ```

@@ -1,7 +1,7 @@
 <!--
 name: "Data: Managed Agents endpoint reference"
 description: "Comprehensive reference for Managed Agents API endpoints, SDK methods, request/response schemas, error handling, and rate limits"
-ccVersion: "2.1.242"
+ccVersion: "2.1.246"
 -->
 # Managed Agents - Endpoint Reference
 
@@ -277,7 +277,7 @@ Immutable per-mutation snapshots (`memver_...`) - the audit and rollback surface
 
 ```json
 {
-  "agent": "agent_abc123 (required - string shorthand for latest version, or {type: \"agent\", id, version} object)",
+  "agent": "agent_abc123 (required - string shorthand for latest version, or {type: "agent", id, version} object)",
   "environment_id": "env_abc123 (required)",
   "title": "string (optional)",
   "resources": [

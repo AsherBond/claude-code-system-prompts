@@ -1,7 +1,7 @@
 <!--
 name: "Skill: Run web server API example"
 description: "Example file for the Run app skill showing how to document a server or API lifecycle with background launch, readiness checks, curl verification, and shutdown"
-ccVersion: "2.1.242"
+ccVersion: "2.1.246"
 -->
 # Example: Web server / API
 

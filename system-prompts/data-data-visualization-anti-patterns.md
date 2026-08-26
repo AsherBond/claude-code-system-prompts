@@ -1,7 +1,7 @@
 <!--
 name: "Data: Data visualization anti-patterns"
 description: "Reference list of chart and dashboard anti-patterns to check against before shipping a data visualization"
-ccVersion: "2.1.242"
+ccVersion: "2.1.246"
 -->
 # Anti-patterns - what goes wrong
 

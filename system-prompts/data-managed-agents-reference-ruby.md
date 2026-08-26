@@ -1,7 +1,7 @@
 <!--
 name: "Data: Managed Agents reference — Ruby"
 description: "Reference guide for using the Anthropic Ruby SDK to create and manage agents, environments, and sessions"
-ccVersion: "2.1.242"
+ccVersion: "2.1.246"
 -->
 # Managed Agents - Ruby
 
@@ -130,13 +130,11 @@ stream.each do |event|
   in :"agent.message"
     event.content.each { |block| print block.text }
   in :"agent.tool_use"
-    puts "\
-[Using tool: #{event.name}]"
+    puts "\n[Using tool: #{event.name}]"
   in :"session.status_idle"
     break
   in :"session.error"
-    puts "\
-[Error: #{event.error&.message || "unknown"}]"
+    puts "\n[Error: #{event.error&.message || "unknown"}]"
     break
   else
     # ignore other event types

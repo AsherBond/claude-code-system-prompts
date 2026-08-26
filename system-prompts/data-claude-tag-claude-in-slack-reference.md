@@ -1,7 +1,7 @@
 <!--
 name: "Data: Claude Tag (Claude in Slack) reference"
 description: "Offline reference for Claude Tag, Claude Code's org-managed Slack surface, covering what it is, availability, setup, configuration, and how it differs from the earlier Claude in Slack app"
-ccVersion: "2.1.242"
+ccVersion: "2.1.246"
 -->
 # Claude Tag (Claude in Slack)
 

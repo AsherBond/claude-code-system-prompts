@@ -1,7 +1,7 @@
 <!--
 name: "Data: Artifact decision component design tokens"
 description: "Provides the byte-pinned Claude Design System custom-property token block required by the reusable Artifact decision component"
-ccVersion: "2.1.232"
+ccVersion: "2.1.246"
 -->
 /* CDS token block for the decision component, carved VERBATIM from the
    workshop-page template (a single contiguous slice; drift-pinned by

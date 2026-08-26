@@ -1,7 +1,7 @@
 <!--
 name: "Skill: Design sync"
 description: "Skill for syncing a React design system to claude.ai/design by configuring the target project, running the converter, verifying previews, and uploading verified artifacts"
-ccVersion: "2.1.242"
+ccVersion: "2.1.246"
 -->
 ---
 name: design-sync

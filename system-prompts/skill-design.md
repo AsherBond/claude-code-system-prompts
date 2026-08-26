@@ -1,7 +1,7 @@
 <!--
 name: "Skill: Design"
 description: "Skill instructions for creating and publishing multi-artboard Claude Design canvas Artifacts with editable layouts and source-grounded visual recreation rules"
-ccVersion: "2.1.242"
+ccVersion: "2.1.246"
 -->
 ---
 name: design
@@ -765,7 +765,7 @@ exists to prevent.
   runtime reads it with `getAttribute` and then JSON-parses, so HTML
   entities decode first: write `&amp;` for `&`, `&#39;` for a
   literal single quote, and JSON
-  `\"` for double quotes inside strings. Single-quote the attribute
+  `"` for double quotes inside strings. Single-quote the attribute
   itself (`data-props='...'`) - every example assumes it, and a
   double-quoted attribute changes which characters need escaping.
   Those three escapes are the complete list: raw UTF-8 (em-dashes,

@@ -1,7 +1,7 @@
 <!--
 name: "Data: Managed Agents reference — TypeScript"
 description: "Reference guide for using the Anthropic TypeScript SDK to create and manage agents, sessions, environments, streaming, custom tools, file uploads, and MCP server integration"
-ccVersion: "2.1.242"
+ccVersion: "2.1.246"
 -->
 # Managed Agents - TypeScript
 
@@ -169,17 +169,14 @@ for await (const event of stream) {
       break;
     case "agent.custom_tool_use":
       // Custom tool invocation - session is now idle
-      console.log(`\
-Custom tool call: ${event.name}`);
+      console.log(`\nCustom tool call: ${event.name}`);
       console.log(`Input: ${JSON.stringify(event.input)}`);
       break;
     case "session.status_idle":
-      console.log("\
---- Agent idle ---");
+      console.log("\n--- Agent idle ---");
       break;
     case "session.status_terminated":
-      console.log("\
---- Session terminated ---");
+      console.log("\n--- Session terminated ---");
       break;
   }
 }

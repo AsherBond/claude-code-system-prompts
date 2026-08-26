@@ -1,7 +1,7 @@
 <!--
 name: "Data: Cowork plugin examples"
 description: "Reference examples of minimal, medium, and complex Cowork plugin structures with plugin metadata, skills, agents, hooks, MCP config, README, and connectors"
-ccVersion: "2.1.242"
+ccVersion: "2.1.246"
 -->
 # Example Plugins
 

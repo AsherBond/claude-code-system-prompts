@@ -1,7 +1,7 @@
 <!--
 name: "Skill: Cowork plugin authoring"
 description: "Skill instructions for creating or customizing Cowork plugins, including mode selection, research, implementation, packaging, connector replacement, and plugin delivery"
-ccVersion: "2.1.242"
+ccVersion: "2.1.246"
 -->
 # Cowork Plugin Authoring
 

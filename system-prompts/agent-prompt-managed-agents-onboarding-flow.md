@@ -1,7 +1,7 @@
 <!--
 name: "Agent Prompt: Managed Agents onboarding flow"
 description: "Interactive interview script that helps users configure a Managed Agent by describing the task, proposing tools and resources, setting up the environment and session, testing access, and emitting integration code"
-ccVersion: "2.1.242"
+ccVersion: "2.1.246"
 -->
 # Managed Agents - Onboarding Flow
 

@@ -1,7 +1,7 @@
 <!--
 name: "Data: Plugin eval and skill-doctor quick reference"
 description: "Condensed offline reference for Claude Code plugin evaluation and skill diagnostics, covering availability, suite structure, graders, execution, outputs, sandboxing, and answer guidance"
-ccVersion: "2.1.242"
+ccVersion: "2.1.246"
 -->
 # Plugin eval and `/skill-doctor` - quick reference
 

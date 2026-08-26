@@ -1,7 +1,7 @@
 <!--
 name: "Data: Managed Agents reference — Go"
 description: "Reference guide for using the Anthropic Go SDK to create and manage agents, environments, sessions, and tools"
-ccVersion: "2.1.242"
+ccVersion: "2.1.246"
 -->
 # Managed Agents - Go
 
@@ -99,10 +99,8 @@ session, err := client.Beta.Sessions.New(ctx, anthropic.BetaSessionNewParams{
 if err != nil {
     panic(err)
 }
-fmt.Printf("Session ID: %s, status: %s\
-", session.ID, session.Status)
-fmt.Printf("Trace: https://platform.claude.com/workspaces/default/sessions/%s\
-", session.ID) // swap 'default' for your workspace ID if the API key is not in the Default workspace
+fmt.Printf("Session ID: %s, status: %s\n", session.ID, session.Status)
+fmt.Printf("Trace: https://platform.claude.com/workspaces/default/sessions/%s\n", session.ID) // swap 'default' for your workspace ID if the API key is not in the Default workspace
 ```
 
 ### Updating an Agent
@@ -117,15 +115,13 @@ updatedAgent, err := client.Beta.Agents.Update(ctx, agent.ID, anthropic.BetaAgen
 if err != nil {
     panic(err)
 }
-fmt.Printf("New version: %d\
-", updatedAgent.Version)
+fmt.Printf("New version: %d\n", updatedAgent.Version)
 
 // List all versions
 iter := client.Beta.Agents.Versions.ListAutoPaging(ctx, agent.ID, anthropic.BetaAgentVersionListParams{})
 for iter.Next() {
     version := iter.Current()
-    fmt.Printf("Version %d: %s\
-", version.Version, version.UpdatedAt.Format(time.RFC3339))
+    fmt.Printf("Version %d: %s\n", version.Version, version.UpdatedAt.Format(time.RFC3339))
 }
 if err := iter.Err(); err != nil {
     panic(err)
@@ -196,15 +192,11 @@ for stream.Next() {
             fmt.Print(block.Text)
         }
     case anthropic.BetaManagedAgentsAgentToolUseEvent:
-        fmt.Printf("\
-[Using tool: %s]\
-", event.Name)
+        fmt.Printf("\n[Using tool: %s]\n", event.Name)
     case anthropic.BetaManagedAgentsSessionStatusIdleEvent:
         break events
     case anthropic.BetaManagedAgentsSessionErrorEvent:
-        fmt.Printf("\
-[Error: %s]\
-", event.Error.Message)
+        fmt.Printf("\n[Error: %s]\n", event.Error.Message)
         break events
     }
 }
@@ -268,8 +260,7 @@ if err := stream.Err(); err != nil {
 iter := client.Beta.Sessions.Events.ListAutoPaging(ctx, session.ID, anthropic.BetaSessionEventListParams{})
 for iter.Next() {
     event := iter.Current()
-    fmt.Printf("%s: %s\
-", event.Type, event.ID)
+    fmt.Printf("%s: %s\n", event.Type, event.ID)
 }
 if err := iter.Err(); err != nil {
     panic(err)
@@ -293,8 +284,7 @@ file, err := client.Beta.Files.Upload(ctx, anthropic.BetaFileUploadParams{
 if err != nil {
     panic(err)
 }
-fmt.Printf("File ID: %s\
-", file.ID)
+fmt.Printf("File ID: %s\n", file.ID)
 
 // Mount in a session
 session, err := client.Beta.Sessions.New(ctx, anthropic.BetaSessionNewParams{

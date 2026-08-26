@@ -1,7 +1,7 @@
 <!--
 name: "Skill: Prototype"
 description: "Turns a product or UI idea—including an explicitly requested feature shown in an existing app—into a working proof-of-concept Artifact through intake, assumption setting, publication, and feedback iteration"
-ccVersion: "2.1.242"
+ccVersion: "2.1.246"
 -->
 ---
 name: prototype

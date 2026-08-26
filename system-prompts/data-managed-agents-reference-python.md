@@ -1,7 +1,7 @@
 <!--
 name: "Data: Managed Agents reference — Python"
 description: "Reference guide for using the Anthropic Python SDK to create and manage agents, sessions, environments, streaming, custom tools, files, and MCP servers"
-ccVersion: "2.1.242"
+ccVersion: "2.1.246"
 -->
 # Managed Agents - Python
 
@@ -158,16 +158,13 @@ with client.beta.sessions.events.stream(
                     print(block.text, end="", flush=True)
         elif event.type == "agent.custom_tool_use":
             # Custom tool invocation - session is now idle
-            print(f"\
-Custom tool call: {event.name}")
+            print(f"\nCustom tool call: {event.name}")
             print(f"Input: {json.dumps(event.input)}")
             # Send result back (see below)
         elif event.type == "session.status_idle":
-            print("\
---- Agent idle ---")
+            print("\n--- Agent idle ---")
         elif event.type == "session.status_terminated":
-            print("\
---- Session terminated ---")
+            print("\n--- Session terminated ---")
             break
 ```
 

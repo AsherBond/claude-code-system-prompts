@@ -1,7 +1,7 @@
 <!--
 name: "Data: Data visualization reference palette"
 description: "Reference palette instance for the data visualization method, including ramps, categorical order, status colors, surfaces, and typography"
-ccVersion: "2.1.242"
+ccVersion: "2.1.246"
 -->
 # Reference palette
 

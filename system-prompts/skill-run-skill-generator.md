@@ -1,7 +1,7 @@
 <!--
 name: "Skill: Run skill generator"
 description: "Skill for authoring or improving a project-specific run skill that documents verified build, launch, runtime driving, and troubleshooting steps"
-ccVersion: "2.1.242"
+ccVersion: "2.1.246"
 -->
 ---
 name: run-skill-generator

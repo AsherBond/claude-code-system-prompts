@@ -1,7 +1,7 @@
 <!--
 name: "Skill: Artifact dashboard"
 description: "Instructions for creating dashboard artifacts with KPI tiles, chart specifications, and breakdown tables from the built-in template"
-ccVersion: "2.1.242"
+ccVersion: "2.1.246"
 -->
 ---
 name: artifact-dashboard

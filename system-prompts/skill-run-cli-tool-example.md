@@ -1,7 +1,7 @@
 <!--
 name: "Skill: Run CLI tool example"
 description: "Example file for the Run app skill showing how to document building, invoking, and testing a CLI tool"
-ccVersion: "2.1.242"
+ccVersion: "2.1.246"
 -->
 # Example: CLI tool
 

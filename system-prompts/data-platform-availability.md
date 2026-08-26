@@ -1,7 +1,7 @@
 <!--
 name: "Data: Platform availability"
 description: "Feature availability matrix across Claude API provider platforms (first-party, Claude Platform on AWS, Bedrock, Vertex, and Foundry)"
-ccVersion: "2.1.242"
+ccVersion: "2.1.246"
 -->
 # Platform Availability
 

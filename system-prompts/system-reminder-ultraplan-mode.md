@@ -1,6 +1,6 @@
 <!--
 name: "System Reminder: Ultraplan mode"
-description: "System reminder for using Ultraplan mode to create a detailed implementation plan with multi-agent exploration and critique."
+description: "System reminder for using Ultraplan mode to create a detailed implementation plan with multi-agent exploration and critique"
 ccVersion: "2.1.242"
 -->
 <system-reminder>

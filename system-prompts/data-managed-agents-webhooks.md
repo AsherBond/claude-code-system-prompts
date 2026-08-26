@@ -1,7 +1,7 @@
 <!--
 name: "Data: Managed Agents Webhooks"
 description: "Managed Agents webhook guidance for registering endpoints, verifying HMAC signatures, handling event payloads, and processing retries"
-ccVersion: "2.1.242"
+ccVersion: "2.1.246"
 -->
 # Managed Agents - Webhooks
 

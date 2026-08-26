@@ -1,7 +1,7 @@
 <!--
 name: "Data: Plugin eval and skill-doctor reference"
 description: "Comprehensive offline reference for Claude Code plugin evaluation and skill diagnostics, covering current-build availability, suite authoring, graders, CLI options, result schemas, reports, sandboxing, CI, and troubleshooting"
-ccVersion: "2.1.242"
+ccVersion: "2.1.246"
 -->
 # Plugin eval (`claude plugin eval`) and `/skill-doctor`
 
@@ -229,7 +229,7 @@ Every grader has `type`, `name` (required in YAML; the filename in prose), `weig
 | Value | Content |
 |---|---|
 | `last_message` (default) | The agent's final assistant text - where the answer usually is. |
-| `trace` | The whole session as JSON, one message per line (quotes/newlines are JSON-escaped: match `\"`, not `"`). Regex sees all of it; the judge sees the first and last 12 messages. |
+| `trace` | The whole session as JSON, one message per line (quotes/newlines are JSON-escaped: match `"`, not `"`). Regex sees all of it; the judge sees the first and last 12 messages. |
 | `files` | The **list of file paths the agent created** during the run (newline-separated) - not their contents, and not files that already existed (including files a scaffold created) or that were merely modified. |
 | `{ source: file, path: <path> }` | The **contents** of one file in the sandbox workspace after the run (<= 10 MiB, must stay inside the workspace). Use this to grade what the plugin produced. Text files are decoded as UTF-8 and a leading BOM is dropped; save artifacts as UTF-8. Images and other binaries: see *Grading images and other binary artifacts* below. |
 | `mock_calls` | The run's calls to **mocked** MCP tools (see *Mocking MCP servers* below): one line per call with tool name, JSON input, the stand-in's answer, and whether it was an ordinary result, a tool error, or an abort. Use it to grade *what the plugin asked the server to do* ("a review comment was posted on login.ts naming the inverted null check"). |
@@ -386,7 +386,7 @@ Trimmed example (one case, one run per arm, a with-only Skill indicator):
       "maxTurns": 10,
       "graders": [
         { "name": "skill-invoked", "type": "tool_used", "weight": 1,
-          "config": { "tool": "Skill", "input_match": "\"skill\"\\s*:\\s*\"(?:[\\w-]+:)?greet\"", "min": 1 } },
+          "config": { "tool": "Skill", "input_match": ""skill"\s*:\s*"(?:[\w-]+:)?greet"", "min": 1 } },
         { "name": "mentions-alex", "type": "regex", "weight": 1,
           "config": { "target": "last_message", "pattern": "Alex", "flags": "", "match": "contains" } },
         { "name": "friendly-tone", "type": "llm", "weight": 1, "graderMarkdown": "The reply is warm and personal.",

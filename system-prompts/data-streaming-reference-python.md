@@ -1,7 +1,7 @@
 <!--
 name: "Data: Streaming reference — Python"
 description: "Python streaming reference including sync/async streaming and handling different content types"
-ccVersion: "2.1.242"
+ccVersion: "2.1.246"
 -->
 # Streaming - Python
 
