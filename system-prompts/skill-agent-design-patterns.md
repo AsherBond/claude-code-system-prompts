@@ -1,7 +1,7 @@
 <!--
 name: "Skill: Agent Design Patterns"
 description: "Reference guide covering decision heuristics for building agents on the Claude API, including tool surface design, context management, caching strategies, and composing tool calls"
-ccVersion: "2.1.246"
+ccVersion: "2.1.247"
 -->
 # Agent Design Patterns
 
@@ -99,7 +99,7 @@ Both patterns keep the fixed context small and load detail on demand.
 | Switching models mid-session invalidates the cache. | Spawn a **subagent** with the cheaper model for the sub-task; keep the main loop on one model. On Managed Agents that is a `multiagent` roster entry - see `managed-agents-multiagent.md`. |
 | Adding/removing tools mid-session invalidates the cache. | Use **tool search** for dynamic discovery - it appends tool schemas rather than swapping them, so the existing prefix is preserved. |
 
-For multi-turn breakpoint placement, use top-level auto-caching - see `prompt-caching.md` §Placement patterns.
+For multi-turn breakpoint placement, use the combination in `prompt-caching.md` § Automatic vs explicit breakpoints: one explicit breakpoint on the static system prefix plus top-level automatic caching for the conversation tail (where automatic caching is available).
 
 ---
 

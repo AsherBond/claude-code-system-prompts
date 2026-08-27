@@ -1,7 +1,7 @@
 <!--
 name: "Data: Platform availability"
 description: "Feature availability matrix across Claude API provider platforms (first-party, Claude Platform on AWS, Bedrock, Vertex, and Foundry)"
-ccVersion: "2.1.246"
+ccVersion: "2.1.247"
 -->
 # Platform Availability
 
@@ -16,8 +16,8 @@ Columns: **1P** = first-party Claude API, **P-AWS** = Claude Platform on AWS (An
 | Structured outputs / strict tool use | Yes | Yes | Yes | Yes | beta | |
 | Adaptive thinking / effort | Yes | Yes | Yes | Yes | beta | |
 | Extended thinking | Yes | Yes | Yes | Yes | beta | |
-| Prompt caching (5m, 1h) | Yes | Yes | Yes | Yes | beta | |
-| Automatic prompt caching | Yes | Yes | No | No | beta | |
+| Prompt caching (5m, 1h) | Yes | Yes | Yes | Yes | Yes | |
+| Automatic prompt caching | Yes | Yes | Yes | Yes | Yes | The legacy Bedrock integration (Opus 4.6 and earlier) rejects top-level `cache_control` with a 400 - explicit breakpoints only there |
 | Token counting | Yes | Yes | Yes | Yes | beta | |
 | Citations | Yes | Yes | Yes | Yes | beta | |
 | Search results content blocks | Yes | Yes | Yes | Yes | beta | |

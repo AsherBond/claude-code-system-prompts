@@ -1,7 +1,7 @@
 <!--
 name: "Data: Artifact workshop page HTML template"
 description: "Provides the blessed direct-HTML workshop page template with structural authoring, security, decision-state, styling, and interaction contracts"
-ccVersion: "2.1.246"
+ccVersion: "2.1.247"
 -->
 <!--
 name: workshop-page
@@ -1090,7 +1090,7 @@ style: tokens come from @ant/cds's vanilla export, embedded verbatim (drift
     vertical-align: -2px;
   }
   :is(li, li > p:first-child) > input[type="checkbox"]:checked {
-    background: var(--fill-accent) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cpath d='M2.5 6.5 5 9l4.5-5.5' fill='none' stroke='%23fff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/10px 10px no-repeat;
+    background: var(--fill-accent) url("data:image/svg+xml,%3Csvg%20xmlns=%27http://www.w3.org/2000/svg%27%20viewBox=%270%200%2012%2012%27%3E%3Cpath%20d=%27M2.5%206.5%205%209l4.5-5.5%27%20fill=%27none%27%20stroke=%27%23fff%27%20stroke-width=%272%27%20stroke-linecap=%27round%27%20stroke-linejoin=%27round%27/%3E%3C/svg%3E") center/10px 10px no-repeat;
     border-color: var(--fill-accent);
   }
   /* Loose / multi-block list items: space the blocks inside an item. */

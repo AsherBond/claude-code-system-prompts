@@ -1,7 +1,7 @@
 <!--
 name: "Data: Prompt Caching — Design & Optimization"
 description: "Document on how to design prompt-building code for effective caching, including placement patterns and anti-patterns"
-ccVersion: "2.1.246"
+ccVersion: "2.1.247"
 -->
 # Prompt Caching - Design & Optimization
 
@@ -129,7 +129,8 @@ Fix by moving the dynamic piece after the last breakpoint, making it determinist
 
 - Max **4** `cache_control` breakpoints per request.
 - Goes on any content block: system text blocks, tool definitions, message content blocks (`text`, `image`, `tool_use`, `tool_result`, `document`).
-- Top-level `cache_control` on `messages.create()` auto-places on the last cacheable block - simplest option when you don't need fine-grained placement.
+- Top-level `cache_control` on `messages.create()` auto-places on the last cacheable block - simplest option when you don't need fine-grained placement (§ Automatic vs explicit breakpoints).
+- Caches are isolated per workspace on the Claude API, Claude Platform on AWS, and Microsoft Foundry (per organization on Amazon Bedrock and Google Cloud), and never shared across organizations. Traffic for the same prompt split across workspaces writes and reads separate entries - check this before blaming a low hit rate on the prompt.
 - Minimum cacheable prefix is model-dependent. Shorter prefixes silently won't cache even with a marker - no error, just `cache_creation_input_tokens: 0`:
 
 | Model | Minimum |
@@ -144,6 +145,36 @@ Fix by moving the dynamic piece after the last breakpoint, making it determinist
 These minimums apply on **every** platform where the model is available - the old Amazon Bedrock override for {{FABLE_NAME}} was removed, and no per-platform exception remains.
 
 **Economics:** Cache reads cost ~0.1× base input price. Cache writes cost **1.25× for 5-minute TTL, 2× for 1-hour TTL**. Break-even depends on TTL: with 5-minute TTL, two requests break even (1.25× + 0.1× = 1.35× vs 2× uncached); with 1-hour TTL, you need at least three requests (2× + 0.2× = 2.2× vs 3× uncached). The 1-hour TTL keeps entries alive across gaps in bursty traffic, but the doubled write cost means it needs more reads to pay off.
+
+### Choosing the TTL
+
+A cache read refreshes the entry's timer at no additional cost, on either TTL. The lifetime is measured from the **start** of the request that writes or reads the entry - generation time counts against it, so a 4-minute generation leaves about 1 minute for the next request to start before a 5-minute entry expires. Requests that share a prefix and start less than 5 minutes apart keep the 5-minute cache warm indefinitely - the 1-hour TTL buys nothing there except the doubled write price. Choose by the start-to-start gap between requests that share the prefix:
+
+| Start-to-start gap between requests sharing the prefix | TTL |
+|---|---|
+| Under 5 minutes (continuous traffic; agent loops whose turns generate well under 5 minutes) | 5-minute - every request refreshes it; strictly cheaper |
+| 5-60 minutes (a user who replies after 20 minutes; an agentic side-task or a generation that runs past 5 minutes between reads) | 1-hour - the only window where the 2× write pays off |
+| Over an hour | Neither helps directly - re-warm on a schedule (§ Pre-warming the cache) or accept the cold miss |
+
+On the Claude API, cache reads also do not count toward input-token rate limits on most models (Haiku 3.5 is the documented exception - see the rate-limits doc), so keeping entries alive across gaps can raise effective throughput as well as cut cost.
+
+---
+
+## Automatic vs explicit breakpoints
+
+Automatic caching is a top-level `cache_control` field on the request, not on any content block. The system places the breakpoint on the last cacheable block and moves it forward as the conversation grows; if the last block isn't an eligible target it silently walks backward to the nearest eligible one, and skips caching if none is found. The automatic breakpoint defaults to the 5-minute TTL (the top-level field accepts `ttl: "1h"`) and consumes one of the 4 breakpoint slots. It composes with explicit markers in the same request, with two documented 400s: all 4 slots already taken by explicit markers, and an explicit marker on the last block whose TTL differs from the top-level field's (an explicit marker there with the same TTL makes automatic caching a no-op).
+
+Automatic is the right default for multi-turn conversations - the multi-turn placement pattern above with no marker bookkeeping. Use explicit breakpoints when:
+
+| Situation | Why automatic is the wrong tool |
+|---|---|
+| The prompt ends in unique per-request content (retrieved rows, per-request context, the one-off question) | The automatic breakpoint lands after the unique tail, so every request pays the write premium on bytes that are never read back - a pure surcharge. The signature: `cache_creation_input_tokens` on every request while `cache_read_input_tokens` never covers the full shared prefix. Put an explicit marker at the end of the shared portion instead (§ Shared prefix, varying suffix). |
+| Sections change at different frequencies (tools never, context daily, conversation per-turn) | Automatic places exactly one breakpoint; multiple stability boundaries need explicit markers. |
+| One block should be 1-hour TTL and another 5-minute | Per-block TTL requires explicit markers - and entries with the longer TTL must appear before shorter ones (a 1-hour entry must appear before any 5-minute entries). |
+| A single turn appends more than 20 content blocks | The lookback can miss the previous entry - § 20-block lookback window. |
+| A platform or integration without automatic caching (check `shared/platform-availability.md`) | The top-level field is rejected there - use explicit markers only. |
+
+**The robust combination for agent loops:** one explicit breakpoint on the last block of the static system prefix - the expensive shared part gets a guaranteed read point that survives whatever happens later in `messages` - plus top-level automatic caching for the growing conversation tail (where automatic caching is available - `shared/platform-availability.md`).
 
 ---
 
@@ -163,6 +194,20 @@ If `cache_read_input_tokens` is zero across repeated requests with identical pre
 
 Language-specific access: `response.usage.cache_read_input_tokens` (Python/TS/Ruby), `$message->usage->cacheReadInputTokens` (PHP), `resp.Usage.CacheReadInputTokens` (Go/C#), `.usage().cacheReadInputTokens()` (Java).
 
+**Verify after every change, not just at setup.** The costliest caching failure in production is silent: requests keep succeeding, the bill is just higher - no error, nothing announces it. The typical shape is a regression, not a bad first implementation: caching works when written, then a later change to prompt assembly (a new dynamic field in the system prompt, a history-rewriting feature, a tool list that stopped being deterministic) misses on every request and goes unnoticed for months. The `usage` fields are the only ground truth that caching is working. Re-check them whenever prompt-assembly code changes, and prefer a standing check - an integration-test assertion that a second identical request shows `cache_read_input_tokens > 0`, or monitoring on the usage fields - over a one-time look.
+
+**The healthy-loop signature.** Writes bill only the delta past the highest cache hit, so in a steady multi-turn loop each request should read everything accumulated so far and write only what the last turn added:
+
+- `cache_read_input_tokens` - the whole prior prefix; grows turn over turn
+- `cache_creation_input_tokens` - roughly the previous assistant output plus the newly appended input; small relative to the conversation
+- `input_tokens` - just the tail after the last breakpoint
+
+If `cache_creation_input_tokens` is instead near the full conversation size on every request, either the prefix is being rewritten upstream of the breakpoint, or the write is happening for a reason payload diffing and cache diagnostics can't localize - with thinking enabled on a model that strips prior-turn thinking blocks the invalidation is server-side (§ Invalidation hierarchy), and a single turn that appends more than 20 content blocks pushes the previous entry out of the lookback so every request rewrites the whole conversation with byte-identical payloads (§ 20-block lookback window). Rule both show-nothing cases out first from the model and the turn shape. Reads can only land on positions where a previous request wrote a breakpoint, so the usage fields say *that* the prefix broke (reads collapse, often to zero) but not where - the payload diff or cache diagnostics below localizes the exact point.
+
+**Finding the invalidator.** Log several consecutive request payloads (the full JSON body) and diff adjacent pairs. In a growing conversation, adjacent payloads legitimately differ at the end (the newly appended turn); what must be byte-identical is the overlap - the previous request's prompt should reappear unchanged as a prefix of the next. Strip `cache_control` markers before diffing: the moving marker always differs between adjacent requests and is not an invalidator (previously-marked blocks are still cache hits). The first remaining divergence inside the overlapping region is the invalidation point. This catches the class of bug code review misses - nondeterministic serialization, a library reordering keys or fields, a value that changes between requests but not within one. On the Claude API, cache diagnostics (beta header `cache-diagnosis-2026-04-07`) does this comparison server-side once you opt in: send the header on **every** request - fingerprints are stored only for requests that carried it, so a one-shot retrofit fails with `previous_message_not_found` - then pass the previous response's `id` as `diagnostics.previous_message_id` and the response's `diagnostics` object names where the two requests diverged (model, system, tools, or message history). No payload logging needed. Availability: `shared/platform-availability.md`.
+
+**Unexplained writes:** `usage.cache_creation` breaks `cache_creation_input_tokens` down by TTL (`ephemeral_5m_input_tokens` / `ephemeral_1h_input_tokens`). Server tools such as web search automatically insert a 5-minute cache write after tool results when the request already uses caching - writes at a position you didn't mark; expected behavior, not an invalidator.
+
 ---
 
 ## Invalidation hierarchy
@@ -175,10 +220,11 @@ Not every parameter change invalidates everything. The API has three cache tiers
 | Model switch | No | No | No |
 | `speed`, web-search, citations toggle | Yes | No | No |
 | System prompt content | Yes | No | No |
-| `tool_choice`, images, `thinking` enable/disable | Yes | Yes | No |
+| `tool_choice`, images | Yes | Yes | No |
+| `thinking` or `effort` change | model-specific | model-specific | No |
 | Message content | Yes | Yes | No |
 
-Implication: you can change `tool_choice` per-request or toggle `thinking` without losing the tools+system cache. Don't over-worry about these - only tool-definition and model changes force a full rebuild.
+Implication: you can change `tool_choice` per-request without losing the tools+system cache, and message-content changes never touch it. Thinking and `effort` changes always invalidate the messages cache, and on models that render the thinking configuration ahead of tools and system they invalidate those caches too - pin thinking and effort settings per route rather than varying them per request. Only tool-definition and model changes force a full rebuild on every model.
 
 **Two of these rows have a cache-preserving escape hatch**, each by moving the change out of the top-level request and into a system message inside `messages[]`, after the cached prefix. **Availability differs per row** - the two are not gated together:
 
@@ -188,6 +234,8 @@ Implication: you can change `tool_choice` per-request or toggle `thinking` witho
 | System prompt content | A `{"role": "system", "content": "..."}` message - see § Mid-conversation system messages above | {{OPUS_NAME}}, {{PREV_OPUS_NAME}}, {{FABLE_NAME}}, {{MYTHOS_NAME}} - **already available today**, no beta header |
 
 Model switch has no escape hatch: caches are model-scoped. Keep the main loop on one model and spawn a subagent for cheaper sub-tasks (see `agent-design.md` § Caching for Agents).
+
+**Thinking blocks and the messages cache (model-specific).** On {{FABLE_NAME}}, {{MYTHOS_NAME}}, Mythos Preview, Opus 4.5 and later, and Sonnet 4.6 and later, previous-turn thinking blocks are preserved by default, so passing a regular (non-tool-result) user message with thinking enabled leaves the messages cache valid. On earlier Opus and Sonnet models and all Haiku models through Haiku 4.5, that same request strips previously-cached thinking blocks from context, and every message after the first stripped block falls out of cache - in an agent loop this shows up as a `cache_creation_input_tokens` spike on turns where a plain user message follows tool use. (Toggling thinking on/off between requests is a separate, all-models invalidator of the messages cache - see the hierarchy table above. Changing `output_config.effort` behaves the same as changing thinking parameters; setting the model's default effort explicitly is equivalent to omitting it, so pinning the default costs nothing.)
 
 ---
 
@@ -204,6 +252,8 @@ Fix: place an intermediate breakpoint every ~15 blocks in long turns, or put the
 A cache entry becomes readable only after the first response **begins streaming**. N parallel requests with identical prefixes all pay full price - none can read what the others are still writing.
 
 For fan-out patterns: send 1 request, await the first streamed token (not the full response), then fire the remaining N-1. They'll read the cache the first one just wrote.
+
+The same arithmetic shapes multi-agent designs: N parallel workers each assembling a slightly different prompt over the same context write N separate cache entries and read none of each other's. When input cost dominates, fewer lanes over a byte-identical shared prefix - or one worker making N sequential passes - turn those writes into reads.
 
 ## Pre-warming the cache
 
