@@ -1,11 +1,13 @@
 <!--
 name: "Data: Files API reference — C#"
 description: "C# Files API reference including beta file upload and use with beta message types"
-ccVersion: "2.1.246"
+ccVersion: "2.1.251"
 -->
 # Files API - C#
 
-## Files API (Beta)
+## Files API
+
+> **Out of beta.** In current SDKs `client.Beta.Files` has breaking shape changes from previous versions, matching the stable `client.Files` - migrate per the Files API row in `shared/live-sources.md`. Examples below predate this.
 
 Files live under `client.Beta.Files` (namespace `Anthropic.Models.Beta.Files`). `BinaryContent` implicit-converts from `Stream` and `byte[]`.
 

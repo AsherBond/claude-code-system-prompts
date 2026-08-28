@@ -1,7 +1,7 @@
 <!--
 name: "Data: Platform availability"
 description: "Feature availability matrix across Claude API provider platforms (first-party, Claude Platform on AWS, Bedrock, Vertex, and Foundry)"
-ccVersion: "2.1.247"
+ccVersion: "2.1.251"
 -->
 # Platform Availability
 
@@ -36,14 +36,14 @@ Columns: **1P** = first-party Claude API, **P-AWS** = Claude Platform on AWS (An
 | &nbsp;&nbsp;Bash, text editor, memory | Yes | Yes | Yes | Yes | beta | |
 | &nbsp;&nbsp;Computer use | beta | beta | beta | beta | beta | |
 | **Agentic / orchestration** | | | | | | |
-| &nbsp;&nbsp;Agent Skills (Messages API) | beta | beta | No | No | beta | |
+| &nbsp;&nbsp;Agent Skills (Messages API) | Yes | Yes | No | No | beta | |
 | &nbsp;&nbsp;Programmatic tool calling | Yes | Yes | No | No | beta | |
 | &nbsp;&nbsp;MCP connector | beta | beta | No | No | beta | |
 | &nbsp;&nbsp;Managed Agents | beta | beta | No | No | No | Foundry: No (inferred; not in Foundry docs either way) |
 | &nbsp;&nbsp;Self-hosted sandboxes | beta | beta | No | No | No | P-AWS: worker authenticates with IAM/SigV4 or an AWS-Console API key + `AnthropicSelfHostedEnvironmentAccess` (Console environment keys don't work there); sessions on self-hosted environments cannot attach memory stores; `GET /v1/environments/{id}/work` list endpoint not supported, other work endpoints OK |
 | **API endpoints** | | | | | | |
 | &nbsp;&nbsp;Message Batches | Yes | Yes | No | No | No | |
-| &nbsp;&nbsp;Files API | beta | beta | No | No | beta | |
+| &nbsp;&nbsp;Files API | Yes | Yes | No | No | beta | |
 | &nbsp;&nbsp;Models API | Yes | Yes | No | No | No | |
 | **Other** | | | | | | |
 | &nbsp;&nbsp;Mid-conversation system messages | Yes | Yes | No | No | No | {{OPUS_NAME}}, {{PREV_OPUS_NAME}}, {{FABLE_NAME}}, {{MYTHOS_NAME}}; not {{SONNET_NAME}} |
