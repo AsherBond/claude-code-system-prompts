@@ -1,7 +1,7 @@
 <!--
 name: "Skill: Whiteboard"
 description: "Creates a whiteboard Artifact for architecture sketches and planning feedback using a freehand canvas"
-ccVersion: "2.1.247"
+ccVersion: "2.1.248"
 -->
 ---
 name: whiteboard
@@ -39,10 +39,9 @@ getting ("putting the whiteboard up", "answering on the board").
    page.
 3. Load the `artifact-capabilities` skill, then publish `whiteboard.html`
    with the Artifact tool. On this FIRST publish declare
-   `capabilities` with `artifact: {}` (required - it is what lets the
-   user's Publish button republish the page and wake you) plus
-   `user: {}`, `db: {}` and `assets: {}` for each of those the roster
-   lists; leave out any it doesn't. Remember the path, URL and favicon.
+   `capabilities` with `artifact: {}` and nothing else - it is what lets
+   the user's Publish button republish the page and wake you, and the
+   board needs no other capability. Remember the path, URL and favicon.
 4. Make sure you will hear the board. From THIS session's main loop -
    never from a subagent, which is refused - check `action: "status"`
    for the board's URL; if no watch is registered or arming, call
@@ -134,8 +133,11 @@ The user is watching the canvas, so latency matters more than polish.
 
 1. **Acknowledge within a minute or two.** One short text element near
    what they drew ("on it - sketching the retry path below") via the
-   helper, then publish. This is a text-only pass: no picture
-   re-render, nothing else.
+   helper with `--ack` added to the write, then publish. This is a
+   text-only pass: no picture re-render, nothing else. The `--ack` is
+   what tells every open tab you have the board and are still drawing
+   (their corner shows it until your answer lands), so never put it on
+   any other write.
 2. **Then the real answer**, as a second publish: the boxes, arrows and
    short labels that answer where they are looking, placed in clear
    space beside or below their drawing, plus at most one short question
@@ -192,16 +194,32 @@ long as the mark stands):
   unless you pass a `fill`)
 - text: `{"id","type":"text","x","y","text","fontSize"?}` (default 24;
   `\n` breaks lines)
-- connector: `{"id","type":"arrow"|"line","x1","y1","x2","y2"}`
+- connector: `{"id","type":"arrow"|"line","x1","y1","x2","y2"}`; an
+  arrow may also carry `startId`/`endId` naming the box (or image) each
+  end is attached to - the page keeps an attached end on that box's edge
+  when the box moves, and the user's arrows snap on the same way
 - optional on any: `stroke`, `fill`, `strokeWidth`, `strokeStyle`
   (`solid`|`dashed`|`dotted`)
 
+Pictures the user pasted or dropped onto the board come back as `image`
+elements (`x,y,w,h`; the inspect row says how big the data is). Look at
+them before answering: pass `--images-out <dir>` to the `--inspect` run
+and Read each `file` the rows then name - what a picture shows is part
+of what the board is asking. You never add or alter an image; an arrow
+of yours may attach to one.
+
 Coordinates are canvas units matching the `x,y,w,h` the inspect summary
-reports, so place your marks relative to the user's: a short hop right
-of or below what they refer to, sized like their shapes (their text is
-usually 24-44px; match it so yours reads at the same zoom). Your ink is
-blue by default so the user can tell your marks from theirs; sign a
-free-standing answer "- Claude" when it could be mistaken for theirs.
+reports, so place your marks relative to the user's: beside what they
+refer to, sized like their shapes (their text is usually 24-44px; match
+it so yours reads at the same zoom). Give everything room to breathe:
+leave at least a box-width of clear canvas between separate things, put
+a question a clear line below or beside the element it concerns rather
+than against its edge, and spread a first sketch out (150-200 units
+between boxes) instead of packing a corner; the helper moves an
+addition that would crowd something to the nearest clear spot. Your ink
+is orange - a colour the page's palette does not offer - so the user can
+tell your marks from theirs; sign a free-standing answer "- Claude" when
+it could still be mistaken for theirs.
 Words on the board are labels and one-line questions, not paragraphs.
 Never move, restyle or delete an element you did not author; retire
 your own marks once they are answered or obsolete so stale ink does not

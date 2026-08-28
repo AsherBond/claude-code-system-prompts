@@ -1,7 +1,7 @@
 <!--
 name: "Skill: Cost optimization"
 description: "Optimizes Claude API cost per completed task by profiling token usage, ranking savings levers, separating free wins from quality tradeoffs, validating changes with evaluations, and reporting measured outcomes"
-ccVersion: "2.1.247"
+ccVersion: "2.1.248"
 -->
 # Cost Optimization - Cutting Spend per Completed Task
 
@@ -13,6 +13,8 @@ The levers divide into two kinds, and the order of the steps is load-bearing:
 
 - **Free wins** - prompt caching, input-token hygiene (including a prompt audit), loop hygiene, output-token hygiene, batch processing - lower what you pay without lowering output quality. They go first, and caching stays on permanently.
 - **Tradeoffs** - budgets, effort, model choice, multi-model architectures - exchange cost for intelligence. They go last, because each one changes what the model can do, and overshooting costs quality that the free wins never touch.
+
+**Where this workflow sits**: the `prompt-audit` subcommand (`shared/prompt-audit.md`) audits the prompt surface (prompts, skills, tool descriptions) alone; this workflow is the holistic cost pass - request shape, caching, loop structure, output, batching, effort, model - and runs that audit as one sub-lever of input hygiene (§ 2.2) rather than restating its patterns; and once the project has an eval, the levers become a hillclimb - one change at a time against the eval, keep or revert (Step 3).
 
 Measured expectations quoted below are snapshots of Anthropic's published runs (sources at the end). They are directional, not guarantees - the validation loop in Step 3 is what makes a number true for this project - and both sources are fetched live - the platform guide through `shared/live-sources.md`, the cookbook at its URL in the Sources section below: wherever a fetched page differs from this snapshot, the page wins.
 
@@ -122,7 +124,7 @@ Send the model what the task needs, let it fetch the rest. Each sub-lever has a 
 - **Chained tool calls whose intermediates don't matter** -> programmatic tool calling runs the calls from code so only the filtered result enters context; its documentation reports 24% fewer input tokens on agentic search benchmarks, with a higher score.
 - **Broad data-dump tools** -> prefer narrow accessors (`get_policy(claim_id)` over `get_all_policies()`), and give list tools `limit`/`fields`/`date_range` parameters.
 - **Unbounded user-supplied input** -> the token-counting endpoint as an ingestion gate (`shared/token-counting.md`): count first, then truncate, summarize, or route oversize payloads to the Files API.
-- **The prompt text itself** -> run the `prompt-audit` subcommand (`shared/prompt-audit.md`) as part of this step; its report and proposed diff fold into this workflow's deliverables. Skip when the prompt surface is small and recently audited. Prompts written for an older model make the current one over-work: on a support-desk evaluation, prompts written for {{PREV_OPUS_NAME}} cost 36% more per ticket on {{OPUS_NAME}} for no change in accuracy; audited, the same prompts were 14% cheaper than unaudited and more accurate (97% of tickets, up from 92%). On the Claude Sonnet 4.6 to {{SONNET_NAME}} migration the audit took 14% off at the same accuracy.
+- **The prompt text itself** -> run the `prompt-audit` subcommand (`shared/prompt-audit.md`) as part of this step; its pattern tables are the reference for dated prompt text (this guide deliberately does not restate them), and its report and proposed diff fold into this workflow's deliverables. Skip when the prompt surface is small and recently audited. Prompts written for an older model make the current one over-work: on a support-desk evaluation, prompts written for {{PREV_OPUS_NAME}} cost 36% more per ticket on {{OPUS_NAME}} for no change in accuracy; audited, the same prompts were 14% cheaper than unaudited and more accurate (97% of tickets, up from 92%). On the Claude Sonnet 4.6 to {{SONNET_NAME}} migration the audit took 14% off at the same accuracy.
 
 **Caveat for the whole section**: a smaller prefix is not automatically a cheaper task. Deferring context means the model may spend discovery turns fetching what it previously read inline. Validate against the eval - on the cookbook's workload, wrapping the manual in a tool matched the explicit-breakpoint config on cost and gave back accuracy.
 
