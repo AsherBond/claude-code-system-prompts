@@ -34,7 +34,7 @@ Download it and try it out for free!  **https://piebald.ai/**
 > [!tip]
 > **NEW (June 12, 2026):** We've greatly expanded this list with many more of Claude Code's prompts&mdash;**from 350 to 515 (+165)**&mdash;our most complete coverage yet.
 
-This repository contains an up-to-date list of all Claude Code's various system prompts and their associated token counts as of **[Claude Code v2.1.251](https://www.npmjs.com/package/@anthropic-ai/claude-code/v/2.1.251) (August 28th, 2026).**  It also contains a [**CHANGELOG.md**](./CHANGELOG.md) for the system prompts across 274 versions since v2.0.14.  From the team behind [<img src="https://github.com/Piebald-AI/piebald/raw/main/assets/logo.svg" width="15"> **Piebald.**](https://piebald.ai/)
+This repository contains an up-to-date list of all Claude Code's various system prompts and their associated token counts as of **[Claude Code v2.1.252](https://www.npmjs.com/package/@anthropic-ai/claude-code/v/2.1.252) (August 31st, 2026).**  It also contains a [**CHANGELOG.md**](./CHANGELOG.md) for the system prompts across 275 versions since v2.0.14.  From the team behind [<img src="https://github.com/Piebald-AI/piebald/raw/main/assets/logo.svg" width="15"> **Piebald.**](https://piebald.ai/)
 
 **This repository is updated within minutes of each Claude Code release.  See the [changelog](./CHANGELOG.md), and follow [@PiebaldAI](https://x.com/PiebaldAI) on X for a summary of the system prompt changes in each release.**
 
@@ -504,7 +504,7 @@ Text for large system reminders.
 - [System Reminder: Queued notifications delivery](./system-prompts/system-reminder-queued-notifications-delivery.md) (**249** tks) - Formats an authoritative system notification for a drained batch of queued notifications, including relayed bodies and the remaining queue count.
 - [System Reminder: Read truncation retry guidance](./system-prompts/system-reminder-read-truncation-retry-guidance.md) (**80** tks) - Instructs Claude to reduce chunk size after file-read truncation warnings and notes the Bash output character limit.
 - [System Reminder: Scheduled task automated firing](./system-prompts/system-reminder-scheduled-task-automated-firing.md) (**242** tks) - Marks a scheduled turn as an automated firing of a stored prompt and warns that no live user approval or confirmation has occurred.
-- [System Reminder: Session context](./system-prompts/system-reminder-session-context.md) (**143** tks) - Provides selected session context values, marks replacement updates, and directs the agent to use them only when highly relevant.
+- [System Reminder: Session context](./system-prompts/system-reminder-session-context.md) (**243** tks) - Provides selected session context values, marks replacement updates, and directs the agent to use them only when highly relevant.
 - [System Reminder: Session continuation](./system-prompts/system-reminder-session-continuation.md) (**37** tks) - Notification that session continues from another machine.
 - [System Reminder: Session stop hook active](./system-prompts/system-reminder-session-stop-hook-active.md) (**111** tks) - Tells Claude a session-scoped Stop hook condition is active and must be treated as the directive until met.
 - [System Reminder: Stop hook blocking error](./system-prompts/system-reminder-stop-hook-blocking-error.md) (**20** tks) - Error from a blocking hook command.
