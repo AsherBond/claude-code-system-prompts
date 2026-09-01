@@ -1,7 +1,7 @@
 <!--
 name: "Data: Claude Code gateway protocol"
 description: "Markdown reference documenting the Claude Code gateway wire contract, including OAuth 2.0 device flow, RFC 8414 discovery, Messages API inference, managed settings, model discovery, OTLP telemetry, error envelopes, TLS certificate pinning, and proxying to Bedrock, Vertex, and Foundry"
-ccVersion: "2.1.247"
+ccVersion: "2.1.257"
 -->
 # Claude Code gateway protocol
 
@@ -54,7 +54,8 @@ intentionally absent.
 
 ## Device authorization — required
 
-`POST {device_authorization_endpoint}` (unauthenticated)
+`POST {device_authorization_endpoint}` (unauthenticated; answer directly, the
+client follows no redirect here)
 
 RFC 8628 §3.2. The client opens `verification_uri_complete` in the user's
 browser and polls `token_endpoint` every `interval` seconds.
@@ -90,7 +91,8 @@ per-IP rate limit (RFC 8628 §5.1) and don't auto-submit a pre-filled code
 ## Token — required
 
 `POST {token_endpoint}` (unauthenticated,
-`application/x-www-form-urlencoded`)
+`application/x-www-form-urlencoded`; answer directly, the client follows no
+redirect here)
 
 **Device grant** (`grant_type=urn:ietf:params:oauth:grant-type:device_code`):
 
