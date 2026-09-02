@@ -34,7 +34,7 @@ Download it and try it out for free!  **https://piebald.ai/**
 > [!tip]
 > **NEW (June 12, 2026):** We've greatly expanded this list with many more of Claude Code's prompts&mdash;**from 350 to 515 (+165)**&mdash;our most complete coverage yet.
 
-This repository contains an up-to-date list of all Claude Code's various system prompts and their associated token counts as of **[Claude Code v2.1.257](https://www.npmjs.com/package/@anthropic-ai/claude-code/v/2.1.257) (September 1st, 2026).**  It also contains a [**CHANGELOG.md**](./CHANGELOG.md) for the system prompts across 276 versions since v2.0.14.  From the team behind [<img src="https://github.com/Piebald-AI/piebald/raw/main/assets/logo.svg" width="15"> **Piebald.**](https://piebald.ai/)
+This repository contains an up-to-date list of all Claude Code's various system prompts and their associated token counts as of **[Claude Code v2.1.258](https://www.npmjs.com/package/@anthropic-ai/claude-code/v/2.1.258) (September 1st, 2026).**  It also contains a [**CHANGELOG.md**](./CHANGELOG.md) for the system prompts across 277 versions since v2.0.14.  From the team behind [<img src="https://github.com/Piebald-AI/piebald/raw/main/assets/logo.svg" width="15"> **Piebald.**](https://piebald.ai/)
 
 **This repository is updated within minutes of each Claude Code release.  See the [changelog](./CHANGELOG.md), and follow [@PiebaldAI](https://x.com/PiebaldAI) on X for a summary of the system prompt changes in each release.**
 
@@ -320,7 +320,7 @@ Parts of the main system prompt.
 - [System Prompt: Correction restraint](./system-prompts/system-prompt-correction-restraint.md) (**365** tks) - Instructs Claude to correct only consequential errors plainly, avoid unnecessary self-criticism or re-auditing, and evaluate other agents’ corrections before adopting them.
 - [System Prompt: Delivering work at full scope](./system-prompts/system-prompt-delivering-work-at-full-scope.md) (**605** tks) - Instructs Claude to complete ordinary requested work at full scope under reasonable assumptions, continue past non-blocking concerns, and preserve necessary refusal and risky-action confirmation boundaries.
 - [System Prompt: Deny rule circumvention classifier guidance](./system-prompts/system-prompt-deny-rule-circumvention-classifier-guidance.md) (**74** tks) - Guides permission classification to block attempts to route around configured Edit, Write, or MultiEdit deny rules.
-- [System Prompt: Description part of memory instructions](./system-prompts/system-prompt-description-part-of-memory-instructions.md) (**148** tks) - Field for describing _what_ the memory is.  Part of a bigger effort to instruct Claude how to create memories.
+- [System Prompt: Description part of memory instructions](./system-prompts/system-prompt-description-part-of-memory-instructions.md) (**148** tks) - Defines what the memory description field should contain within broader user-memory authoring instructions.
 - [System Prompt: Doing tasks (ambitious tasks)](./system-prompts/system-prompt-doing-tasks-ambitious-tasks.md) (**47** tks) - Allow users to complete ambitious tasks; defer to user judgement on scope.
 - [System Prompt: Doing tasks (help and feedback)](./system-prompts/system-prompt-doing-tasks-help-and-feedback.md) (**24** tks) - How to inform users about help and feedback channels.
 - [System Prompt: Doing tasks (no compatibility hacks)](./system-prompts/system-prompt-doing-tasks-no-compatibility-hacks.md) (**52** tks) - Delete unused code completely rather than adding compatibility shims.
@@ -347,7 +347,7 @@ Parts of the main system prompt.
 - [System Prompt: Harness instructions](./system-prompts/system-prompt-harness-instructions.md) (**374** tks) - Core interactive-agent identity and harness instructions for terminal Markdown output, security, permissions, system-reminder handling, hook feedback, tool use, and code references.
 - [System Prompt: Hook evaluator truncated transcript note](./system-prompts/system-prompt-hook-evaluator-truncated-transcript-note.md) (**74** tks) - Tells the hook condition evaluator that earlier conversation was omitted and how to handle insufficient evidence.
 - [System Prompt: Hook feedback handling](./system-prompts/system-prompt-hook-feedback-handling.md) (**85** tks) - Explains that hook feedback should be treated as user feedback and how to respond when hooks block actions.
-- [System Prompt: Hooks Configuration](./system-prompts/system-prompt-hooks-configuration.md) (**1493** tks) - System prompt for hooks configuration.  Used for above Claude Code config skill.
+- [System Prompt: Hooks Configuration](./system-prompts/system-prompt-hooks-configuration.md) (**1493** tks) - Documents hook structure, events, types, input/output fields, and examples for the Claude Code configuration skill.
 - [System Prompt: How to use the SendUserMessage tool](./system-prompts/system-prompt-how-to-use-the-sendusermessage-tool.md) (**283** tks) - Instructions for using the SendUserMessage tool.
 - [System Prompt: Insights at a glance summary](./system-prompts/system-prompt-insights-at-a-glance-summary.md) (**569** tks) - Generates a concise 4-part summary (what's working, hindrances, quick wins, ambitious workflows) for the insights report.
 - [System Prompt: Insights friction analysis](./system-prompts/system-prompt-insights-friction-analysis.md) (**139** tks) - Analyzes aggregated usage data to identify friction patterns and categorize recurring issues.
@@ -579,7 +579,7 @@ Text for large system reminders.
 - [Tool Description: EnterPlanMode](./system-prompts/tool-description-enterplanmode.md) (**1296** tks) - Tool description for entering plan mode to explore and design implementation approaches.
 - [Tool Description: EnterWorktree](./system-prompts/tool-description-enterworktree.md) (**1062** tks) - Creates a new isolated worktree or enters an existing one only when explicitly requested, with eligibility, switching, lifecycle, and cleanup rules.
 - [Tool Description: ExitPlanMode](./system-prompts/tool-description-exitplanmode.md) (**648** tks) - Description for the ExitPlanMode tool, which presents a plan dialog for the user to approve.
-- [Tool Description: ExitWorktree](./system-prompts/tool-description-exitworktree.md) (**527** tks) - Roughly, the reverse of the ExitWorktree.
+- [Tool Description: ExitWorktree](./system-prompts/tool-description-exitworktree.md) (**527** tks) - Describes ExitWorktree, which returns the session to its original working directory and either keeps or removes the session-created worktree.
 - [Tool Description: Finding artifacts from earlier sessions](./system-prompts/tool-description-finding-artifacts-from-earlier-sessions.md) (**238** tks) - Explains how to list and recover artifacts from earlier sessions and conditionally provides client-specific follow-up guidance.
 - [Tool Description: Glob compact](./system-prompts/tool-description-glob-compact.md) (**0** tks) - Compact Glob tool description served to newer models — file pattern matching returning paths sorted by modification time.
 - [Tool Description: Glob](./system-prompts/tool-description-glob.md) (**90** tks) - Tool description for file pattern matching and searching by name.
@@ -598,7 +598,7 @@ Text for large system reminders.
 - [Tool Description: PowerShell](./system-prompts/tool-description-powershell.md) (**2850** tks) - Describes the PowerShell command execution tool with syntax guidance, timeout settings, and instructions to prefer specialized tools over PowerShell for file operations.
 - [Tool Description: Prohibited artifact publishing](./system-prompts/tool-description-prohibited-artifact-publishing.md) (**171** tks) - Prohibits publishing impersonation, fabricated records, deceptive collection flows, and content targeting private individuals.
 - [Tool Description: ProposeGoal](./system-prompts/tool-description-proposegoal.md) (**421** tks) - Describes proposing a verifiable multi-turn session goal, requiring user approval unless the user explicitly requested the exact outcome.
-- [Tool Description: PushNotification](./system-prompts/tool-description-pushnotification.md) (**407** tks) - Tool description for PushNotification. This is a tool that sends a desktop notification in the user's terminal and pushes to their phone if Remote Control is connected.
+- [Tool Description: PushNotification](./system-prompts/tool-description-pushnotification.md) (**407** tks) - Explains when and how PushNotification should alert the user on the desktop and, when Remote Control is connected, on their phone.
 - [Tool Description: REPL](./system-prompts/tool-description-repl.md) (**1060** tks) - Describes the REPL tool, a JavaScript programming interface for looping, branching, and composing Claude Code tool calls as async functions.
 - [Tool Description: ReadFile compact](./system-prompts/tool-description-readfile-compact.md) (**293** tks) - Compact file-read tool description served to newer models — absolute path, default line cap, and image/PDF/notebook handling.
 - [Tool Description: ReadFile](./system-prompts/tool-description-readfile.md) (**586** tks) - Tool description for reading files.
@@ -627,7 +627,7 @@ Text for large system reminders.
 - [Tool Description: SuggestConnectors](./system-prompts/tool-description-suggestconnectors.md) (**224** tks) - Describes the SuggestConnectors tool for resolving SearchMcpRegistry directoryUuid values into full connector payloads and install-state guidance.
 - [Tool Description: SuggestSkills proactive guidance](./system-prompts/tool-description-suggestskills-proactive-guidance.md) (**303** tks) - Guides proactive use of SuggestSkills to recommend addable standalone skills for repeatable tasks without interrupting one-off work.
 - [Tool Description: Task Get](./system-prompts/tool-description-task-get.md) (**182** tks) - Retrieve a task by ID with full details and comments.
-- [Tool Description: TaskCreate](./system-prompts/tool-description-taskcreate.md) (**499** tks) - Tool description for TaskCreate tool.
+- [Tool Description: TaskCreate](./system-prompts/tool-description-taskcreate.md) (**738** tks) - Tool description for TaskCreate tool.
 - [Tool Description: TaskList](./system-prompts/tool-description-tasklist.md) (**267** tks) - Description for the TaskList tool, which lists all tasks in the task list.
 - [Tool Description: TaskUpdate](./system-prompts/tool-description-taskupdate.md) (**586** tks) - Description for the TaskUpdate tool, which updates Claude's task list.
 - [Tool Description: TodoWrite compact](./system-prompts/tool-description-todowrite-compact.md) (**108** tks) - Compact tool description for creating and updating a session task list with content, status, and activeForm fields.
