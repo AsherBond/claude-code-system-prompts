@@ -4,6 +4,13 @@ Note: Only use **NEW:** for entirely new prompt files, NOT for new additions/sec
 
 ### Claude Code System Prompts Changelog
 
+# [2.1.258](https://github.com/Piebald-AI/claude-code-system-prompts/commit/545894c)
+
+_+239 tokens_
+
+- Agent Prompt: Plan mode (enhanced) — Corrects CCSP's extracted agent metadata to include `ArtifactComments`, `ArtifactData`, and `ArtifactCheck` among the Plan subagent's disallowed tools; the restrictions already exist in both upstream versions, so Claude Code behavior is unchanged.
+- Tool Description: TaskCreate — Corrects the generated teammate-note placeholder from `CONDTIONAL_TEAMMATES_NOTE` to `CONDITIONAL_TEAMMATES_NOTE`; rendered prompt text and runtime behavior are unchanged.
+
 # [2.1.257](https://github.com/Piebald-AI/claude-code-system-prompts/commit/9465ca1)
 
 _+4,226 tokens_
