@@ -1,12 +1,12 @@
 <!--
 name: "Data: Plugin JSX runtime shim"
 description: "Provides the JSX runtime used by plugin render hooks to construct supported UI elements and button press handlers"
-ccVersion: "2.1.257"
+ccVersion: "2.1.259"
 -->
 (() => {
   const INTRINSIC = {
     Box: 'Box', box: 'Box', Text: 'Text', text: 'Text',
-    div: 'div', span: 'span', b: 'b',
+    div: 'div', span: 'span', b: 'b', Svg: 'Svg',
   }
   let pressCounter = 0
   const flatten = (children, into) => {
@@ -89,11 +89,29 @@ ccVersion: "2.1.257"
       onPress,
     }
   }
+  function svg(props, children) {
+    const { source, alt, width, height, interactive } = props ?? {}
+    if (typeof source !== 'string' || typeof alt !== 'string') {
+      throw new Error(
+        'JSX element <Svg> needs source (the SVG markup) and alt, both ' +
+          'strings',
+      )
+    }
+    if (children.length > 0) {
+      throw new Error('JSX element <Svg> is a leaf: it takes no children')
+    }
+    const svgProps = { source, alt }
+    if (width !== undefined) svgProps.width = width
+    if (height !== undefined) svgProps.height = height
+    if (interactive !== undefined) svgProps.interactive = interactive
+    return { type: 'Svg', props: svgProps }
+  }
   function h(type, props, ...rest) {
     const children = []
     flatten(rest, children)
     if (typeof type === 'function') return type({ ...(props ?? {}), children })
     if (type === 'Button') return button(props, children)
+    if (type === 'Svg') return svg(props, children)
     const intrinsic = Object.hasOwn(INTRINSIC, type)
       ? INTRINSIC[type]
       : undefined
@@ -101,8 +119,8 @@ ccVersion: "2.1.257"
       // The tag name is the plugin's own source text, thrown in its
       // environment: the host reports it as a hook error.
       throw new Error(
-        'JSX element <' + type + '> is not one of Box, Text, Button, div, ' +
-          'span, b: a render hook draws those and what next(e) returned',
+        'JSX element <' + type + '> is not one of Box, Text, Button, Svg, ' +
+          'div, span, b: a render hook draws those and what next(e) returned',
       )
     }
     const cleaned = {}
