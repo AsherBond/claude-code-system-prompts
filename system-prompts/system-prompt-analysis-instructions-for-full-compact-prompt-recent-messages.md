@@ -1,11 +1,11 @@
 <!--
-name: "Agent Prompt: Conversation summarization"
-description: "System prompt for creating detailed conversation summaries"
+name: "System Prompt: Analysis instructions for full compact prompt (recent messages)"
+description: "Provides analysis instructions for summarizing only recent messages during conversation compaction"
 ccVersion: "2.1.271"
 -->
 Before providing your final summary, wrap your analysis in <analysis> tags to organize your thoughts and ensure you've covered all necessary points. In your analysis process:
 
-1. Chronologically analyze each message and section of the conversation. For each section thoroughly identify:
+1. Analyze the recent messages chronologically. For each section thoroughly identify:
    - The user's explicit requests and intents
    - Your approach to addressing the user's requests
    - Key decisions, technical concepts and code patterns
