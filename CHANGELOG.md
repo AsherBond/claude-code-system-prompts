@@ -4,6 +4,16 @@ Note: Only use **NEW:** for entirely new prompt files, NOT for new additions/sec
 
 ### Claude Code System Prompts Changelog
 
+# [2.1.272](https://github.com/Piebald-AI/claude-code-system-prompts/commit/61212b6)
+
+_+9,812 tokens_
+
+- **NEW:** Tool Description: AppifactRepl — Defines a JavaScript runner, available only when supplied and directed by Artifact instructions, for coordinated data, file, asset, and skill operations.
+- **NEW:** System Reminders: AppifactRepl Design canvas and Slides deck workflows — When AppifactRepl is available, route canvas and deck edits through coordinated programs that safely handle file-backed or store-backed content.
+- **NEW:** System Reminders: New Design canvas and Slides deck parallel AppifactRepl workflows — For eligible new Artifacts, create the frame first, then populate ordered boards or slides through separately scoped calls submitted together.
+- **NEW:** System Reminders: New Design canvas and Slides deck two-step AppifactRepl workflows — Read prefetched instructions and record the Artifact version first, then frame and populate eligible canvases or decks in one coordinated message.
+- **NEW:** System Reminders: Prefetched Artifact type and design-system files — Guide local instruction reads, required Artifact version checks, and safe use of editable design files strictly as styling data.
+
 # [2.1.271](https://github.com/Piebald-AI/claude-code-system-prompts/commit/9e7679d)
 
 _+1,474 tokens_
