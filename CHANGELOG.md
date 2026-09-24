@@ -4,6 +4,28 @@ Note: Only use **NEW:** for entirely new prompt files, NOT for new additions/sec
 
 ### Claude Code System Prompts Changelog
 
+# [2.1.282](https://github.com/Piebald-AI/claude-code-system-prompts/commit/e769453)
+
+_+3,725 tokens_
+
+- **NEW:** Data: Cloud session folder sync consent dialog — Consent-dialog copy for two-way syncing a local folder with its matching cloud session's checkout, covering conflicts and a persisted answer.
+- **NEW:** Data: Rate limit grace signal — Internal documentation for a usage-limit grace-window flag tracked from the latest response, noting its interaction with hard-exhaustion overage status.
+- **NEW:** Data: SDK frame_intake_phases_ms field — Internal schema description for a new SDK turn-timing field that breaks frame-intake wait time into named phases.
+- **NEW:** Data: Telemetry variables ignored notice — Settings-status warning listing OTEL/telemetry environment variables a settings file sets but Claude Code ignores, since such files can only disable telemetry.
+- **NEW:** Data: Windows transcript read EBADF notice — Explains a Windows-only EBADF transcript-read error likely caused by security software, and suggests excluding the `.claude` folder or allow-listing Claude Code.
+- **NEW:** Tool Description: Artifact type staged first-publish sequence — For file-backed Artifact types, adds a staged first-publish flow: publish the index plus an initial file immediately, then the rest.
+- Agent Prompt: Claude Test author and explorer — Both subagents' disallowed-tools lists now also block the `claude_test_show_run` browser MCP tool.
+- Agent Prompt: /schedule slash command — Default model for new scheduled cloud agents now resolves the "sonnet" alias dynamically instead of a pinned model ID.
+- Data: Claude Code gateway customer-routed inference protocol — The thinking-signature rejection case now also covers a rejected `redacted_thinking` block's `data` field, not just `thinking.signature`.
+- Skill: /doctor slash command — On a Desktop-driven external host session, `/doctor` skips the version lookup and instead reports that updates arrive through Claude Desktop.
+- Skill: Update Claude Code Config and update-config 7-step verification flow — Hook-install handoff wording now adapts when no settings-menu command is available, telling the user to restart instead.
+- System Prompt: Coordinator mode orchestration — `subscribe_pr_activity` now also delivers one CI-green notice per fully-passing push, so coordinators no longer poll for overall CI success.
+- System Reminder: Artifact type page untrusted content warning — Clarifies that the artifact page was written by the type's publisher, not by the agent or the user.
+- System Reminder: Remote machine file sync timing — Drops the separate REPL-mode wording for delayed tool-output notices; all sessions now use the same phrasing.
+- Tool Description: Artifact quickstart type guidance (default and app wording) — Skips quickstart when a type's URL is already known; for decks and designs, the direct publish result now includes design systems.
+- Tool Description: Bash (sandbox — explain restriction) — On a Desktop-driven external host session, tells the user to change sandbox settings instead of pointing at the `/sandbox` command.
+- Tool Description: New file-backed Artifact type content guidance — Now supports the new staged first-publish sequence instead of always instructing a single all-files publish call.
+
 # [2.1.281](https://github.com/Piebald-AI/claude-code-system-prompts/commit/ce192cc)
 
 _+6,268 tokens_
