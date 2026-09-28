@@ -1,7 +1,7 @@
 <!--
 name: "Data: Claude Code gateway protocol"
 description: "Markdown reference documenting the Claude Code gateway wire contract, including OAuth 2.0 device flow, RFC 8414 discovery, Messages API inference, managed settings, model discovery, OTLP telemetry, error envelopes, TLS certificate pinning, and proxying to Bedrock, Vertex, and Foundry"
-ccVersion: "2.1.275"
+ccVersion: "2.1.284"
 -->
 # Claude Code gateway protocol
 
@@ -235,6 +235,31 @@ message, nothing else. This gateway sends exactly the shapes above for caps
 set through its admin API (`overage-period` is `daily`, `weekly`, or
 `monthly`); when several caps apply it describes the fullest one, or once
 blocked the one that resets last.
+
+To show the user dollars as well ("$271.40 / $500.00 spent"), also answer
+`GET /api/oauth/usage`, the path claude.ai serves Claude Code's usage data on,
+for the bearer's own cap. Newer Claude Code clients call it when signed in to
+a gateway and add the amounts to `/usage` and the status line; on a 404 or
+any other error they show the percent alone, and older clients never call it.
+Put the cap the headers describe in `extra_usage` and one `limits` row per cap
+naming its period, with `is_active` on the row the dollars belong to.
+`monthly_limit` and `used_credits` are cents and must be numbers (the field
+is named `monthly_limit` whatever the period); `utilization` and `percent`
+are whole percents from 0 to 100 (above 100 once over), not the fraction the
+headers use; `resets_at` is an ISO 8601 UTC time, the same instant as that
+cap's `anthropic-ratelimit-unified-overage-reset` header, since clients pair
+the dollars with the percent only when the two agree to the second. A user
+with no cap gets
+`{"limits": []}`.
+
+    GET /api/oauth/usage
+    Authorization: Bearer <access_token>
+
+    HTTP/1.1 200
+    cache-control: no-store
+
+    {"extra_usage": {"is_enabled": true, "monthly_limit": 50000, "used_credits": 27140, "utilization": 54, "currency": "USD"},
+     "limits": [{"kind": "spend", "group": "monthly", "percent": 54, "resets_at": "2026-10-01T00:00:00.000Z", "severity": "normal", "is_active": true}]}
 
 ## Bearer token
 
